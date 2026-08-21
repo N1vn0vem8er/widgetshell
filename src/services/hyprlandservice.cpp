@@ -31,7 +31,7 @@ QList<HyprlandWorkspace> HyprlandService::getWorkspaces()
     socket.connectToServer(QString("%1/hypr/%2/.socket.sock").arg(xdgRuntime, his));
     if(!socket.waitForConnected(1000))
     {
-        qWarning << "Can't connect to socket";
+        // qWarning << "Can't connect to socket";
         return {};
     }
 
@@ -88,12 +88,29 @@ void HyprlandService::onReadReady()
         QString line = QString::fromUtf8(socket2->readLine()).trimmed();
         if(line.startsWith("workspace>>"))
         {
+            emit workspacesChanged();
             bool ok;
             int id = line.section(">>", 1).toInt(&ok);
             if(ok)
                 emit workspaceChanged(id);
             else
                 qCritical() << "Error parsing workspace id";
+            continue;
+        }
+        if(line.startsWith("createdworkspace>>"))
+        {
+            emit workspacesChanged();
+            continue;
+        }
+        if(line.startsWith("destroyworkspace>>"))
+        {
+            emit workspacesChanged();
+            continue;
+        }
+        if(line.startsWith("focusedmon>>"))
+        {
+            emit workspacesChanged();
+            continue;
         }
     }
 }

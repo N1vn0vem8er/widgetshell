@@ -6,6 +6,8 @@
 #include <QTimer>
 #include <QWidget>
 
+#include "components/workspaceswitchercomponent.h"
+
 class BarWidget : public QWidget
 {
     Q_OBJECT
@@ -17,6 +19,8 @@ private:
     QLabel* dateTimeLabel;
     QTimer* dateTimeTimer;
     QSpacerItem* spacerItem;
+    QSpacerItem* spacerItem2;
+    WorkspaceSwitcherComponent* workspaceSwitcher;
 
 signals:
 };

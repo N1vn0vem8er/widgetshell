@@ -32,6 +32,7 @@ private slots:
 
 signals:
     void workspaceChanged(int id);
+    void workspacesChanged();
 };
 
 #endif // HYPRLANDSERVICE_H

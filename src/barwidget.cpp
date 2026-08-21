@@ -14,6 +14,12 @@ BarWidget::BarWidget(QWidget *parent)
 
     mainLayout = new QHBoxLayout(this);
 
+    spacerItem2 = new QSpacerItem(1046, 20, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
+    mainLayout->addItem(spacerItem2);
+
+    workspaceSwitcher = new WorkspaceSwitcherComponent(this);
+    mainLayout->addWidget(workspaceSwitcher);
+
     spacerItem = new QSpacerItem(1046, 20, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
     mainLayout->addItem(spacerItem);
     dateTimeLabel = new QLabel(this);

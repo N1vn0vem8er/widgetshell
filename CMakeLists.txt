@@ -1,10 +1,12 @@
 cmake_minimum_required(VERSION 3.19)
 project(widgetshell LANGUAGES CXX)
 
-find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets)
+find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets Network)
 find_package(LayerShellQt REQUIRED)
 
 qt_standard_project_setup()
+
+include_directories(src)
 
 qt_add_executable(widgetshell
     WIN32 MACOSX_BUNDLE
@@ -20,6 +22,7 @@ target_link_libraries(widgetshell
     PRIVATE
         Qt::Core
         Qt::Widgets
+        Qt::Network
         LayerShellQt::Interface
 )
 

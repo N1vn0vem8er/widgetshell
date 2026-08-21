@@ -9,6 +9,7 @@ qt_standard_project_setup()
 qt_add_executable(widgetshell
     WIN32 MACOSX_BUNDLE
     main.cpp
+    barwidget.h barwidget.cpp
 
 
 

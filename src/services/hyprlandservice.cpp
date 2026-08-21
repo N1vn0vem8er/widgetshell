@@ -1,5 +1,8 @@
 #include "hyprlandservice.h"
 #include <QDebug>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
 
 HyprlandService *HyprlandService::instance()
 {
@@ -22,12 +25,50 @@ void HyprlandService::destroy()
     }
 }
 
+QList<HyprlandWorkspace> HyprlandService::getWorkspaces()
+{
+    QLocalSocket socket;
+    socket.connectToServer(QString("%1/hypr/%2/.socket.sock").arg(xdgRuntime, his));
+    if(!socket.waitForConnected(1000))
+    {
+        qWarning << "Can't connect to socket";
+        return {};
+    }
+
+    socket.write("j/workspaces");
+    socket.flush();
+
+    if(!socket.waitForReadyRead(1000))
+        return {};
+
+    QByteArray response = socket.readAll();
+    socket.close();
+
+    QJsonDocument doc = QJsonDocument::fromJson(response);
+    if(!doc.isArray())
+        return {};
+
+    QList<HyprlandWorkspace> workspaces;
+    const QJsonArray array = doc.array();
+    for(const auto& val : array)
+    {
+        QJsonObject obj = val.toObject();
+        HyprlandWorkspace workspace;
+        workspace.id = obj.value("id").toInt();
+        workspace.name = obj.value("name").toString();
+        workspace.windowsCount = obj.value("windows").toInt();
+        workspace.hasFullscreen = obj.value("hasfullscreen").toBool();
+        workspaces.append(workspace);
+    }
+    return workspaces;
+}
+
 HyprlandService::HyprlandService(QObject *parent)
     : QObject{parent}
 {
     socket2 = new QLocalSocket(this);
-    QString xdgRuntime = qgetenv("XDG_RUNTIME_DIR");
-    QString his = qgetenv("HYPRLAND_INSTANCE_SIGNATURE");
+    xdgRuntime = qgetenv("XDG_RUNTIME_DIR");
+    his = qgetenv("HYPRLAND_INSTANCE_SIGNATURE");
 
     if(his.isEmpty())
     {

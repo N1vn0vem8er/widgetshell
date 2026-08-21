@@ -13,6 +13,7 @@ BarWidget::BarWidget(QWidget *parent)
     layerWindow->setExclusiveZone(height());
 
     mainLayout = new QHBoxLayout(this);
+
     spacerItem = new QSpacerItem(1046, 20, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
     mainLayout->addItem(spacerItem);
     dateTimeLabel = new QLabel(this);

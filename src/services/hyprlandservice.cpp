@@ -27,22 +27,7 @@ void HyprlandService::destroy()
 
 QList<HyprlandWorkspace> HyprlandService::getWorkspaces()
 {
-    QLocalSocket socket;
-    socket.connectToServer(QString("%1/hypr/%2/.socket.sock").arg(xdgRuntime, his));
-    if(!socket.waitForConnected(1000))
-    {
-        // qWarning << "Can't connect to socket";
-        return {};
-    }
-
-    socket.write("j/workspaces");
-    socket.flush();
-
-    if(!socket.waitForReadyRead(1000))
-        return {};
-
-    QByteArray response = socket.readAll();
-    socket.close();
+    QByteArray response = sendIpcCommand("j/workspaces");
 
     QJsonDocument doc = QJsonDocument::fromJson(response);
     if(!doc.isArray())
@@ -63,6 +48,11 @@ QList<HyprlandWorkspace> HyprlandService::getWorkspaces()
     return workspaces;
 }
 
+void HyprlandService::switchWorkspace(int id)
+{
+    sendIpcCommand(QString("dispatch hl.dsp.focus({workspace = %1})").arg(id).toUtf8());
+}
+
 HyprlandService::HyprlandService(QObject *parent)
     : QObject{parent}
 {
@@ -79,6 +69,33 @@ HyprlandService::HyprlandService(QObject *parent)
     connect(socket2, &QLocalSocket::readyRead, this, &HyprlandService::onReadReady);
 
     socket2->connectToServer(QString("%1/hypr/%2/.socket2.sock").arg(xdgRuntime, his));
+}
+
+HyprlandService::~HyprlandService()
+{
+    if(socket2)
+        socket2->close();
+}
+
+QByteArray HyprlandService::sendIpcCommand(const QByteArray &command)
+{
+    QLocalSocket socket;
+    socket.connectToServer(QString("%1/hypr/%2/.socket.sock").arg(xdgRuntime, his));
+    if(!socket.waitForConnected(1000))
+    {
+        qWarning() << "Cant connect to socket";
+        return {};
+    }
+
+    socket.write(command);
+    socket.flush();
+
+    if(!socket.waitForReadyRead(1000))
+        return {};
+
+    QByteArray resp = socket.readAll();
+    socket.close();
+    return resp;
 }
 
 void HyprlandService::onReadReady()

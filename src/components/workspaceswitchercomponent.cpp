@@ -19,6 +19,8 @@ WorkspaceSwitcherComponent::WorkspaceSwitcherComponent(QWidget *parent)
 
 void WorkspaceSwitcherComponent::refreshWorkspaces()
 {
+    if(!service)
+        return;
     QList<HyprlandWorkspace> workspaces = service->getWorkspaces();
     const int neededButtons = workspaces.size();
 
@@ -37,6 +39,9 @@ void WorkspaceSwitcherComponent::refreshWorkspaces()
             QPushButton* button = buttons.at(i);
             button->setText(QString::number(ws.id));
             button->setProperty("workspaceId", ws.id);
+            connect(button, &QPushButton::clicked, this, [button, this]{
+                service->switchWorkspace(button->property("workspaceId").toInt());
+            });
             button->show();
         }
         else

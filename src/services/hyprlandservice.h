@@ -14,18 +14,23 @@ public:
     static HyprlandService* create(QObject* parent = nullptr);
     static void destroy();
     QList<HyprlandWorkspace> getWorkspaces();
+    void switchWorkspace(int id);
 
     HyprlandService(const HyprlandService&) = delete;
     HyprlandService& operator=(const HyprlandService&) = delete;
 
 private:
     explicit HyprlandService(QObject *parent = nullptr);
+    ~HyprlandService();
 
 private:
     QLocalSocket* socket2 {nullptr};
     inline static HyprlandService* m_instance {nullptr};
     QString xdgRuntime;
     QString his;
+
+private:
+    QByteArray sendIpcCommand(const QByteArray& command);
 
 private slots:
     void onReadReady();

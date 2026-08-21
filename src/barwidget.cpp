@@ -12,18 +12,15 @@ BarWidget::BarWidget(QWidget *parent)
     layerWindow->setAnchors(LayerShellQt::Window::Anchors(LayerShellQt::Window::AnchorTop | LayerShellQt::Window::AnchorLeft | LayerShellQt::Window::AnchorRight));
     layerWindow->setExclusiveZone(height());
 
-    mainLayout = new QHBoxLayout(this);
+    mainLayout = new QGridLayout(this);
 
-    spacerItem2 = new QSpacerItem(1046, 20, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
-    mainLayout->addItem(spacerItem2);
+    mainLayout->addWidget(new QWidget(this), 0, 0, Qt::AlignLeft | Qt::AlignVCenter);
 
     workspaceSwitcher = new WorkspaceSwitcherComponent(this);
-    mainLayout->addWidget(workspaceSwitcher);
+    mainLayout->addWidget(workspaceSwitcher, 0, 1, Qt::AlignCenter);
 
-    spacerItem = new QSpacerItem(1046, 20, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
-    mainLayout->addItem(spacerItem);
     dateTimeLabel = new QLabel(this);
-    mainLayout->addWidget(dateTimeLabel);
+    mainLayout->addWidget(dateTimeLabel, 0, 2, Qt::AlignRight | Qt::AlignVCenter);
     dateTimeTimer = new QTimer(this);
     connect(dateTimeTimer, &QTimer::timeout, this, [this]{dateTimeLabel->setText(QDateTime::currentDateTime().toString("hh::mm:ss | dd:MM:yyyy"));});
     dateTimeTimer->setInterval(1000);

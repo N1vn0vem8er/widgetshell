@@ -15,11 +15,9 @@ public:
     explicit BarWidget(QWidget *parent = nullptr);
 
 private:
-    QHBoxLayout* mainLayout;
+    QGridLayout* mainLayout;
     QLabel* dateTimeLabel;
     QTimer* dateTimeTimer;
-    QSpacerItem* spacerItem;
-    QSpacerItem* spacerItem2;
     WorkspaceSwitcherComponent* workspaceSwitcher;
 
 signals:

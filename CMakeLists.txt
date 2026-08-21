@@ -8,8 +8,9 @@ qt_standard_project_setup()
 
 qt_add_executable(widgetshell
     WIN32 MACOSX_BUNDLE
-    main.cpp
-    barwidget.h barwidget.cpp
+    src/main.cpp
+    src/barwidget.h src/barwidget.cpp
+    src/services/hyprlandservice.h src/services/hyprlandservice.cpp
 
 
 

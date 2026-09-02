@@ -7,12 +7,14 @@
 #include <QWidget>
 
 #include "components/workspaceswitchercomponent.h"
+#include "components/controlmenu.h"
 
 class BarWidget : public QWidget
 {
     Q_OBJECT
 public:
     explicit BarWidget(QWidget *parent = nullptr);
+    ~BarWidget();
 
 private:
     QGridLayout* mainLayout;
@@ -20,6 +22,7 @@ private:
     QTimer* dateTimeTimer;
     QPushButton* controlMenuButton;
     WorkspaceSwitcherComponent* workspaceSwitcher;
+    ControlMenu* controlMenu {nullptr};
 
 signals:
 };

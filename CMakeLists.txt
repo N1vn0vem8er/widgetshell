@@ -15,6 +15,7 @@ qt_add_executable(widgetshell
     src/services/hyprlandservice.h src/services/hyprlandservice.cpp
     src/components/workspaceswitchercomponent.h src/components/workspaceswitchercomponent.cpp
     src/data/hyprlandworkspace.h
+    src/components/controlmenu.h src/components/controlmenu.cpp
 
 
 

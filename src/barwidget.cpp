@@ -19,8 +19,14 @@ BarWidget::BarWidget(QWidget *parent)
     workspaceSwitcher = new WorkspaceSwitcherComponent(this);
     mainLayout->addWidget(workspaceSwitcher, 0, 1, Qt::AlignCenter);
 
+    controlMenuButton = new QPushButton(QIcon::fromTheme("application-menu"), "", this);
     dateTimeLabel = new QLabel(this);
-    mainLayout->addWidget(dateTimeLabel, 0, 2, Qt::AlignRight | Qt::AlignVCenter);
+    QWidget* rightWidget = new QWidget(this);
+    QHBoxLayout* rightLayout = new QHBoxLayout(rightWidget);
+    rightLayout->addWidget(dateTimeLabel);
+    rightLayout->addWidget(controlMenuButton);
+
+    mainLayout->addWidget(rightWidget, 0, 2, Qt::AlignRight | Qt::AlignVCenter);
     dateTimeTimer = new QTimer(this);
     connect(dateTimeTimer, &QTimer::timeout, this, [this]{dateTimeLabel->setText(QDateTime::currentDateTime().toString("hh::mm:ss | dd:MM:yyyy"));});
     dateTimeTimer->setInterval(1000);

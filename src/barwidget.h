@@ -18,6 +18,7 @@ private:
     QGridLayout* mainLayout;
     QLabel* dateTimeLabel;
     QTimer* dateTimeTimer;
+    QPushButton* controlMenuButton;
     WorkspaceSwitcherComponent* workspaceSwitcher;
 
 signals:

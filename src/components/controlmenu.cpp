@@ -2,6 +2,8 @@
 
 #include <LayerShellQt/Window>
 
+#include <QProcess>
+
 ControlMenu::ControlMenu(QWidget *parent)
     : QWidget{parent}
 {
@@ -10,4 +12,44 @@ ControlMenu::ControlMenu(QWidget *parent)
     LayerShellQt::Window* layerWindow = LayerShellQt::Window::get(windowHandle());
     layerWindow->setLayer(LayerShellQt::Window::Layer::LayerOverlay);
     layerWindow->setAnchors(LayerShellQt::Window::Anchors(LayerShellQt::Window::AnchorTop | LayerShellQt::Window::AnchorRight));
+
+    mainLayout = new QVBoxLayout(this);
+
+    QWidget* topButtonsWidget = new QWidget(this);
+    QHBoxLayout* topButtonsLayout = new QHBoxLayout(topButtonsWidget);
+    shutdownButton = new QPushButton(QIcon::fromTheme("system-shutdown"), "", this);
+    logoutButton = new QPushButton(QIcon::fromTheme("system-log-out"), "", this);
+    sleepButton = new QPushButton(QIcon::fromTheme("system-suspend"), "", this);
+    rebootButton = new QPushButton(QIcon::fromTheme("system-reboot"), "", this);
+    connect(shutdownButton, &QPushButton::clicked, this, &ControlMenu::onShutdown);
+    connect(logoutButton, &QPushButton::clicked, this, &ControlMenu::onLogout);
+    connect(sleepButton, &QPushButton::clicked, this, &ControlMenu::onSleep);
+    connect(rebootButton, &QPushButton::clicked, this, &ControlMenu::onReboot);
+    topButtonsLayout->addWidget(sleepButton);
+    topButtonsLayout->addWidget(logoutButton);
+    topButtonsLayout->addWidget(rebootButton);
+    topButtonsLayout->addWidget(shutdownButton);
+
+    mainLayout->addWidget(topButtonsWidget);
+    setLayout(mainLayout);
+}
+
+void ControlMenu::onShutdown()
+{
+    QProcess::startDetached("systemctl", {"poweroff"});
+}
+
+void ControlMenu::onLogout()
+{
+    QProcess::startDetached("loginctl", {"terminate-session", getenv("XDG_SESSION_ID")});
+}
+
+void ControlMenu::onSleep()
+{
+    QProcess::startDetached("systemctl", {"suspend"});
+}
+
+void ControlMenu::onReboot()
+{
+    QProcess::startDetached("systemctl", {"reboot"});
 }

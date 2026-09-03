@@ -20,6 +20,7 @@ private:
 
 private slots:
     void refreshWorkspaces();
+    void workspaceChanged(int id);
 
 signals:
 };

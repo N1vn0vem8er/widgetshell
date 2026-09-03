@@ -13,6 +13,7 @@ WorkspaceSwitcherComponent::WorkspaceSwitcherComponent(QWidget *parent)
     if(service)
     {
         connect(service, &HyprlandService::workspacesChanged, this, &WorkspaceSwitcherComponent::refreshWorkspaces);
+        connect(service, &HyprlandService::workspaceChanged, this, &WorkspaceSwitcherComponent::workspaceChanged);
     }
     refreshWorkspaces();
 }
@@ -27,6 +28,7 @@ void WorkspaceSwitcherComponent::refreshWorkspaces()
     while(buttons.size() < neededButtons)
     {
         QPushButton* button = new QPushButton(this);
+        button->setCheckable(true);
         mainLayout->addWidget(button);
         buttons.append(button);
     }
@@ -46,5 +48,16 @@ void WorkspaceSwitcherComponent::refreshWorkspaces()
         }
         else
             buttons.at(i)->hide();
+    }
+}
+
+void WorkspaceSwitcherComponent::workspaceChanged(int id)
+{
+    for(auto* button : std::as_const(buttons))
+    {
+        if(button->property("workspaceId").toInt() == id)
+            button->setChecked(true);
+        else
+            button->setChecked(false);
     }
 }

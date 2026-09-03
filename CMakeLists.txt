@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.19)
 project(widgetshell LANGUAGES CXX)
 
 find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets Network)
+find_package(Qt6 REQUIRED COMPONENTS MultimediaWidgets)
 find_package(LayerShellQt REQUIRED)
 
 qt_standard_project_setup()
@@ -16,6 +17,8 @@ qt_add_executable(widgetshell
     src/components/workspaceswitchercomponent.h src/components/workspaceswitchercomponent.cpp
     src/data/hyprlandworkspace.h
     src/components/controlmenu.h src/components/controlmenu.cpp
+    src/services/audioservice.h src/services/audioservice.cpp
+    src/components/wallpaper.h src/components/wallpaper.cpp
 
 
 
@@ -28,6 +31,7 @@ target_link_libraries(widgetshell
         Qt::Network
         LayerShellQt::Interface
 )
+target_link_libraries(widgetshell PRIVATE Qt6::MultimediaWidgets)
 
 install(TARGETS widgetshell
     BUNDLE  DESTINATION .

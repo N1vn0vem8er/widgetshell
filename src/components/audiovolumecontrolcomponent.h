@@ -1,6 +1,7 @@
 #ifndef AUDIOVOLUMECONTROLCOMPONENT_H
 #define AUDIOVOLUMECONTROLCOMPONENT_H
 
+#include "services/audioservice.h"
 #include <QWidget>
 #include <QSlider>
 #include <qboxlayout.h>
@@ -20,6 +21,7 @@ private:
     QLabel* volumeLabel;
     bool muted;
     float volume;
+    AudioService* service;
 
 private:
     void updateVolumeIcon();
@@ -27,8 +29,8 @@ private:
 private slots:
     void volumeChanged(float val);
     void muteChanged(bool val);
-
-signals:
+    void changeVolume(int val);
+    void changeMute();
 };
 
 #endif // AUDIOVOLUMECONTROLCOMPONENT_H

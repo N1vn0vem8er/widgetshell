@@ -7,12 +7,14 @@ AudioVolumeControlComponent::AudioVolumeControlComponent(QWidget *parent)
 
     muteButton = new QPushButton(this);
     muteButton->setFlat(true);
+    connect(muteButton, &QPushButton::clicked, this, &AudioVolumeControlComponent::changeMute);
     mainLayout->addWidget(muteButton);
 
     slider = new QSlider(this);
     slider->setOrientation(Qt::Horizontal);
     slider->setMaximum(100);
     slider->setMinimum(0);
+    connect(slider, &QSlider::sliderMoved, this, &AudioVolumeControlComponent::changeVolume);
     mainLayout->addWidget(slider);
 
     volumeLabel = new QLabel("0%", this);
@@ -45,4 +47,15 @@ void AudioVolumeControlComponent::muteChanged(bool val)
 {
     muted = val;
     updateVolumeIcon();
+}
+
+void AudioVolumeControlComponent::changeVolume(int val)
+{
+    if(val < 0 || val > 100)
+        return;
+}
+
+void AudioVolumeControlComponent::changeMute()
+{
+
 }

@@ -17,8 +17,9 @@ qt_add_executable(widgetshell
     src/components/workspaceswitchercomponent.h src/components/workspaceswitchercomponent.cpp
     src/data/hyprlandworkspace.h
     src/components/controlmenu.h src/components/controlmenu.cpp
-    src/services/audioservice.h src/services/audioservice.cpp
     src/components/wallpaper.h src/components/wallpaper.cpp
+    src/services/audioservice.h src/services/audioservice.cpp
+    src/components/audiovolumecontrolcomponent.h src/components/audiovolumecontrolcomponent.cpp
 
 
 

@@ -1,6 +1,7 @@
 #ifndef CONTROLMENU_H
 #define CONTROLMENU_H
 
+#include "components/audiovolumecontrolcomponent.h"
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QWidget>
@@ -17,6 +18,7 @@ private:
     QPushButton* logoutButton;
     QPushButton* sleepButton;
     QPushButton* rebootButton;
+    AudioVolumeControlComponent* audioVolumeControl;
 
 private slots:
     void onShutdown();

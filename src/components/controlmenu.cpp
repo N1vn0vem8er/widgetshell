@@ -31,6 +31,10 @@ ControlMenu::ControlMenu(QWidget *parent)
     topButtonsLayout->addWidget(shutdownButton);
 
     mainLayout->addWidget(topButtonsWidget);
+
+    audioVolumeControl = new AudioVolumeControlComponent(this);
+    mainLayout->addWidget(audioVolumeControl);
+
     setLayout(mainLayout);
 }
 

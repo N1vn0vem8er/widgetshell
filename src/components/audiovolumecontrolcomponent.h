@@ -18,6 +18,15 @@ private:
     QPushButton* muteButton;
     QHBoxLayout* mainLayout;
     QLabel* volumeLabel;
+    bool muted;
+    float volume;
+
+private:
+    void updateVolumeIcon();
+
+private slots:
+    void volumeChanged(float val);
+    void muteChanged(bool val);
 
 signals:
 };

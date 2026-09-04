@@ -8,6 +8,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     HyprlandService::create();
+    AudioService::create();
     BarWidget bar;
     bar.show();
     Wallpaper wallpaper;

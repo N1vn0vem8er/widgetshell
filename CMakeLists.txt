@@ -4,6 +4,10 @@ project(widgetshell LANGUAGES CXX)
 find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets Network)
 find_package(Qt6 REQUIRED COMPONENTS MultimediaWidgets)
 find_package(LayerShellQt REQUIRED)
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(PULSEAUDIO REQUIRED libpulse)
+
+include_directories(${PULSEAUDIO_INCLUDE_DIRS})
 
 qt_standard_project_setup()
 
@@ -32,7 +36,10 @@ target_link_libraries(widgetshell
         Qt::Network
         LayerShellQt::Interface
 )
-target_link_libraries(widgetshell PRIVATE Qt6::MultimediaWidgets)
+target_link_libraries(widgetshell
+    PRIVATE
+        Qt6::MultimediaWidgets
+        ${PULSEAUDIO_LIBRARIES})
 
 install(TARGETS widgetshell
     BUNDLE  DESTINATION .

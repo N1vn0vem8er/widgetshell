@@ -3,6 +3,9 @@
 AudioVolumeControlComponent::AudioVolumeControlComponent(QWidget *parent)
     : QWidget{parent}
 {
+    service = AudioService::instance();
+    connect(service, &AudioService::volumeChanged, this, &AudioVolumeControlComponent::volumeChanged);
+
     mainLayout = new QHBoxLayout(this);
 
     muteButton = new QPushButton(this);
@@ -14,7 +17,9 @@ AudioVolumeControlComponent::AudioVolumeControlComponent(QWidget *parent)
     slider->setOrientation(Qt::Horizontal);
     slider->setMaximum(100);
     slider->setMinimum(0);
-    connect(slider, &QSlider::sliderMoved, this, &AudioVolumeControlComponent::changeVolume);
+    slider->setSingleStep(1);
+    slider->setPageStep(5);
+    connect(slider, &QSlider::valueChanged, this, &AudioVolumeControlComponent::changeVolume);
     mainLayout->addWidget(slider);
 
     volumeLabel = new QLabel("0%", this);
@@ -38,8 +43,10 @@ void AudioVolumeControlComponent::updateVolumeIcon()
 void AudioVolumeControlComponent::volumeChanged(float val)
 {
     volume = val;
-    volumeLabel->setText(QString("%1%").arg(volume));
-    slider->setValue(volume * 100);
+    volumeLabel->setText(QString("%1%").arg(qRound(volume * 100)));
+    slider->blockSignals(true);
+    slider->setValue(qRound(volume * 100.0f));
+    slider->blockSignals(false);
     updateVolumeIcon();
 }
 
@@ -53,6 +60,7 @@ void AudioVolumeControlComponent::changeVolume(int val)
 {
     if(val < 0 || val > 100)
         return;
+    service->setVolume(static_cast<float>(val) / 100.0f);
 }
 
 void AudioVolumeControlComponent::changeMute()

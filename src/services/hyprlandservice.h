@@ -5,6 +5,7 @@
 #include <QObject>
 
 #include "data/hyprlandworkspace.h"
+#include "data/hyprlandclient.h"
 
 class HyprlandService : public QObject
 {
@@ -15,6 +16,8 @@ public:
     static void destroy();
     QList<HyprlandWorkspace> getWorkspaces();
     void switchWorkspace(int id);
+    QList<HyprlandClient> getClients();
+    HyprlandWorkspace getWorkspace(int id);
 
     HyprlandService(const HyprlandService&) = delete;
     HyprlandService& operator=(const HyprlandService&) = delete;

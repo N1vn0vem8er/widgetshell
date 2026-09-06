@@ -1,6 +1,13 @@
 #ifndef HYPRLANDWORKSPACE_H
 #define HYPRLANDWORKSPACE_H
 
+#include <qobject.h>
+
+struct HyprlandWorkspaceR {
+    int id;
+    QString name;
+};
+
 struct HyprlandWorkspace {
     int id;
     QString name;

@@ -5,6 +5,7 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QWidget>
+#include <QCalendarWidget>
 
 class ControlMenu : public QWidget
 {
@@ -18,6 +19,7 @@ private:
     QPushButton* logoutButton;
     QPushButton* sleepButton;
     QPushButton* rebootButton;
+    QCalendarWidget* calendar;
     AudioVolumeControlComponent* audioVolumeControl;
 
 private slots:

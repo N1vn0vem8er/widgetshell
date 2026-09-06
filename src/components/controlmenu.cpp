@@ -29,11 +29,13 @@ ControlMenu::ControlMenu(QWidget *parent)
     topButtonsLayout->addWidget(logoutButton);
     topButtonsLayout->addWidget(rebootButton);
     topButtonsLayout->addWidget(shutdownButton);
-
     mainLayout->addWidget(topButtonsWidget);
 
     audioVolumeControl = new AudioVolumeControlComponent(this);
     mainLayout->addWidget(audioVolumeControl);
+
+    calendar = new QCalendarWidget(this);
+    mainLayout->addWidget(calendar);
 
     setLayout(mainLayout);
 }

@@ -41,6 +41,11 @@ private slots:
 signals:
     void workspaceChanged(int id);
     void workspacesChanged();
+    void clientsChanged();
+    void openedWindow(const QString& windowAddress, const QString& workspaceName, const QString& windowClass, const QString& windowTitle);
+    void closedWindow(const QString& windowAddress);
+    void movedWindow(const QString& windowAddress, const QString& workspaceName);
+    void movedWindowV2(const QString& windowAddress, const int workspaceId, const QString& workspaceName);
 };
 
 #endif // HYPRLANDSERVICE_H

@@ -109,6 +109,12 @@ QList<HyprlandClient> HyprlandService::getClients()
 HyprlandWorkspace HyprlandService::getWorkspace(int id)
 {
     QByteArray response = sendIpcCommand("j/workspace/1");
+    QJsonDocument doc = QJsonDocument::fromJson(response);
+    if(!doc.isArray())
+        return {};
+
+    HyprlandWorkspace workspace;
+    return workspace;
 }
 
 HyprlandService::HyprlandService(QObject *parent)
@@ -185,6 +191,58 @@ void HyprlandService::onReadReady()
         if(line.startsWith("focusedmon>>"))
         {
             emit workspacesChanged();
+            continue;
+        }
+        if(line.startsWith("openwindow"))
+        {
+            const QStringList parts = line.mid(QStringLiteral("openwindow>>").size()).split(',');
+            if(parts.size() >= 4)
+            {
+                const QString windowAddress = parts.at(0);
+                const QString workspaceName = parts.at(1);
+                const QString windowClass = parts.at(2);
+                const QString windowTitle = parts.mid(3).join(',');
+                emit openedWindow(windowAddress, workspaceName, windowClass, windowTitle);
+                emit clientsChanged();
+            }
+            continue;
+        }
+        if(line.startsWith("closewindow"))
+        {
+            const QString windowAddress = line.section(">>", 1);
+            emit closedWindow(windowAddress);
+            emit clientsChanged();
+            continue;
+        }
+        if(line.startsWith("movewindow"))
+        {
+            const QStringList parts = line.mid(QStringLiteral("movewindow>>").size()).split(',');
+            if(parts.size() >= 2)
+            {
+                const QString windowAddress = parts.at(0);
+                const QString workspaceName = parts.at(1);
+                emit movedWindow(windowAddress, workspaceName);
+                emit clientsChanged();
+            }
+            continue;
+        }
+        if(line.startsWith("movewindowv2"))
+        {
+            const QStringList parts = line.mid(QStringLiteral("movewindowv2>>").size()).split(',');
+            if(parts.size() >= 3)
+            {
+                const QString windowAddress = parts.at(0);
+                bool ok;
+                const int workspaceId = parts.at(1).toInt(&ok);
+                if(!ok)
+                {
+                    qCritical() << "Error parsing workspace id";
+                    continue;
+                }
+                const QString workspaceName = parts.at(2);
+                emit movedWindowV2(windowAddress, workspaceId, workspaceName);
+                emit clientsChanged();
+            }
             continue;
         }
     }

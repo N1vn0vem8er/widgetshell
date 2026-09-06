@@ -192,7 +192,7 @@ void AudioService::sinkInfoCallback(pa_context *c, const pa_sink_info *i, int eo
     if(dev.name == self->m_defaultSinkName)
     {
         self->m_defaultSinkChannels = i->channel_map.channels;
-        float vol = static_cast<float>(pa_cvolume_avg(&(i->volume)) / PA_VOLUME_NORM);
+        float vol = static_cast<float>(pa_cvolume_avg(&i->volume)) / PA_VOLUME_NORM;
         bool mute = i->mute > 0;
 
         if(!qFuzzyCompare(self->m_currentVolume, vol))
@@ -207,4 +207,14 @@ void AudioService::sinkInfoCallback(pa_context *c, const pa_sink_info *i, int eo
             emit self->muteChanged(mute);
         }
     }
+}
+
+bool AudioService::currentMute() const
+{
+    return m_currentMute;
+}
+
+float AudioService::currentVolume() const
+{
+    return m_currentVolume;
 }

@@ -27,6 +27,8 @@ public:
     QVector<AudioDevice> getOutputDevices();
     AudioService(const AudioService&) = delete;
     AudioService& operator=(const AudioService&) = delete;
+    float currentVolume() const;
+    bool currentMute() const;
 
 private:
     explicit AudioService(QObject *parent = nullptr);

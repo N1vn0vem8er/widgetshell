@@ -4,7 +4,10 @@ AudioVolumeControlComponent::AudioVolumeControlComponent(QWidget *parent)
     : QWidget{parent}
 {
     service = AudioService::instance();
+    volume = service->currentVolume();
+    muted = service->currentMute();
     connect(service, &AudioService::volumeChanged, this, &AudioVolumeControlComponent::volumeChanged);
+    connect(service, &AudioService::muteChanged, this, &AudioVolumeControlComponent::muteChanged);
 
     mainLayout = new QHBoxLayout(this);
 
@@ -26,6 +29,8 @@ AudioVolumeControlComponent::AudioVolumeControlComponent(QWidget *parent)
     mainLayout->addWidget(volumeLabel);
 
     mainLayout->setStretch(1, 1);
+    volumeChanged(volume);
+    muteChanged(muted);
 }
 
 void AudioVolumeControlComponent::updateVolumeIcon()
@@ -65,5 +70,5 @@ void AudioVolumeControlComponent::changeVolume(int val)
 
 void AudioVolumeControlComponent::changeMute()
 {
-
+    service->setMute(!muted);
 }

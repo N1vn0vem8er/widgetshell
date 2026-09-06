@@ -7,6 +7,7 @@
 #include <qboxlayout.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
+#include <QComboBox>
 
 class AudioVolumeControlComponent : public QWidget
 {
@@ -15,9 +16,11 @@ public:
     explicit AudioVolumeControlComponent(QWidget *parent = nullptr);
 
 private:
+    QComboBox* outputComboBox;
     QSlider* slider;
     QPushButton* muteButton;
-    QHBoxLayout* mainLayout;
+    QVBoxLayout* mainLayout;
+    QHBoxLayout* volumeControlLayout;
     QLabel* volumeLabel;
     bool muted;
     float volume;

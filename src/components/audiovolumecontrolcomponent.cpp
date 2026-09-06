@@ -9,12 +9,22 @@ AudioVolumeControlComponent::AudioVolumeControlComponent(QWidget *parent)
     connect(service, &AudioService::volumeChanged, this, &AudioVolumeControlComponent::volumeChanged);
     connect(service, &AudioService::muteChanged, this, &AudioVolumeControlComponent::muteChanged);
 
-    mainLayout = new QHBoxLayout(this);
+    mainLayout = new QVBoxLayout(this);
+    volumeControlLayout = new QHBoxLayout();
+
+    outputComboBox = new QComboBox(this);
+    const auto& devices = service->getOutputDevices();
+    for(const auto& device : devices)
+    {
+        outputComboBox->addItem(device.name);
+    }
+    connect(outputComboBox, &QComboBox::textActivated, this, [this](const QString& name){service->setDefaultOutput(name);});
+    mainLayout->addWidget(outputComboBox);
 
     muteButton = new QPushButton(this);
     muteButton->setFlat(true);
     connect(muteButton, &QPushButton::clicked, this, &AudioVolumeControlComponent::changeMute);
-    mainLayout->addWidget(muteButton);
+    volumeControlLayout->addWidget(muteButton);
 
     slider = new QSlider(this);
     slider->setOrientation(Qt::Horizontal);
@@ -23,14 +33,16 @@ AudioVolumeControlComponent::AudioVolumeControlComponent(QWidget *parent)
     slider->setSingleStep(1);
     slider->setPageStep(5);
     connect(slider, &QSlider::valueChanged, this, &AudioVolumeControlComponent::changeVolume);
-    mainLayout->addWidget(slider);
+    volumeControlLayout->addWidget(slider);
 
     volumeLabel = new QLabel("0%", this);
-    mainLayout->addWidget(volumeLabel);
+    volumeControlLayout->addWidget(volumeLabel);
 
-    mainLayout->setStretch(1, 1);
+    volumeControlLayout->setStretch(1, 1);
+    mainLayout->addLayout(volumeControlLayout);
     volumeChanged(volume);
     muteChanged(muted);
+    setLayout(mainLayout);
 }
 
 void AudioVolumeControlComponent::updateVolumeIcon()

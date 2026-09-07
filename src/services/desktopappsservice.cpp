@@ -6,7 +6,9 @@
 
 DesktopAppsService::DesktopAppsService(QObject *parent)
     : QObject{parent}
-{}
+{
+    scanForApps();
+}
 
 DesktopAppsService::~DesktopAppsService()
 {

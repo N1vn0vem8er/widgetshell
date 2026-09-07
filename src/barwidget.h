@@ -6,6 +6,7 @@
 #include <QTimer>
 #include <QWidget>
 
+#include "components/openedappscomponent.h"
 #include "components/workspaceswitchercomponent.h"
 #include "components/controlmenu.h"
 
@@ -23,6 +24,7 @@ private:
     QPushButton* controlMenuButton;
     WorkspaceSwitcherComponent* workspaceSwitcher;
     ControlMenu* controlMenu {nullptr};
+    OpenedAppsComponent* openedApps;
 
 signals:
 };

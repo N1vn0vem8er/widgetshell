@@ -36,6 +36,11 @@ DesktopAppsService::~DesktopAppsService()
 
 }
 
+QList<DesktopApp> DesktopAppsService::desktopApps() const
+{
+    return m_desktopApps;
+}
+
 void DesktopAppsService::scanForApps()
 {
     m_desktopApps.clear();
@@ -50,6 +55,7 @@ void DesktopAppsService::scanForApps()
 
     QSet<QString> processedAppIds;
     static const QRegularExpression fieldCodexRegex(R"(\s%[fFuUiIkK])");
+    static const QRegularExpression desktopRegex("\\.desktop$");
 
     for(const QString& dirPath : dirs)
     {
@@ -68,6 +74,7 @@ void DesktopAppsService::scanForApps()
             desktopFile.beginGroup("Desktop Entry");
 
             DesktopApp app;
+            app.fileName = QFileInfo(filePath).fileName().remove(desktopRegex);
             app.name = desktopFile.value("Name", "").toString();
             app.type = desktopFile.value("Type", "").toString();
             app.genericName = desktopFile.value("GenericName", "").toString();
@@ -76,6 +83,7 @@ void DesktopAppsService::scanForApps()
             exec.replace("%c", app.name);
             exec.remove(fieldCodexRegex);
             app.exec = exec;
+            app.startupWMClass = desktopFile.value("StartupWMClass", "").toString();
             m_desktopApps.append(app);
             processedAppIds.insert(filePath);
         }

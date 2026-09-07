@@ -4,6 +4,7 @@
 #include <QObject>
 
 struct DesktopApp {
+    QString fileName;
     QString type;
     QString name;
     QString genericName;
@@ -39,6 +40,7 @@ public:
     DesktopAppsService(const DesktopAppsService&) = delete;
     DesktopAppsService& operator=(const DesktopAppsService&) = delete;
     static void destroy();
+    QList<DesktopApp> desktopApps() const;
 
 private:
     explicit DesktopAppsService(QObject *parent = nullptr);

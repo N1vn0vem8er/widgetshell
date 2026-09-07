@@ -15,7 +15,9 @@ BarWidget::BarWidget(QWidget *parent)
     mainLayout = new QGridLayout(this);
     mainLayout->setContentsMargins(0, 0, 0, 0);
 
-    mainLayout->addWidget(new QWidget(this), 0, 0, Qt::AlignLeft | Qt::AlignVCenter);
+    openedApps = new OpenedAppsComponent(this);
+
+    mainLayout->addWidget(openedApps, 0, 0, Qt::AlignLeft | Qt::AlignVCenter);
 
     workspaceSwitcher = new WorkspaceSwitcherComponent(this);
     mainLayout->addWidget(workspaceSwitcher, 0, 1, Qt::AlignCenter);

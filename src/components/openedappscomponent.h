@@ -4,6 +4,8 @@
 #include "services/desktopappsservice.h"
 #include "services/hyprlandservice.h"
 #include <QWidget>
+#include <qboxlayout.h>
+#include <qpushbutton.h>
 
 class OpenedAppsComponent : public QWidget
 {
@@ -15,6 +17,8 @@ public:
 private:
     HyprlandService* hyprlandService;
     DesktopAppsService* desktopAppService;
+    QHBoxLayout* mainLayout;
+    QList<QPushButton*> buttons;
 
 private slots:
     void updateClients();

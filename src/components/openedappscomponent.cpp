@@ -5,11 +5,14 @@ OpenedAppsComponent::OpenedAppsComponent(QWidget *parent)
 {
     hyprlandService = HyprlandService::instance();
     desktopAppService = DesktopAppsService::instance();
+
     mainLayout = new QHBoxLayout(this);
     mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSpacing(4);
     setLayout(mainLayout);
     updateClients();
+
+    connect(hyprlandService, &HyprlandService::clientsChanged, this, &OpenedAppsComponent::updateClients);
 }
 
 OpenedAppsComponent::~OpenedAppsComponent()
@@ -50,6 +53,10 @@ void OpenedAppsComponent::updateClients()
             button->show();
         }
         else
-            buttons.at(i)->hide();
+        {
+            QPushButton* button = buttons.takeAt(i);
+            mainLayout->removeWidget(button);
+            button->deleteLater();
+        }
     }
 }

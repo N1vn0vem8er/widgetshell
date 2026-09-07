@@ -34,11 +34,19 @@ class DesktopAppsService : public QObject
 {
     Q_OBJECT
 public:
+    static DesktopAppsService* instance();
+    static DesktopAppsService* create(QObject* parent = nullptr);
+    DesktopAppsService(const DesktopAppsService&) = delete;
+    DesktopAppsService& operator=(const DesktopAppsService&) = delete;
+    static void destroy();
+
+private:
     explicit DesktopAppsService(QObject *parent = nullptr);
     ~DesktopAppsService();
 
 private:
     QList<DesktopApp> m_desktopApps;
+    inline static DesktopAppsService* m_instance {nullptr};
 
 public slots:
     void scanForApps();

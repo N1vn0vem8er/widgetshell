@@ -4,6 +4,27 @@
 #include <QSettings>
 #include <qregularexpression.h>
 
+DesktopAppsService *DesktopAppsService::instance()
+{
+    return m_instance;
+}
+
+DesktopAppsService *DesktopAppsService::create(QObject *parent)
+{
+    if(!m_instance)
+        m_instance = new DesktopAppsService(parent);
+    return m_instance;
+}
+
+void DesktopAppsService::destroy()
+{
+    if(m_instance)
+    {
+        delete m_instance;
+        m_instance = nullptr;
+    }
+}
+
 DesktopAppsService::DesktopAppsService(QObject *parent)
     : QObject{parent}
 {
@@ -51,6 +72,10 @@ void DesktopAppsService::scanForApps()
             app.type = desktopFile.value("Type", "").toString();
             app.genericName = desktopFile.value("GenericName", "").toString();
             app.icon = desktopFile.value("Icon", "").toString();
+            QString exec = desktopFile.value("Exec", "").toString();
+            exec.replace("%c", app.name);
+            exec.remove(fieldCodexRegex);
+            app.exec = exec;
             m_desktopApps.append(app);
             processedAppIds.insert(filePath);
         }

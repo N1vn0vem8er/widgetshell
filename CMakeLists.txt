@@ -26,6 +26,7 @@ qt_add_executable(widgetshell
     src/components/audiovolumecontrolcomponent.h src/components/audiovolumecontrolcomponent.cpp
     src/data/hyprlandclient.h
     src/components/openedappscomponent.h src/components/openedappscomponent.cpp
+    src/services/desktopappsservice.h src/services/desktopappsservice.cpp
 
 
 

@@ -32,7 +32,7 @@ void OpenedAppsComponent::updateClients()
     while(buttons.size() < neededButtons)
     {
         QPushButton* button = new QPushButton(this);
-        button->setCheckable(true);
+        button->setFlat(true);
         mainLayout->addWidget(button);
         buttons.append(button);
     }
@@ -50,6 +50,7 @@ void OpenedAppsComponent::updateClients()
             }
             button->setFlat(true);
             button->setProperty("clientAddress", client.address);
+            connect(button, &QPushButton::clicked, this, [this, button]{hyprlandService->focusWindow(button->property("clientAddress").toString());});
             button->show();
         }
         else

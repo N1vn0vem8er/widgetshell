@@ -117,6 +117,11 @@ HyprlandWorkspace HyprlandService::getWorkspace(int id)
     return workspace;
 }
 
+void HyprlandService::focusWindow(const QString address)
+{
+    sendIpcCommand(QString("dispatch hl.dsp.focus({ window = \"address:%1\" })").arg(address).toUtf8());
+}
+
 HyprlandService::HyprlandService(QObject *parent)
     : QObject{parent}
 {

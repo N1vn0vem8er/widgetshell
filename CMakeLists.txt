@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.19)
 project(widgetshell LANGUAGES CXX)
+set (CMAKE_CXX_STANDARD 23)
 
 find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets Network)
 find_package(Qt6 REQUIRED COMPONENTS MultimediaWidgets)
@@ -27,6 +28,7 @@ qt_add_executable(widgetshell
     src/data/hyprlandclient.h
     src/components/openedappscomponent.h src/components/openedappscomponent.cpp
     src/services/desktopappsservice.h src/services/desktopappsservice.cpp
+    src/widgetfactory.h src/widgetfactory.cpp
 
 
 

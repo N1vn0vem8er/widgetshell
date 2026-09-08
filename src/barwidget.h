@@ -26,6 +26,9 @@ private:
     ControlMenu* controlMenu {nullptr};
     OpenedAppsComponent* openedApps;
 
+private:
+    void createBar();
+
 signals:
 };
 

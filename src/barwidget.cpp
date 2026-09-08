@@ -1,6 +1,12 @@
 #include "barwidget.h"
 #include <LayerShellQt/Window>
 #include <QDateTime>
+#include <QDir>
+#include <QFile>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QStandardPaths>
 
 BarWidget::BarWidget(QWidget *parent)
     : QWidget{parent}
@@ -37,10 +43,54 @@ BarWidget::BarWidget(QWidget *parent)
     connect(dateTimeTimer, &QTimer::timeout, this, [this]{dateTimeLabel->setText(QDateTime::currentDateTime().toString("hh::mm:ss | dd:MM:yyyy"));});
     dateTimeTimer->setInterval(1000);
     dateTimeTimer->start();
+
+    createBar();
 }
 
 BarWidget::~BarWidget()
 {
     if(controlMenu)
         controlMenu->deleteLater();
+}
+
+void BarWidget::createBar()
+{
+    QFile configFile(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/layout.json");
+    if(!configFile.open(QIODevice::ReadOnly))
+        return;
+
+    const QJsonDocument doc = QJsonDocument::fromJson(configFile.readAll());
+    configFile.close();
+
+    if(!doc.isObject())
+        return;
+
+    const QJsonObject root = doc.object();
+    if(root.contains("left") && root.value("left").isArray())
+    {
+        const QJsonArray layoutArray = root.value("left").toArray();
+        for(const auto& val : layoutArray)
+        {
+            const QString element = val.toString();
+
+        }
+    }
+    if(root.contains("center") && root.value("center").isArray())
+    {
+        const QJsonArray layoutArray = root.value("center").toArray();
+        for(const auto& val : layoutArray)
+        {
+            const QString element = val.toString();
+
+        }
+    }
+    if(root.contains("right") && root.value("right").isArray())
+    {
+        const QJsonArray layoutArray = root.value("right").toArray();
+        for(const auto& val : layoutArray)
+        {
+            const QString element = val.toString();
+
+        }
+    }
 }

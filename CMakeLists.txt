@@ -30,6 +30,7 @@ qt_add_executable(widgetshell
     src/services/desktopappsservice.h src/services/desktopappsservice.cpp
     src/widgetfactory.h src/widgetfactory.cpp
     src/components/datetimecomponent.h src/components/datetimecomponent.cpp
+    src/components/controlmenubutton.h src/components/controlmenubutton.cpp
 
 
 

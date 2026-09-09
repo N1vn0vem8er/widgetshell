@@ -1,5 +1,6 @@
 #include "widgetfactory.h"
 #include "components/controlmenubutton.h"
+#include "components/cpuusagecomponent.h"
 #include "components/datetimecomponent.h"
 #include "components/openedappscomponent.h"
 #include "components/workspaceswitchercomponent.h"
@@ -26,6 +27,10 @@ WidgetFactory::WidgetFactory(QObject *parent)
     });
     registerWidget("controlmenu", [](const QJsonObject& obj, QWidget* parent){
         ControlMenuButton* widget = new ControlMenuButton(parent);
+        return widget;
+    });
+    registerWidget("cpuusage", [](const QJsonObject& obj, QWidget* parent){
+        CpuUsageComponent* widget = new CpuUsageComponent(parent);
         return widget;
     });
 }

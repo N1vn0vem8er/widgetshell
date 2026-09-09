@@ -2,6 +2,7 @@
 #include "components/wallpaper.h"
 #include "services/hyprlandservice.h"
 #include "services/desktopappsservice.h"
+#include "services/systemmonitorservice.h"
 
 #include <QApplication>
 
@@ -11,6 +12,7 @@ int main(int argc, char *argv[])
     HyprlandService::create();
     AudioService::create();
     DesktopAppsService::create();
+    SystemMonitorService::create();
     BarWidget bar;
     bar.show();
     Wallpaper wallpaper;

@@ -31,6 +31,8 @@ qt_add_executable(widgetshell
     src/widgetfactory.h src/widgetfactory.cpp
     src/components/datetimecomponent.h src/components/datetimecomponent.cpp
     src/components/controlmenubutton.h src/components/controlmenubutton.cpp
+    src/services/systemmonitorservice.h src/services/systemmonitorservice.cpp
+    src/components/cpuusagecomponent.h src/components/cpuusagecomponent.cpp
 
 
 

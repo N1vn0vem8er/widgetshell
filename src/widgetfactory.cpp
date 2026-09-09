@@ -1,11 +1,21 @@
 #include "widgetfactory.h"
+#include "components/datetimecomponent.h"
 #include "components/workspaceswitchercomponent.h"
+
+#include <QJsonObject>
 
 WidgetFactory::WidgetFactory(QObject *parent)
     : QObject{parent}
 {
     registerWidget("workspaceswitcher", [](const QJsonObject& obj, QWidget* parent){
         WorkspaceSwitcherComponent* widget = new WorkspaceSwitcherComponent(parent);
+        return widget;
+    });
+    registerWidget("datetime", [](const QJsonObject& obj, QWidget* parent){
+        QString format = "hh::mm:ss | dd:MM:yyyy";
+        if(obj.contains("format"))
+            format = obj.value("format").toString();
+        DateTimeComponent* widget = new DateTimeComponent(format, parent);
         return widget;
     });
 }

@@ -49,6 +49,7 @@ void OpenedAppsComponent::updateClients()
                 button->setIcon(QIcon::fromTheme(apps->icon));
             }
             button->setFlat(true);
+            button->setToolTip(client.title);
             button->setProperty("clientAddress", client.address);
             connect(button, &QPushButton::clicked, this, [this, button]{hyprlandService->focusWindow(button->property("clientAddress").toString());});
             button->show();

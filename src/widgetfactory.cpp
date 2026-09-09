@@ -1,5 +1,6 @@
 #include "widgetfactory.h"
 #include "components/datetimecomponent.h"
+#include "components/openedappscomponent.h"
 #include "components/workspaceswitchercomponent.h"
 
 #include <QJsonObject>
@@ -16,6 +17,10 @@ WidgetFactory::WidgetFactory(QObject *parent)
         if(obj.contains("format"))
             format = obj.value("format").toString();
         DateTimeComponent* widget = new DateTimeComponent(format, parent);
+        return widget;
+    });
+    registerWidget("openedapps", [](const QJsonObject& obj, QWidget* parent){
+        OpenedAppsComponent* widget = new OpenedAppsComponent(parent);
         return widget;
     });
 }

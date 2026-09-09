@@ -1,4 +1,5 @@
 #include "barwidget.h"
+#include "widgetfactory.h"
 #include <LayerShellQt/Window>
 #include <QDateTime>
 #include <QDir>
@@ -21,28 +22,28 @@ BarWidget::BarWidget(QWidget *parent)
     mainLayout = new QGridLayout(this);
     mainLayout->setContentsMargins(0, 0, 0, 0);
 
-    openedApps = new OpenedAppsComponent(this);
+    // openedApps = new OpenedAppsComponent(this);
 
-    mainLayout->addWidget(openedApps, 0, 0, Qt::AlignLeft | Qt::AlignVCenter);
+    // mainLayout->addWidget(openedApps, 0, 0, Qt::AlignLeft | Qt::AlignVCenter);
 
-    workspaceSwitcher = new WorkspaceSwitcherComponent(this);
-    mainLayout->addWidget(workspaceSwitcher, 0, 1, Qt::AlignCenter);
+    // workspaceSwitcher = new WorkspaceSwitcherComponent(this);
+    // mainLayout->addWidget(workspaceSwitcher, 0, 1, Qt::AlignCenter);
 
-    controlMenuButton = new QPushButton(QIcon::fromTheme("application-menu"), "", this);
-    dateTimeLabel = new QLabel(this);
-    QWidget* rightWidget = new QWidget(this);
-    QHBoxLayout* rightLayout = new QHBoxLayout(rightWidget);
-    rightLayout->addWidget(dateTimeLabel);
-    rightLayout->addWidget(controlMenuButton);
+    // controlMenuButton = new QPushButton(QIcon::fromTheme("application-menu"), "", this);
+    // dateTimeLabel = new QLabel(this);
+    // QWidget* rightWidget = new QWidget(this);
+    // QHBoxLayout* rightLayout = new QHBoxLayout(rightWidget);
+    // rightLayout->addWidget(dateTimeLabel);
+    // rightLayout->addWidget(controlMenuButton);
 
-    controlMenu = new ControlMenu();
-    connect(controlMenuButton, &QPushButton::clicked, this, [this]{if(controlMenu->isVisible()) controlMenu->hide(); else controlMenu->show();});
+    // controlMenu = new ControlMenu();
+    // connect(controlMenuButton, &QPushButton::clicked, this, [this]{if(controlMenu->isVisible()) controlMenu->hide(); else controlMenu->show();});
 
-    mainLayout->addWidget(rightWidget, 0, 2, Qt::AlignRight | Qt::AlignVCenter);
-    dateTimeTimer = new QTimer(this);
-    connect(dateTimeTimer, &QTimer::timeout, this, [this]{dateTimeLabel->setText(QDateTime::currentDateTime().toString("hh::mm:ss | dd:MM:yyyy"));});
-    dateTimeTimer->setInterval(1000);
-    dateTimeTimer->start();
+    // mainLayout->addWidget(rightWidget, 0, 2, Qt::AlignRight | Qt::AlignVCenter);
+    // dateTimeTimer = new QTimer(this);
+    // connect(dateTimeTimer, &QTimer::timeout, this, [this]{dateTimeLabel->setText(QDateTime::currentDateTime().toString("hh::mm:ss | dd:MM:yyyy"));});
+    // dateTimeTimer->setInterval(1000);
+    // dateTimeTimer->start();
 
     createBar();
 }
@@ -66,31 +67,41 @@ void BarWidget::createBar()
         return;
 
     const QJsonObject root = doc.object();
+    WidgetFactory factory;
     if(root.contains("left") && root.value("left").isArray())
     {
         const QJsonArray layoutArray = root.value("left").toArray();
+        QHBoxLayout* layout = new QHBoxLayout();
         for(const auto& val : layoutArray)
         {
-            const QString element = val.toString();
-
+            const QJsonObject element = val.toObject();
+            if(element.contains("component"))
+                layout->addWidget(factory.create(element.value("component").toString(), element, this));
         }
+        mainLayout->addLayout(layout, 0, 0, Qt::AlignLeft | Qt::AlignVCenter);
     }
     if(root.contains("center") && root.value("center").isArray())
     {
         const QJsonArray layoutArray = root.value("center").toArray();
+        QHBoxLayout* layout = new QHBoxLayout();
         for(const auto& val : layoutArray)
         {
-            const QString element = val.toString();
-
+            const QJsonObject element = val.toObject();
+            if(element.contains("component"))
+                layout->addWidget(factory.create(element.value("component").toString(), element, this));
         }
+        mainLayout->addLayout(layout, 0, 1, Qt::AlignCenter);
     }
     if(root.contains("right") && root.value("right").isArray())
     {
         const QJsonArray layoutArray = root.value("right").toArray();
+        QHBoxLayout* layout = new QHBoxLayout();
         for(const auto& val : layoutArray)
         {
-            const QString element = val.toString();
-
+            const QJsonObject element = val.toObject();
+            if(element.contains("component"))
+                layout->addWidget(factory.create(element.value("component").toString(), element, this));
         }
+        mainLayout->addLayout(layout, 0, 2, Qt::AlignRight | Qt::AlignVCenter);
     }
 }

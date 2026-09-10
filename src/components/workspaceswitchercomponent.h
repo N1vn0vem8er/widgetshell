@@ -5,6 +5,7 @@
 #include <QPushButton>
 #include <QWidget>
 
+#include "components/workspacebutton.h"
 #include "services/hyprlandservice.h"
 
 class WorkspaceSwitcherComponent : public QWidget
@@ -15,7 +16,7 @@ public:
 
 private:
     QHBoxLayout* mainLayout;
-    QList<QPushButton*> buttons;
+    QList<WorkspaceButton*> buttons;
     HyprlandService* service;
 
 private slots:

@@ -27,7 +27,7 @@ void WorkspaceSwitcherComponent::refreshWorkspaces()
 
     while(buttons.size() < neededButtons)
     {
-        QPushButton* button = new QPushButton(this);
+        WorkspaceButton* button = new WorkspaceButton(this);
         button->setCheckable(true);
         mainLayout->addWidget(button);
         buttons.append(button);
@@ -38,10 +38,10 @@ void WorkspaceSwitcherComponent::refreshWorkspaces()
         if(i < neededButtons)
         {
             const auto& ws = workspaces.at(i);
-            QPushButton* button = buttons.at(i);
+            WorkspaceButton* button = buttons.at(i);
             button->setText(QString::number(ws.id));
             button->setProperty("workspaceId", ws.id);
-            connect(button, &QPushButton::clicked, this, [button, this]{
+            connect(button, &WorkspaceButton::clicked, this, [button, this]{
                 service->switchWorkspace(button->property("workspaceId").toInt());
             });
             button->show();

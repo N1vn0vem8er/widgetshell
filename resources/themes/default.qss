@@ -1,3 +1,15 @@
 BarWidget {
     background-color: #100043;
 }
+
+WorkspaceButton {
+    background-color: #38427f;
+}
+
+WorkspaceButton:hover {
+    background-color: #6474e1;
+}
+
+WorkspaceButton:checked {
+    background-color: #b0b9e1;
+}

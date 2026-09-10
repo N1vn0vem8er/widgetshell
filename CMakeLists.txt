@@ -37,6 +37,7 @@ qt_add_executable(widgetshell
     src/components/cpuusagecomponent.h src/components/cpuusagecomponent.cpp
     src/components/memoryusagecomponent.h src/components/memoryusagecomponent.cpp
     resources/resources.qrc
+    src/components/workspacebutton.h src/components/workspacebutton.cpp
 )
 
 target_link_libraries(widgetshell

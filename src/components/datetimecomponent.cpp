@@ -5,6 +5,7 @@
 DateTimeComponent::DateTimeComponent(const QString& format, QWidget *parent)
     : QWidget{parent}
 {
+    setAttribute(Qt::WA_StyledBackground, true);
     this->format = format;
     mainLayout = new QHBoxLayout(this);
     label = new QLabel(this);

@@ -3,6 +3,7 @@
 WorkspaceSwitcherComponent::WorkspaceSwitcherComponent(QWidget *parent)
     : QWidget{parent}
 {
+    setAttribute(Qt::WA_StyledBackground, true);
     mainLayout = new QHBoxLayout(this);
     mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSpacing(4);

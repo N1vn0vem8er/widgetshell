@@ -3,6 +3,7 @@
 OpenedAppsComponent::OpenedAppsComponent(QWidget *parent)
     : QWidget{parent}
 {
+    setAttribute(Qt::WA_StyledBackground, true);
     hyprlandService = HyprlandService::instance();
     desktopAppService = DesktopAppsService::instance();
 

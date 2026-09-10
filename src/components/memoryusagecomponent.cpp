@@ -4,6 +4,7 @@
 MemoryUsageComponent::MemoryUsageComponent(Unit unit, QWidget *parent)
     : QWidget{parent}
 {
+    setAttribute(Qt::WA_StyledBackground, true);
     this->unit = unit;
     service = SystemMonitorService::instance();
     label = new QLabel(this);

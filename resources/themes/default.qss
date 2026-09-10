@@ -13,3 +13,33 @@ WorkspaceButton:hover {
 WorkspaceButton:checked {
     background-color: #b0b9e1;
 }
+
+ControlMenuButton {
+    background-color: #38427f;
+}
+
+ControlMenuButton:hover {
+    background-color: #6474e1;
+}
+
+ControlMenuButton:checked {
+    background-color: #b0b9e1;
+}
+
+CpuUsageComponent {
+    background-color: #355436;
+    border: none;
+    border-radius: 4px;
+}
+
+MemoryUsageComponent {
+    background-color: #05a182;
+    border: none;
+    border-radius: 4px;
+}
+
+DateTimeComponent {
+    background-color: #460194;
+    border: none;
+    border-radius: 4px;
+}

@@ -9,11 +9,18 @@ class MemoryUsageComponent : public QWidget
 {
     Q_OBJECT
 public:
-    explicit MemoryUsageComponent(QWidget *parent = nullptr);
+    enum class Unit {
+        KB,
+        MB,
+        GB,
+        TB
+    };
+    explicit MemoryUsageComponent(MemoryUsageComponent::Unit unit, QWidget *parent = nullptr);
 
 private:
     SystemMonitorService* service;
     QLabel* label;
+    Unit unit {Unit::KB};
 
 private slots:
     void update(quint64 used, quint64 free);

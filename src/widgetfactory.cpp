@@ -35,7 +35,21 @@ WidgetFactory::WidgetFactory(QObject *parent)
         return widget;
     });
     registerWidget("memoryusage", [](const QJsonObject& obj, QWidget* parent){
-        MemoryUsageComponent* widget = new MemoryUsageComponent(parent);
+        MemoryUsageComponent* widget;
+        if(obj.contains("unit"))
+        {
+            const QString unit = obj.value("unit").toString().trimmed().toLower();
+            if(unit == "tb")
+                widget = new MemoryUsageComponent(MemoryUsageComponent::Unit::TB, parent);
+            else if(unit == "mb")
+                widget = new MemoryUsageComponent(MemoryUsageComponent::Unit::MB, parent);
+            else if(unit == "gb")
+                widget = new MemoryUsageComponent(MemoryUsageComponent::Unit::GB, parent);
+            else
+                widget = new MemoryUsageComponent(MemoryUsageComponent::Unit::KB, parent);
+        }
+        else
+            widget = new MemoryUsageComponent(MemoryUsageComponent::Unit::KB, parent);
         return widget;
     });
 }

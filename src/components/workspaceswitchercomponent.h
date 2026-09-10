@@ -18,6 +18,7 @@ private:
     QHBoxLayout* mainLayout;
     QList<WorkspaceButton*> buttons;
     HyprlandService* service;
+    int currentWorkspace;
 
 private slots:
     void refreshWorkspaces();

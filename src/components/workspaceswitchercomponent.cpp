@@ -42,7 +42,11 @@ void WorkspaceSwitcherComponent::refreshWorkspaces()
             button->setText(QString::number(ws.id));
             button->setProperty("workspaceId", ws.id);
             connect(button, &WorkspaceButton::clicked, this, [button, this]{
-                service->switchWorkspace(button->property("workspaceId").toInt());
+                int workspaceId = button->property("workspaceId").toInt();
+                if(workspaceId == currentWorkspace)
+                    button->setChecked(true);
+                else
+                    service->switchWorkspace(workspaceId);
             });
             button->show();
         }
@@ -53,6 +57,7 @@ void WorkspaceSwitcherComponent::refreshWorkspaces()
 
 void WorkspaceSwitcherComponent::workspaceChanged(int id)
 {
+    currentWorkspace = id;
     for(auto* button : std::as_const(buttons))
     {
         if(button->property("workspaceId").toInt() == id)

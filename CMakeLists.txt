@@ -14,6 +14,8 @@ qt_standard_project_setup()
 
 include_directories(src)
 
+set(CMAKE_AUTORCC ON)
+
 qt_add_executable(widgetshell
     WIN32 MACOSX_BUNDLE
     src/main.cpp
@@ -34,9 +36,7 @@ qt_add_executable(widgetshell
     src/services/systemmonitorservice.h src/services/systemmonitorservice.cpp
     src/components/cpuusagecomponent.h src/components/cpuusagecomponent.cpp
     src/components/memoryusagecomponent.h src/components/memoryusagecomponent.cpp
-
-
-
+    resources/resources.qrc
 )
 
 target_link_libraries(widgetshell

@@ -5,10 +5,19 @@
 #include "services/systemmonitorservice.h"
 
 #include <QApplication>
+#include <QFile>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+    QFile file(":/themes/default.qss");
+    if(file.open(QIODevice::ReadOnly))
+    {
+        a.setStyleSheet(file.readAll());
+        file.close();
+    }
+
     HyprlandService::create();
     AudioService::create();
     DesktopAppsService::create();

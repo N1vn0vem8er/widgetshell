@@ -38,12 +38,14 @@ private:
     CpuTimes readCpuTimes();
     double countCpuUsage(const CpuTimes& old, const CpuTimes& current);
     void checkCpu();
+    void checkMemory();
 
 private slots:
     void timeout();
 
 signals:
     void cpuUsage(double val);
+    void memoryUsage(quint64 used, quint64 free);
 };
 
 #endif // SYSTEMMONITORSERVICE_H

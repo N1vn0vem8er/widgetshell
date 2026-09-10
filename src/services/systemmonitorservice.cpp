@@ -69,7 +69,37 @@ void SystemMonitorService::checkCpu()
     previousCpuTimes = current;
 }
 
+void SystemMonitorService::checkMemory()
+{
+    QFile file("/proc/meminfo");
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return;
+
+    const QByteArray data = file.readAll();
+    file.close();
+
+    quint64 total = 0;
+    quint64 available = 0;
+    const QList<QByteArray> lines = data.split('\n');
+
+    for(const QByteArray &line : lines)
+    {
+        const QList<QByteArray> parts = line.simplified().split(' ');
+        if(parts.size() < 2)
+            continue;
+        if(parts[0] == "MemTotal:")
+            total = parts[1].toULongLong();
+        else if(parts[0] == "MemAvailable:")
+            available = parts[1].toULongLong();
+    }
+
+    if(total == 0)
+        return;
+    emit memoryUsage(total - available, available);
+}
+
 void SystemMonitorService::timeout()
 {
     checkCpu();
+    checkMemory();
 }

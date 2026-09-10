@@ -33,6 +33,7 @@ qt_add_executable(widgetshell
     src/components/controlmenubutton.h src/components/controlmenubutton.cpp
     src/services/systemmonitorservice.h src/services/systemmonitorservice.cpp
     src/components/cpuusagecomponent.h src/components/cpuusagecomponent.cpp
+    src/components/memoryusagecomponent.h src/components/memoryusagecomponent.cpp
 
 
 

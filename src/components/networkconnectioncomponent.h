@@ -4,6 +4,7 @@
 #include "services/networkservice.h"
 #include <QWidget>
 #include <qlabel.h>
+#include <qpushbutton.h>
 
 class NetworkConnectionComponent : public QWidget
 {
@@ -13,7 +14,16 @@ public:
 
 private:
     NetworkService* service;
-    QLabel* connectionTypeLabel;
+    QPushButton* connectionbutton;
+    QNetworkInformation::TransportMedium m_transportMedium;
+    QNetworkInformation::Reachability m_reachability;
+
+private:
+    void updateIcons();
+
+private slots:
+    void updateTransportMedium(QNetworkInformation::TransportMedium transportMedium);
+    void updateReachability(QNetworkInformation::Reachability reachability);
 
 signals:
 };

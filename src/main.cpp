@@ -3,6 +3,7 @@
 #include "services/hyprlandservice.h"
 #include "services/desktopappsservice.h"
 #include "services/systemmonitorservice.h"
+#include "services/networkservice.h"
 
 #include <QApplication>
 #include <QFile>
@@ -22,6 +23,7 @@ int main(int argc, char *argv[])
     AudioService::create();
     DesktopAppsService::create();
     SystemMonitorService::create();
+    NetworkService::create();
     BarWidget bar;
     bar.show();
     Wallpaper wallpaper;

@@ -13,6 +13,10 @@ public:
     static void destroy();
     NetworkService(const NetworkService&) = delete;
     NetworkService& operator=(const NetworkService&) = delete;
+    bool isOnline() const;
+    bool isWifi() const;
+    QNetworkInformation::Reachability reachability() const;
+    QNetworkInformation::TransportMedium transportMedium() const;
 
 private:
     inline static NetworkService* m_instance = nullptr;
@@ -29,6 +33,11 @@ private slots:
     void updateTransportMedium(QNetworkInformation::TransportMedium medium);
 
 signals:
+    void onlineChanged(bool online);
+    void wifiChanged(bool wifi);
+    void reachabilityChanged(QNetworkInformation::Reachability reachability);
+    void transportMediumChanged(QNetworkInformation::TransportMedium medium);
+
 };
 
 #endif // NETWORKSERVICE_H

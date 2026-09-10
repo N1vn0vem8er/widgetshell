@@ -3,6 +3,7 @@
 #include "components/cpuusagecomponent.h"
 #include "components/datetimecomponent.h"
 #include "components/memoryusagecomponent.h"
+#include "components/networkconnectioncomponent.h"
 #include "components/openedappscomponent.h"
 #include "components/workspaceswitchercomponent.h"
 
@@ -50,6 +51,10 @@ WidgetFactory::WidgetFactory(QObject *parent)
         }
         else
             widget = new MemoryUsageComponent(MemoryUsageComponent::Unit::KB, parent);
+        return widget;
+    });
+    registerWidget("networkconnection", [](const QJsonObject& obj, QWidget* parent){
+        NetworkConnectionComponent* widget = new NetworkConnectionComponent(parent);
         return widget;
     });
 }

@@ -22,8 +22,29 @@ void NetworkService::destroy()
     }
 }
 
+bool NetworkService::isOnline() const
+{
+    return m_reachability == QNetworkInformation::Reachability::Online;
+}
+
+bool NetworkService::isWifi() const
+{
+    return m_transportMedium == QNetworkInformation::TransportMedium::WiFi;
+}
+
+QNetworkInformation::Reachability NetworkService::reachability() const
+{
+    return m_reachability;
+}
+
+QNetworkInformation::TransportMedium NetworkService::transportMedium() const
+{
+    return m_transportMedium;
+}
+
 NetworkService::NetworkService(QObject *parent)
 {
+    QNetworkInformation::loadDefaultBackend();
     m_networkInfo = QNetworkInformation::instance();
     if(!m_networkInfo)
         qWarning() << "Failed to get QNetworkInformation";
@@ -43,12 +64,26 @@ NetworkService::~NetworkService()
 
 void NetworkService::updateReachability(QNetworkInformation::Reachability reachability)
 {
+    if(m_reachability == reachability)
+        return;
+    const bool wasOnline = isOnline();
+    m_reachability = reachability;
 
+    emit reachabilityChanged(m_reachability);
+    if(wasOnline != isOnline())
+        emit onlineChanged(isOnline());
 }
 
 void NetworkService::updateTransportMedium(QNetworkInformation::TransportMedium medium)
 {
+    if(m_transportMedium == medium)
+        return;
+    const bool wasWifi = isWifi();
+    m_transportMedium = medium;
 
+    emit transportMediumChanged(m_transportMedium);
+    if(wasWifi != isWifi())
+        emit wifiChanged(isWifi());
 }
 
 

@@ -8,11 +8,15 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QStandardPaths>
+#include <qsettings.h>
 
 BarWidget::BarWidget(QWidget *parent)
     : QWidget{parent}
 {
-    setFixedSize(100, 50);
+    QSettings settings;
+    settings.beginGroup("Bar");
+    setFixedSize(settings.value("barWidth", 100).toInt(), settings.value("barHeight", 50).toInt());
+    settings.endGroup();
     winId();
     LayerShellQt::Window* layerWindow = LayerShellQt::Window::get(windowHandle());
     layerWindow->setLayer(LayerShellQt::Window::Layer::LayerTop);
@@ -32,7 +36,7 @@ BarWidget::~BarWidget()
 
 void BarWidget::createBar()
 {
-    QFile configFile(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/layout.json");
+    QFile configFile(QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + "/" + QCoreApplication::organizationName() + "/layout.json");
     if(!configFile.open(QIODevice::ReadOnly))
         return;
 

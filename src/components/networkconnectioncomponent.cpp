@@ -7,11 +7,13 @@ NetworkConnectionComponent::NetworkConnectionComponent(QWidget *parent)
     service = NetworkService::instance();
     connectionbutton = new QPushButton(this);
     connectionbutton->setFlat(true);
-    networkSpeedLabel = new QLabel(this);
+    networkDownloadLabel = new QLabel(this);
+    networkUploadLabel = new QLabel(this);
     QHBoxLayout* layout = new QHBoxLayout(this);
     layout->addWidget(connectionbutton);
-    layout->addWidget(networkSpeedLabel);
-    connect(service, &NetworkService::networkSpeed, this, [this](double down, double up){networkSpeedLabel->setText(QString("down %1 | up %2").arg(down).arg(up));});
+    layout->addWidget(networkDownloadLabel);
+    layout->addWidget(networkUploadLabel);
+    connect(service, &NetworkService::networkSpeed, this, &NetworkConnectionComponent::updateDownloadUpload);
     updateTransportMedium(service->transportMedium());
     updateReachability(service->reachability());
 }
@@ -144,4 +146,10 @@ void NetworkConnectionComponent::updateReachability(QNetworkInformation::Reachab
 {
     m_reachability = reachability;
     updateIcons();
+}
+
+void NetworkConnectionComponent::updateDownloadUpload(double download, double upload)
+{
+    networkDownloadLabel->setText(QString("↓ %1").arg(download));
+    networkUploadLabel->setText(QString("↑ %1").arg(upload));
 }

@@ -15,7 +15,8 @@ public:
 private:
     NetworkService* service;
     QPushButton* connectionbutton;
-    QLabel* networkSpeedLabel;
+    QLabel* networkDownloadLabel;
+    QLabel* networkUploadLabel;
     QNetworkInformation::TransportMedium m_transportMedium;
     QNetworkInformation::Reachability m_reachability;
 
@@ -26,6 +27,7 @@ private:
 private slots:
     void updateTransportMedium(QNetworkInformation::TransportMedium transportMedium);
     void updateReachability(QNetworkInformation::Reachability reachability);
+    void updateDownloadUpload(double download, double upload);
 
 signals:
 };

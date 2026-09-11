@@ -1,6 +1,7 @@
 #ifndef NETWORKCONNECTIONCOMPONENT_H
 #define NETWORKCONNECTIONCOMPONENT_H
 
+#include "menus/networkmenu.h"
 #include "services/networkservice.h"
 #include <QWidget>
 #include <qlabel.h>
@@ -18,6 +19,7 @@ public:
         TB
     };
     explicit NetworkConnectionComponent(NetworkConnectionComponent::Unit unit, QWidget *parent = nullptr);
+    ~NetworkConnectionComponent();
 
 private:
     NetworkService* service;
@@ -27,6 +29,7 @@ private:
     QNetworkInformation::TransportMedium m_transportMedium;
     QNetworkInformation::Reachability m_reachability;
     Unit unit {Unit::MB};
+    NetworkMenu* networkMenu {nullptr};
 
 private:
     void updateIcons();

@@ -20,6 +20,14 @@ NetworkConnectionComponent::NetworkConnectionComponent(Unit unit, QWidget *paren
     connect(service, &NetworkService::networkSpeed, this, &NetworkConnectionComponent::updateDownloadUpload);
     updateTransportMedium(service->transportMedium());
     updateReachability(service->reachability());
+    networkMenu = new NetworkMenu();
+    connect(connectionbutton, &QPushButton::clicked, this, [this]{if(networkMenu->isVisible()) networkMenu->hide(); else networkMenu->showForWidget(connectionbutton);});
+}
+
+NetworkConnectionComponent::~NetworkConnectionComponent()
+{
+    if(networkMenu)
+        networkMenu->deleteLater();
 }
 
 void NetworkConnectionComponent::updateIcons()

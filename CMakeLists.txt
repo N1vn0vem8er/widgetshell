@@ -40,6 +40,7 @@ qt_add_executable(widgetshell
     src/components/workspacebutton.h src/components/workspacebutton.cpp
     src/services/networkservice.h src/services/networkservice.cpp
     src/components/networkconnectioncomponent.h src/components/networkconnectioncomponent.cpp
+    src/menus/networkmenu.h src/menus/networkmenu.cpp
 )
 
 target_link_libraries(widgetshell

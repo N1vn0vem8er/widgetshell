@@ -7,6 +7,8 @@ NetworkConnectionComponent::NetworkConnectionComponent(Unit unit, QWidget *paren
     setAttribute(Qt::WA_StyledBackground, true);
     service = NetworkService::instance();
     connectionbutton = new QPushButton(this);
+    connectionbutton->setObjectName("NetworkConnectionComponentButton");
+    connectionbutton->setAttribute(Qt::WA_StyledBackground);
     connectionbutton->setFlat(true);
     networkDownloadLabel = new QLabel(this);
     networkUploadLabel = new QLabel(this);

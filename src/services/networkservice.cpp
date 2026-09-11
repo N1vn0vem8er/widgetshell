@@ -1,5 +1,6 @@
 #include "networkservice.h"
 #include <qdebug.h>
+#include <qdir.h>
 
 NetworkService *NetworkService::instance()
 {
@@ -55,11 +56,32 @@ NetworkService::NetworkService(QObject *parent)
         connect(m_networkInfo, &QNetworkInformation::reachabilityChanged, this, &NetworkService::updateReachability);
         connect(m_networkInfo, &QNetworkInformation::transportMediumChanged, this, &NetworkService::updateTransportMedium);
     }
+    timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &NetworkService::timeout);
+    timer->setInterval(1000);
+    timer->start();
 }
 
 NetworkService::~NetworkService()
 {
 
+}
+
+void NetworkService::checkNetworkUse()
+{
+    quint64 rx = readCounter("/sys/class/net/enp1s0/statistics/rx_bytes");
+    quint64 tx = readCounter("/sys/class/net/enp1s0/statistics/tx_bytes");
+    emit networkSpeed(rx - oldRx, tx - oldTx);
+    oldRx = rx;
+    oldTx = tx;
+}
+
+quint64 NetworkService::readCounter(const QString &path)
+{
+    QFile file(path);
+    if(file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return file.readAll().trimmed().toULongLong();
+    return 0;
 }
 
 void NetworkService::updateReachability(QNetworkInformation::Reachability reachability)
@@ -84,6 +106,11 @@ void NetworkService::updateTransportMedium(QNetworkInformation::TransportMedium 
     emit transportMediumChanged(m_transportMedium);
     if(wasWifi != isWifi())
         emit wifiChanged(isWifi());
+}
+
+void NetworkService::timeout()
+{
+    checkNetworkUse();
 }
 
 

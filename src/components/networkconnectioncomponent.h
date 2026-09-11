@@ -15,6 +15,7 @@ public:
 private:
     NetworkService* service;
     QPushButton* connectionbutton;
+    QLabel* networkSpeedLabel;
     QNetworkInformation::TransportMedium m_transportMedium;
     QNetworkInformation::Reachability m_reachability;
 

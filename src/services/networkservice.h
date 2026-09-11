@@ -3,6 +3,7 @@
 
 #include <QNetworkInformation>
 #include <QObject>
+#include <qtimer.h>
 
 class NetworkService : public QObject
 {
@@ -23,20 +24,27 @@ private:
     QNetworkInformation* m_networkInfo = nullptr;
     QNetworkInformation::Reachability m_reachability;
     QNetworkInformation::TransportMedium m_transportMedium;
+    QTimer* timer;
+    quint64 oldTx {0};
+    quint64 oldRx {0};
 
 private:
     explicit NetworkService(QObject *parent = nullptr);
     ~NetworkService();
+    void checkNetworkUse();
+    quint64 readCounter(const QString& path);
 
 private slots:
     void updateReachability(QNetworkInformation::Reachability reachability);
     void updateTransportMedium(QNetworkInformation::TransportMedium medium);
+    void timeout();
 
 signals:
     void onlineChanged(bool online);
     void wifiChanged(bool wifi);
     void reachabilityChanged(QNetworkInformation::Reachability reachability);
     void transportMediumChanged(QNetworkInformation::TransportMedium medium);
+    void networkSpeed(double download, double upload);
 
 };
 

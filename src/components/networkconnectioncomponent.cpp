@@ -1,8 +1,8 @@
 #include "networkconnectioncomponent.h"
 #include <qboxlayout.h>
 
-NetworkConnectionComponent::NetworkConnectionComponent(QWidget *parent)
-    : QWidget{parent}
+NetworkConnectionComponent::NetworkConnectionComponent(Unit unit, QWidget *parent)
+    : unit(unit), QWidget{parent}
 {
     service = NetworkService::instance();
     connectionbutton = new QPushButton(this);
@@ -136,6 +136,47 @@ QString NetworkConnectionComponent::createTooltipText(QNetworkInformation::Trans
     return tooltip;
 }
 
+QString NetworkConnectionComponent::formatSpeed(double bytesPerSecond) const
+{
+    switch(unit)
+    {
+    case Unit::B:
+        break;
+
+    case Unit::KB:
+        bytesPerSecond /= 1024.0;
+        break;
+
+    case Unit::MB:
+        bytesPerSecond /= 1024.0 * 1024.0;
+        break;
+
+    case Unit::GB:
+        bytesPerSecond /= 1024.0 * 1024.0 * 1024.0;
+        break;
+
+    case Unit::TB:
+        bytesPerSecond /= 1024.0 * 1024.0 * 1024.0 * 1024.0;
+        break;
+    }
+
+    QString unitString;
+    switch(unit)
+    {
+    case Unit::B:  unitString = "B/s";
+        break;
+    case Unit::KB: unitString = "KB/s";
+        break;
+    case Unit::MB: unitString = "MB/s";
+        break;
+    case Unit::GB: unitString = "GB/s";
+        break;
+    case Unit::TB: unitString = "TB/s";
+        break;
+    }
+    return QString("%1 %2").arg(bytesPerSecond, 0, 'f', 2).arg(unitString);
+}
+
 void NetworkConnectionComponent::updateTransportMedium(QNetworkInformation::TransportMedium transportMedium)
 {
     m_transportMedium = transportMedium;
@@ -150,6 +191,6 @@ void NetworkConnectionComponent::updateReachability(QNetworkInformation::Reachab
 
 void NetworkConnectionComponent::updateDownloadUpload(double download, double upload)
 {
-    networkDownloadLabel->setText(QString("↓ %1").arg(download));
-    networkUploadLabel->setText(QString("↑ %1").arg(upload));
+    networkDownloadLabel->setText(QString("↓ %1").arg(formatSpeed(download)));
+    networkUploadLabel->setText(QString("↑ %1").arg(formatSpeed(upload)));
 }

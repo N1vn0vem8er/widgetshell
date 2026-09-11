@@ -10,7 +10,14 @@ class NetworkConnectionComponent : public QWidget
 {
     Q_OBJECT
 public:
-    explicit NetworkConnectionComponent(QWidget *parent = nullptr);
+    enum class Unit {
+        B,
+        KB,
+        MB,
+        GB,
+        TB
+    };
+    explicit NetworkConnectionComponent(NetworkConnectionComponent::Unit unit, QWidget *parent = nullptr);
 
 private:
     NetworkService* service;
@@ -19,10 +26,12 @@ private:
     QLabel* networkUploadLabel;
     QNetworkInformation::TransportMedium m_transportMedium;
     QNetworkInformation::Reachability m_reachability;
+    Unit unit {Unit::MB};
 
 private:
     void updateIcons();
     QString createTooltipText(QNetworkInformation::TransportMedium transportMedium, QNetworkInformation::Reachability reachability) const;
+    QString formatSpeed(double bytesPerSecond) const;
 
 private slots:
     void updateTransportMedium(QNetworkInformation::TransportMedium transportMedium);

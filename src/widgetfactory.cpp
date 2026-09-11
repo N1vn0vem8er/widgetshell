@@ -54,7 +54,23 @@ WidgetFactory::WidgetFactory(QObject *parent)
         return widget;
     });
     registerWidget("networkconnection", [](const QJsonObject& obj, QWidget* parent){
-        NetworkConnectionComponent* widget = new NetworkConnectionComponent(parent);
+        NetworkConnectionComponent* widget;
+        if(obj.contains("unit"))
+        {
+            const QString unit = obj.value("unit").toString().trimmed().toLower();
+            if(unit == "b")
+                widget = new NetworkConnectionComponent(NetworkConnectionComponent::Unit::B, parent);
+            else if(unit == "kb")
+                widget = new NetworkConnectionComponent(NetworkConnectionComponent::Unit::KB, parent);
+            else if(unit == "gb")
+                widget = new NetworkConnectionComponent(NetworkConnectionComponent::Unit::GB, parent);
+            else if(unit == "tb")
+                widget = new NetworkConnectionComponent(NetworkConnectionComponent::Unit::TB, parent);
+            else
+                widget = new NetworkConnectionComponent(NetworkConnectionComponent::Unit::MB, parent);
+        }
+        else
+            widget = new NetworkConnectionComponent(NetworkConnectionComponent::Unit::MB, parent);
         return widget;
     });
 }

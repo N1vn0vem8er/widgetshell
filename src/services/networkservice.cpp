@@ -1,6 +1,7 @@
 #include "networkservice.h"
 #include <qdebug.h>
 #include <qdir.h>
+#include <qprocess.h>
 
 NetworkService *NetworkService::instance()
 {
@@ -43,6 +44,27 @@ QNetworkInformation::TransportMedium NetworkService::transportMedium() const
     return m_transportMedium;
 }
 
+QString NetworkService::defaultInterface() const
+{
+    return m_defaultInterface;
+}
+
+void NetworkService::updateDefaultInterface()
+{
+    QProcess process;
+    process.start("ip", {"route", "get", "1.1.1.1"});
+    if (!process.waitForFinished(1000))
+        return;
+
+    const QString output = QString::fromLocal8Bit(process.readAllStandardOutput());
+    const QStringList parts = output.simplified().split(' ');
+
+    for(int i = 0; i + 1 < parts.size(); ++i) {
+        if(parts[i] == "dev")
+            m_defaultInterface = parts[i + 1];
+    }
+}
+
 NetworkService::NetworkService(QObject *parent)
 {
     QNetworkInformation::loadDefaultBackend();
@@ -56,6 +78,7 @@ NetworkService::NetworkService(QObject *parent)
         connect(m_networkInfo, &QNetworkInformation::reachabilityChanged, this, &NetworkService::updateReachability);
         connect(m_networkInfo, &QNetworkInformation::transportMediumChanged, this, &NetworkService::updateTransportMedium);
     }
+    updateDefaultInterface();
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &NetworkService::timeout);
     timer->setInterval(1000);
@@ -69,8 +92,8 @@ NetworkService::~NetworkService()
 
 void NetworkService::checkNetworkUse()
 {
-    quint64 rx = readCounter("/sys/class/net/enp1s0/statistics/rx_bytes");
-    quint64 tx = readCounter("/sys/class/net/enp1s0/statistics/tx_bytes");
+    quint64 rx = readCounter(QString("/sys/class/net/%1/statistics/rx_bytes").arg(m_defaultInterface));
+    quint64 tx = readCounter(QString("/sys/class/net/%1/statistics/tx_bytes").arg(m_defaultInterface));
     emit networkSpeed(rx - oldRx, tx - oldTx);
     oldRx = rx;
     oldTx = tx;
@@ -100,6 +123,7 @@ void NetworkService::updateTransportMedium(QNetworkInformation::TransportMedium 
 {
     if(m_transportMedium == medium)
         return;
+    updateDefaultInterface();
     const bool wasWifi = isWifi();
     m_transportMedium = medium;
 

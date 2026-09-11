@@ -18,10 +18,13 @@ public:
     bool isWifi() const;
     QNetworkInformation::Reachability reachability() const;
     QNetworkInformation::TransportMedium transportMedium() const;
+    QString defaultInterface() const;
+    void updateDefaultInterface();
 
 private:
     inline static NetworkService* m_instance = nullptr;
     QNetworkInformation* m_networkInfo = nullptr;
+    QString m_defaultInterface;
     QNetworkInformation::Reachability m_reachability;
     QNetworkInformation::TransportMedium m_transportMedium;
     QTimer* timer;

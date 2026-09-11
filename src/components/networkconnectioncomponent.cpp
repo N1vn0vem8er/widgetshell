@@ -6,6 +6,7 @@ NetworkConnectionComponent::NetworkConnectionComponent(QWidget *parent)
 {
     service = NetworkService::instance();
     connectionbutton = new QPushButton(this);
+    connectionbutton->setFlat(true);
     QHBoxLayout* layout = new QHBoxLayout(this);
     layout->addWidget(connectionbutton);
     updateTransportMedium(service->transportMedium());

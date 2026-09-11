@@ -20,6 +20,7 @@ private:
 
 private:
     void updateIcons();
+    QString createTooltipText(QNetworkInformation::TransportMedium transportMedium, QNetworkInformation::Reachability reachability) const;
 
 private slots:
     void updateTransportMedium(QNetworkInformation::TransportMedium transportMedium);

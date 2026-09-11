@@ -86,6 +86,49 @@ void NetworkConnectionComponent::updateIcons()
         }
         break;
     }
+    connectionbutton->setToolTip(createTooltipText(m_transportMedium, m_reachability));
+}
+
+QString NetworkConnectionComponent::createTooltipText(QNetworkInformation::TransportMedium transportMedium, QNetworkInformation::Reachability reachability) const
+{
+    QString tooltip;
+    switch(transportMedium)
+    {
+    case QNetworkInformation::TransportMedium::Unknown:
+        tooltip.append("TransportMedium: Unknown");
+        break;
+    case QNetworkInformation::TransportMedium::Ethernet:
+        tooltip.append("TransportMedium: Ethernet");
+        break;
+    case QNetworkInformation::TransportMedium::Cellular:
+        tooltip.append("TransportMedium: Cellular");
+        break;
+    case QNetworkInformation::TransportMedium::WiFi:
+        tooltip.append("TransportMedium: WiFi");
+        break;
+    case QNetworkInformation::TransportMedium::Bluetooth:
+        tooltip.append("TransportMedium: Bluetooth");
+        break;
+    }
+    switch(reachability)
+    {
+    case QNetworkInformation::Reachability::Unknown:
+        tooltip.append(" | Reachability: Unknown");
+        break;
+    case QNetworkInformation::Reachability::Disconnected:
+        tooltip.append(" | Reachability: Disconnected");
+        break;
+    case QNetworkInformation::Reachability::Local:
+        tooltip.append(" | Reachability: Local");
+        break;
+    case QNetworkInformation::Reachability::Site:
+        tooltip.append(" | Reachability: Site");
+        break;
+    case QNetworkInformation::Reachability::Online:
+        tooltip.append(" | Reachability: Online");
+        break;
+    }
+    return tooltip;
 }
 
 void NetworkConnectionComponent::updateTransportMedium(QNetworkInformation::TransportMedium transportMedium)

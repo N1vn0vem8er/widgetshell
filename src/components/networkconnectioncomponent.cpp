@@ -4,6 +4,7 @@
 NetworkConnectionComponent::NetworkConnectionComponent(Unit unit, QWidget *parent)
     : unit(unit), QWidget{parent}
 {
+    setAttribute(Qt::WA_StyledBackground, true);
     service = NetworkService::instance();
     connectionbutton = new QPushButton(this);
     connectionbutton->setFlat(true);
@@ -13,6 +14,7 @@ NetworkConnectionComponent::NetworkConnectionComponent(Unit unit, QWidget *paren
     layout->addWidget(connectionbutton);
     layout->addWidget(networkDownloadLabel);
     layout->addWidget(networkUploadLabel);
+    layout->setContentsMargins(4, 0, 4, 0);
     connect(service, &NetworkService::networkSpeed, this, &NetworkConnectionComponent::updateDownloadUpload);
     updateTransportMedium(service->transportMedium());
     updateReachability(service->reachability());
@@ -142,19 +144,15 @@ QString NetworkConnectionComponent::formatSpeed(double bytesPerSecond) const
     {
     case Unit::B:
         break;
-
     case Unit::KB:
         bytesPerSecond /= 1024.0;
         break;
-
     case Unit::MB:
         bytesPerSecond /= 1024.0 * 1024.0;
         break;
-
     case Unit::GB:
         bytesPerSecond /= 1024.0 * 1024.0 * 1024.0;
         break;
-
     case Unit::TB:
         bytesPerSecond /= 1024.0 * 1024.0 * 1024.0 * 1024.0;
         break;

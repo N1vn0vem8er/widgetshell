@@ -43,3 +43,9 @@ DateTimeComponent {
     border: none;
     border-radius: 4px;
 }
+
+NetworkConnectionComponent {
+    background-color: #005b94;
+    border: none;
+    border-radius: 4px;
+}

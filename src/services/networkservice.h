@@ -20,6 +20,8 @@ public:
     QNetworkInformation::TransportMedium transportMedium() const;
     QString defaultInterface() const;
     void updateDefaultInterface();
+    QMap<QString, QString> getIpAddresses();
+    QString getGatewayAddress();
 
 private:
     inline static NetworkService* m_instance = nullptr;

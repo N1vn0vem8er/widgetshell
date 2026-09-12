@@ -2,6 +2,7 @@
 #include <qdebug.h>
 #include <qdir.h>
 #include <qprocess.h>
+#include <qregularexpression.h>
 
 NetworkService *NetworkService::instance()
 {
@@ -53,7 +54,7 @@ void NetworkService::updateDefaultInterface()
 {
     QProcess process;
     process.start("ip", {"route", "get", "1.1.1.1"});
-    if (!process.waitForFinished(1000))
+    if(!process.waitForFinished(1000))
         return;
 
     const QString output = QString::fromLocal8Bit(process.readAllStandardOutput());
@@ -63,6 +64,57 @@ void NetworkService::updateDefaultInterface()
         if(parts[i] == "dev")
             m_defaultInterface = parts[i + 1];
     }
+}
+
+QMap<QString, QString> NetworkService::getIpAddresses()
+{
+    QProcess process;
+    process.start("ip", {"-4", "addr", "show"});
+    if(!process.waitForFinished(1000))
+        return {};
+
+    const QString output = QString::fromLocal8Bit(process.readAllStandardOutput());
+    QMap<QString, QString> result;
+    QString currentInterface;
+    const QStringList lines = output.split('\n');
+
+    for(const QString& line : lines)
+    {
+        static QRegularExpression interfaceRegex(R"(^\d+:\s+([^:]+):)");
+        const auto interfaceMatch = interfaceRegex.match(line);
+
+        if(interfaceMatch.hasMatch())
+        {
+            currentInterface = interfaceMatch.captured(1);
+            continue;
+        }
+
+        static QRegularExpression addressRegex(R"(^\s+inet\s+(\d+\.\d+\.\d+\.\d+)/\d+)");
+        const auto addressMatch = addressRegex.match(line);
+
+        if(addressMatch.hasMatch() && !currentInterface.isEmpty())
+            result.insert(currentInterface, addressMatch.captured(1));
+    }
+
+    return result;
+}
+
+QString NetworkService::getGatewayAddress()
+{
+    QProcess process;
+    process.start("ip", {"route", "show", "default"});
+
+    if(!process.waitForFinished(1000))
+        return {};
+
+    const QString output = QString::fromLocal8Bit(process.readAllStandardOutput());
+    static QRegularExpression regex(R"(default\s+via\s+(\S+))");
+    const auto match = regex.match(output);
+
+    if(match.hasMatch())
+        return match.captured(1);
+
+    return {};
 }
 
 NetworkService::NetworkService(QObject *parent)

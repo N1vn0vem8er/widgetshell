@@ -5,6 +5,33 @@
 #include <QObject>
 #include <qtimer.h>
 
+struct NetworkInterface
+{
+    QString name;
+    QString macAddress;
+    QStringList ipv4Addresses;
+    QStringList ipv6Addresses;
+    QString gateway;
+    bool up;
+    bool carrier;
+    int mtu;
+    int speed;
+    QString duplex;
+    quint64 rxBytes;
+    quint64 txBytes;
+    quint64 rxPackets;
+    quint64 txPackets;
+    quint64 rxErrors;
+    quint64 txErrors;
+    quint64 rxDropped;
+    quint64 txDropped;
+    QString ssid;
+    int signalDbm;
+    int frequency;
+    double rxBitrate;
+    double txBitrate;
+};
+
 class NetworkService : public QObject
 {
     Q_OBJECT
@@ -22,6 +49,9 @@ public:
     void updateDefaultInterface();
     QMap<QString, QString> getIpAddresses();
     QString getGatewayAddress();
+    QString getInterfaceMacAddress(const QString& name);
+    QString getInterfaceGateway(const QString& name);
+    QString getInterfaceSpeed(const QString& name);
 
 private:
     inline static NetworkService* m_instance = nullptr;

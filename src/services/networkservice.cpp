@@ -117,6 +117,42 @@ QString NetworkService::getGatewayAddress()
     return {};
 }
 
+QString NetworkService::getInterfaceMacAddress(const QString &name)
+{
+    QFile file(QStringLiteral("/sys/class/net/%1/address").arg(name));
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return {};
+
+    return QString::fromLatin1(file.readAll()).trimmed().toUpper();
+}
+
+QString NetworkService::getInterfaceGateway(const QString &name)
+{
+    QProcess process;
+    process.start("ip", {"route", "show", "default", "dev", name});
+
+    if(!process.waitForFinished(1000))
+        return {};
+
+    const QString output = process.readAllStandardOutput().trimmed();
+    static const QRegularExpression regex(R"(^default\s+via\s+(\S+))");
+    const auto match = regex.match(output);
+
+    if(!match.hasMatch())
+        return {};
+
+    return match.captured(1);
+}
+
+QString NetworkService::getInterfaceSpeed(const QString &name)
+{
+    QFile file(QStringLiteral("/sys/class/net/%1/speed").arg(name));
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return {};
+
+    return QString::fromLatin1(file.readAll()).trimmed();
+}
+
 NetworkService::NetworkService(QObject *parent)
 {
     QNetworkInformation::loadDefaultBackend();

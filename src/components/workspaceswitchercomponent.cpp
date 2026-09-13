@@ -11,6 +11,8 @@ WorkspaceSwitcherComponent::WorkspaceSwitcherComponent(QWidget *parent)
 
     service = HyprlandService::instance();
 
+    currentWorkspace = service->getActiveWorkspaceId();
+
     if(service)
     {
         connect(service, &HyprlandService::workspacesChanged, this, &WorkspaceSwitcherComponent::refreshWorkspaces);
@@ -42,6 +44,8 @@ void WorkspaceSwitcherComponent::refreshWorkspaces()
             WorkspaceButton* button = buttons.at(i);
             button->setText(QString::number(ws.id));
             button->setProperty("workspaceId", ws.id);
+            if(ws.id == currentWorkspace)
+                button->setChecked(true);
             connect(button, &WorkspaceButton::clicked, this, [button, this]{
                 int workspaceId = button->property("workspaceId").toInt();
                 if(workspaceId == currentWorkspace)

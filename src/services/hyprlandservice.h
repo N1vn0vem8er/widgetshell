@@ -57,6 +57,7 @@ public:
     QList<HyprlandClient> getClients();
     HyprlandWorkspace getWorkspace(int id);
     void focusWindow(const QString address);
+    int getActiveWorkspaceId();
 
     HyprlandService(const HyprlandService&) = delete;
     HyprlandService& operator=(const HyprlandService&) = delete;

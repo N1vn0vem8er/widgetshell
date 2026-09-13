@@ -122,6 +122,14 @@ void HyprlandService::focusWindow(const QString address)
     sendIpcCommand(QString("dispatch hl.dsp.focus({ window = \"address:%1\" })").arg(address).toUtf8());
 }
 
+int HyprlandService::getActiveWorkspaceId()
+{
+    QByteArray response = sendIpcCommand("j/activeworkspace");
+
+    QJsonObject obj = QJsonDocument::fromJson(response).object();
+    return obj.value("id").toInt(-1);
+}
+
 HyprlandService::HyprlandService(QObject *parent)
     : QObject{parent}
 {

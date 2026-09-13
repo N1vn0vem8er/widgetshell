@@ -3,9 +3,47 @@
 
 #include <QLocalSocket>
 #include <QObject>
+#include <qpoint.h>
+#include <qsize.h>
 
-#include "data/hyprlandworkspace.h"
-#include "data/hyprlandclient.h"
+struct HyprlandWorkspaceR {
+    int id;
+    QString name;
+};
+
+struct HyprlandWorkspace {
+    int id;
+    QString name;
+    int windowsCount;
+    bool hasFullscreen;
+};
+
+struct HyprlandClient {
+    QString address;
+    bool mapped;
+    bool hidden;
+    bool visible;
+    bool acceptsInput;
+    QPoint at;
+    QSize size;
+    HyprlandWorkspaceR workspace;
+    bool floating;
+    int monitor;
+    QString appClass;
+    QString title;
+    QString initialClass;
+    QString initialTitle;
+    int pid;
+    bool xwayland;
+    bool pinned;
+    bool pinFullscreened;
+    int fullscreen;
+    int fullscreenClient;
+    QString fullscreenHandler;
+    bool allowedOverFullscreen;
+    bool tearingHint;
+    long stableId;
+};
 
 class HyprlandService : public QObject
 {

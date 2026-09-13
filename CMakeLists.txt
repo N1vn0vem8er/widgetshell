@@ -22,12 +22,12 @@ qt_add_executable(widgetshell
     src/barwidget.h src/barwidget.cpp
     src/services/hyprlandservice.h src/services/hyprlandservice.cpp
     src/components/workspaceswitchercomponent.h src/components/workspaceswitchercomponent.cpp
-    src/data/hyprlandworkspace.h
+
     src/components/controlmenu.h src/components/controlmenu.cpp
     src/components/wallpaper.h src/components/wallpaper.cpp
     src/services/audioservice.h src/services/audioservice.cpp
     src/components/audiovolumecontrolcomponent.h src/components/audiovolumecontrolcomponent.cpp
-    src/data/hyprlandclient.h
+
     src/components/openedappscomponent.h src/components/openedappscomponent.cpp
     src/services/desktopappsservice.h src/services/desktopappsservice.cpp
     src/widgetfactory.h src/widgetfactory.cpp

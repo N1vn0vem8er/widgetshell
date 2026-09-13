@@ -39,6 +39,7 @@ NetworkMenu::NetworkMenu(QWidget *parent)
         interfaceLayout->setContentsMargins(0, 0, 0, 0);
         interfaceLayout->setSpacing(0);
         QPushButton* button = new QPushButton(interfaceContainer);
+        button->setObjectName("NetworkMenuInterfaceButton");
         QString status;
 
         if(!iface.up)

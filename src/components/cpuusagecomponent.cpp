@@ -1,8 +1,8 @@
 #include "cpuusagecomponent.h"
 #include <qboxlayout.h>
 
-CpuUsageComponent::CpuUsageComponent(QWidget *parent)
-    : QWidget{parent}
+CpuUsageComponent::CpuUsageComponent(const QString &labelText, QWidget *parent)
+    : labelText(labelText), QWidget{parent}
 {
     setAttribute(Qt::WA_StyledBackground, true);
     service = SystemMonitorService::instance();
@@ -14,5 +14,5 @@ CpuUsageComponent::CpuUsageComponent(QWidget *parent)
 
 void CpuUsageComponent::update(double val)
 {
-    label->setText(QString("%1%").arg(val));
+    label->setText(labelText.arg(val, 0, 'f', 1));
 }

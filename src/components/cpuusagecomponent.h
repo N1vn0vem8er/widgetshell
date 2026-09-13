@@ -9,11 +9,12 @@ class CpuUsageComponent : public QWidget
 {
     Q_OBJECT
 public:
-    explicit CpuUsageComponent(QWidget *parent = nullptr);
+    explicit CpuUsageComponent(const QString& labelText, QWidget *parent = nullptr);
 
 private:
     SystemMonitorService* service;
     QLabel* label;
+    QString labelText;
 
 private slots:
     void update(double val);

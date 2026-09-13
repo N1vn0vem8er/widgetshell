@@ -32,7 +32,7 @@ WidgetFactory::WidgetFactory(QObject *parent)
         return widget;
     });
     registerWidget("cpuusage", [](const QJsonObject& obj, QWidget* parent){
-        CpuUsageComponent* widget = new CpuUsageComponent(parent);
+        CpuUsageComponent* widget = new CpuUsageComponent(obj.value("text").toString("%1%"), parent);
         return widget;
     });
     registerWidget("memoryusage", [](const QJsonObject& obj, QWidget* parent){

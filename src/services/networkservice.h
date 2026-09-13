@@ -51,7 +51,10 @@ public:
     QString getGatewayAddress();
     QString getInterfaceMacAddress(const QString& name);
     QString getInterfaceGateway(const QString& name);
-    QString getInterfaceSpeed(const QString& name);
+    bool isInterfaceUp(const QString& name);
+    bool isInterfaceCarrier(const QString& name);
+    int getInterfaceMtu(const QString& name);
+    int getInterfaceSpeed(const QString& name);
 
 private:
     inline static NetworkService* m_instance = nullptr;

@@ -119,7 +119,7 @@ QString NetworkService::getGatewayAddress()
 
 QString NetworkService::getInterfaceMacAddress(const QString &name)
 {
-    QFile file(QStringLiteral("/sys/class/net/%1/address").arg(name));
+    QFile file(QString("/sys/class/net/%1/address").arg(name));
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
         return {};
 
@@ -144,13 +144,45 @@ QString NetworkService::getInterfaceGateway(const QString &name)
     return match.captured(1);
 }
 
-QString NetworkService::getInterfaceSpeed(const QString &name)
+int NetworkService::getInterfaceSpeed(const QString &name)
 {
-    QFile file(QStringLiteral("/sys/class/net/%1/speed").arg(name));
+    QFile file(QString("/sys/class/net/%1/speed").arg(name));
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
         return {};
 
-    return QString::fromLatin1(file.readAll()).trimmed();
+    bool ok;
+    const int speed = QString::fromUtf8(file.readAll()).trimmed().toInt(&ok);
+    return ok ? speed : 0;
+}
+
+bool NetworkService::isInterfaceUp(const QString &name)
+{
+    QFile file(QString("/sys/class/net/%1/operstate").arg(name));
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return false;
+
+    return QString::fromUtf8(file.readAll()).trimmed() == "up";
+}
+
+bool NetworkService::isInterfaceCarrier(const QString &name)
+{
+    QFile file(QString("/sys/class/net/%1/carrier").arg(name));
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return false;
+
+    return file.readAll().trimmed() == "1";
+}
+
+int NetworkService::getInterfaceMtu(const QString &name)
+{
+    QFile file(QString("/sys/class/net/%1/mtu").arg(name));
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return 0;
+
+    bool ok = false;
+    const int mtu = QString::fromUtf8(file.readAll()).trimmed().toInt(&ok);
+
+    return ok ? mtu : 0;
 }
 
 NetworkService::NetworkService(QObject *parent)

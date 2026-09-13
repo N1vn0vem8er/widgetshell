@@ -164,6 +164,46 @@ QString NetworkService::getInterfaceDuplex(const QString &name)
     return QString::fromUtf8(file.readAll()).trimmed();
 }
 
+quint64 NetworkService::getInterfaceRxBytes(const QString &name)
+{
+    return readCounter(QString("/sys/class/net/%1/statistics/rx_bytes").arg(name));
+}
+
+quint64 NetworkService::getInterfaceTxBytes(const QString &name)
+{
+    return readCounter(QString("/sys/class/net/%1/statistics/tx_bytes").arg(name));
+}
+
+quint64 NetworkService::getInterfaceRxPackets(const QString &name)
+{
+    return readCounter(QString("/sys/class/net/%1/statistics/rx_packets").arg(name));
+}
+
+quint64 NetworkService::getInterfaceTxPackets(const QString &name)
+{
+    return readCounter(QString("/sys/class/net/%1/statistics/rx_packets").arg(name));
+}
+
+quint64 NetworkService::getInterfaceRxErrors(const QString &name)
+{
+    return readCounter(QString("/sys/class/net/%1/statistics/rx_errors").arg(name));
+}
+
+quint64 NetworkService::getInterfaceTxErrors(const QString &name)
+{
+    return readCounter(QString("/sys/class/net/%1/statistics/rx_errors").arg(name));
+}
+
+quint64 NetworkService::getInterfaceRxDropped(const QString &name)
+{
+    return readCounter(QString("/sys/class/net/%1/statistics/rx_dropped").arg(name));
+}
+
+quint64 NetworkService::getInterfaceTxDropped(const QString &name)
+{
+    return readCounter(QString("/sys/class/net/%1/statistics/rx_dropped").arg(name));
+}
+
 bool NetworkService::isInterfaceUp(const QString &name)
 {
     QFile file(QString("/sys/class/net/%1/operstate").arg(name));
@@ -221,8 +261,8 @@ NetworkService::~NetworkService()
 
 void NetworkService::checkNetworkUse()
 {
-    quint64 rx = readCounter(QString("/sys/class/net/%1/statistics/rx_bytes").arg(m_defaultInterface));
-    quint64 tx = readCounter(QString("/sys/class/net/%1/statistics/tx_bytes").arg(m_defaultInterface));
+    quint64 rx = getInterfaceRxBytes(m_defaultInterface);
+    quint64 tx = getInterfaceTxBytes(m_defaultInterface);
     emit networkSpeed(rx - oldRx, tx - oldTx);
     oldRx = rx;
     oldTx = tx;

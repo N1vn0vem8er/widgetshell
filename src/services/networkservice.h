@@ -56,6 +56,14 @@ public:
     int getInterfaceMtu(const QString& name);
     int getInterfaceSpeed(const QString& name);
     QString getInterfaceDuplex(const QString& name);
+    quint64 getInterfaceRxBytes(const QString& name);
+    quint64 getInterfaceTxBytes(const QString& name);
+    quint64 getInterfaceRxPackets(const QString& name);
+    quint64 getInterfaceTxPackets(const QString& name);
+    quint64 getInterfaceRxErrors(const QString& name);
+    quint64 getInterfaceTxErrors(const QString& name);
+    quint64 getInterfaceRxDropped(const QString& name);
+    quint64 getInterfaceTxDropped(const QString& name);
 
 private:
     inline static NetworkService* m_instance = nullptr;

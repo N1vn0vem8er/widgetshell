@@ -15,11 +15,12 @@ public:
         GB,
         TB
     };
-    explicit MemoryUsageComponent(MemoryUsageComponent::Unit unit, QWidget *parent = nullptr);
+    explicit MemoryUsageComponent(const QString& labelText, MemoryUsageComponent::Unit unit, QWidget *parent = nullptr);
 
 private:
     SystemMonitorService* service;
     QLabel* label;
+    QString labelText;
     Unit unit {Unit::KB};
 
 private slots:

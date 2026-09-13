@@ -1,8 +1,8 @@
 #include "memoryusagecomponent.h"
 #include <qboxlayout.h>
 
-MemoryUsageComponent::MemoryUsageComponent(Unit unit, QWidget *parent)
-    : QWidget{parent}
+MemoryUsageComponent::MemoryUsageComponent(const QString &labelText, Unit unit, QWidget *parent)
+    : labelText(labelText), QWidget{parent}
 {
     setAttribute(Qt::WA_StyledBackground, true);
     this->unit = unit;
@@ -44,5 +44,5 @@ void MemoryUsageComponent::update(quint64 used, quint64 free)
         return "KB";
     }();
 
-    label->setText(QString("%1 %3 / %2 %3").arg(convert(used), 0, 'f', 2).arg(convert(used + free), 0, 'f', 2).arg(unitText));
+    label->setText(labelText.arg(convert(used), 0, 'f', 2).arg(convert(used + free), 0, 'f', 2).arg(unitText));
 }

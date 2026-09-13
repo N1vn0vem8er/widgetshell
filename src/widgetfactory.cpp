@@ -32,7 +32,7 @@ WidgetFactory::WidgetFactory(QObject *parent)
         return widget;
     });
     registerWidget("cpuusage", [](const QJsonObject& obj, QWidget* parent){
-        CpuUsageComponent* widget = new CpuUsageComponent(obj.value("text").toString("%1%"), parent);
+        CpuUsageComponent* widget = new CpuUsageComponent(obj.value("format").toString("%1%"), parent);
         return widget;
     });
     registerWidget("memoryusage", [](const QJsonObject& obj, QWidget* parent){
@@ -41,16 +41,16 @@ WidgetFactory::WidgetFactory(QObject *parent)
         {
             const QString unit = obj.value("unit").toString().trimmed().toLower();
             if(unit == "tb")
-                widget = new MemoryUsageComponent(MemoryUsageComponent::Unit::TB, parent);
+                widget = new MemoryUsageComponent(obj.value("format").toString("%1 %3 / %2 %3"), MemoryUsageComponent::Unit::TB, parent);
             else if(unit == "mb")
-                widget = new MemoryUsageComponent(MemoryUsageComponent::Unit::MB, parent);
+                widget = new MemoryUsageComponent(obj.value("format").toString("%1 %3 / %2 %3"), MemoryUsageComponent::Unit::MB, parent);
             else if(unit == "gb")
-                widget = new MemoryUsageComponent(MemoryUsageComponent::Unit::GB, parent);
+                widget = new MemoryUsageComponent(obj.value("format").toString("%1 %3 / %2 %3"), MemoryUsageComponent::Unit::GB, parent);
             else
-                widget = new MemoryUsageComponent(MemoryUsageComponent::Unit::KB, parent);
+                widget = new MemoryUsageComponent(obj.value("format").toString("%1 %3 / %2 %3"), MemoryUsageComponent::Unit::KB, parent);
         }
         else
-            widget = new MemoryUsageComponent(MemoryUsageComponent::Unit::KB, parent);
+            widget = new MemoryUsageComponent(obj.value("format").toString("%1 %3 / %2 %3"), MemoryUsageComponent::Unit::KB, parent);
         return widget;
     });
     registerWidget("networkconnection", [](const QJsonObject& obj, QWidget* parent){

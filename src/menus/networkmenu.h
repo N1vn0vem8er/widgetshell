@@ -21,6 +21,10 @@ private:
     QLabel* gatewayAddressLabel;
     QListWidget* ipList;
 
+private:
+    QString formatBytes(quint64 bytes);
+    QLabel* valueLabel(const QString& value);
+
 signals:
 };
 

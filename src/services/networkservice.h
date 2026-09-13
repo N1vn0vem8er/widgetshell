@@ -55,6 +55,7 @@ public:
     bool isInterfaceCarrier(const QString& name);
     int getInterfaceMtu(const QString& name);
     int getInterfaceSpeed(const QString& name);
+    QString getInterfaceDuplex(const QString& name);
 
 private:
     inline static NetworkService* m_instance = nullptr;

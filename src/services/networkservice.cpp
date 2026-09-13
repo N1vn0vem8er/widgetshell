@@ -155,6 +155,15 @@ int NetworkService::getInterfaceSpeed(const QString &name)
     return ok ? speed : 0;
 }
 
+QString NetworkService::getInterfaceDuplex(const QString &name)
+{
+    QFile file(QString("/sys/class/net/%1/duplex").arg(name));
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return {};
+
+    return QString::fromUtf8(file.readAll()).trimmed();
+}
+
 bool NetworkService::isInterfaceUp(const QString &name)
 {
     QFile file(QString("/sys/class/net/%1/operstate").arg(name));

@@ -1,4 +1,5 @@
 #include "networkservice.h"
+#include <QNetworkInterface>
 #include <qdebug.h>
 #include <qdir.h>
 #include <qprocess.h>
@@ -204,6 +205,74 @@ quint64 NetworkService::getInterfaceTxDropped(const QString &name)
     return readCounter(QString("/sys/class/net/%1/statistics/rx_dropped").arg(name));
 }
 
+QStringList NetworkService::getInterfaceIpv4Addresses(const QString &name)
+{
+    const QNetworkInterface interface = QNetworkInterface::interfaceFromName(name);
+    if(!interface.isValid())
+        return {};
+
+    QStringList addresses;
+    for(const auto& entry : interface.addressEntries())
+    {
+        const QHostAddress& address = entry.ip();
+        if (address.protocol() == QAbstractSocket::IPv4Protocol)
+            addresses.append(address.toString());
+    }
+
+    return addresses;
+}
+
+QStringList NetworkService::getInterfaceIpv6Addresses(const QString &name)
+{
+    const QNetworkInterface interface = QNetworkInterface::interfaceFromName(name);
+    if(!interface.isValid())
+        return {};
+
+    QStringList addresses;
+    for(const auto& entry : interface.addressEntries())
+    {
+        const QHostAddress& address = entry.ip();
+        if(address.protocol() == QAbstractSocket::IPv6Protocol)
+            addresses.append(address.toString());
+    }
+
+    return addresses;
+}
+
+QMap<QString, NetworkInterface> NetworkService::networkInterfaces() const
+{
+    return m_networkInterfaces;
+}
+
+void NetworkService::updateNetworkInterfaces()
+{
+    const QDir dir(QStringLiteral("/sys/class/net"));
+    const QStringList interfaces = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+    for(const auto& i : interfaces)
+    {
+        NetworkInterface interface;
+        interface.name = i;
+        interface.gateway = getInterfaceGateway(i);
+        interface.speed = getInterfaceSpeed(i);
+        interface.macAddress = getInterfaceMacAddress(i);
+        interface.up = isInterfaceUp(i);
+        interface.carrier = isInterfaceCarrier(i);
+        interface.mtu = getInterfaceMtu(i);
+        interface.duplex = getInterfaceDuplex(i);
+        interface.rxBytes = getInterfaceRxBytes(i);
+        interface.txBytes = getInterfaceTxBytes(i);
+        interface.rxPackets = getInterfaceRxPackets(i);
+        interface.txPackets = getInterfaceTxPackets(i);
+        interface.rxErrors = getInterfaceRxErrors(i);
+        interface.txErrors = getInterfaceTxErrors(i);
+        interface.rxDropped = getInterfaceRxDropped(i);
+        interface.txDropped = getInterfaceTxDropped(i);
+        interface.ipv4Addresses = getInterfaceIpv4Addresses(i);
+        interface.ipv6Addresses = getInterfaceIpv6Addresses(i);
+        m_networkInterfaces[i] = interface;
+    }
+}
+
 bool NetworkService::isInterfaceUp(const QString &name)
 {
     QFile file(QString("/sys/class/net/%1/operstate").arg(name));
@@ -248,6 +317,7 @@ NetworkService::NetworkService(QObject *parent)
         connect(m_networkInfo, &QNetworkInformation::transportMediumChanged, this, &NetworkService::updateTransportMedium);
     }
     updateDefaultInterface();
+    updateNetworkInterfaces();
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &NetworkService::timeout);
     timer->setInterval(1000);

@@ -1,6 +1,7 @@
 #ifndef NETWORKSERVICE_H
 #define NETWORKSERVICE_H
 
+#include <QMap>
 #include <QNetworkInformation>
 #include <QObject>
 #include <qtimer.h>
@@ -64,11 +65,16 @@ public:
     quint64 getInterfaceTxErrors(const QString& name);
     quint64 getInterfaceRxDropped(const QString& name);
     quint64 getInterfaceTxDropped(const QString& name);
+    QStringList getInterfaceIpv4Addresses(const QString& name);
+    QStringList getInterfaceIpv6Addresses(const QString& name);
+    QMap<QString, NetworkInterface> networkInterfaces() const;
+    void updateNetworkInterfaces();
 
 private:
     inline static NetworkService* m_instance = nullptr;
     QNetworkInformation* m_networkInfo = nullptr;
     QString m_defaultInterface;
+    QMap<QString, NetworkInterface> m_networkInterfaces;
     QNetworkInformation::Reachability m_reachability;
     QNetworkInformation::TransportMedium m_transportMedium;
     QTimer* timer;

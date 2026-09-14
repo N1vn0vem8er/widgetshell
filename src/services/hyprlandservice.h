@@ -19,7 +19,7 @@ struct HyprlandWorkspace {
 };
 
 struct HyprlandClient {
-    QString address;
+    quint64 address;
     bool mapped;
     bool hidden;
     bool visible;
@@ -56,7 +56,7 @@ public:
     void switchWorkspace(int id);
     QList<HyprlandClient> getClients();
     HyprlandWorkspace getWorkspace(int id);
-    void focusWindow(const QString address);
+    void focusWindow(quint64 address);
     int getActiveWorkspaceId();
 
     HyprlandService(const HyprlandService&) = delete;
@@ -82,10 +82,11 @@ signals:
     void workspaceChanged(int id);
     void workspacesChanged();
     void clientsChanged();
-    void openedWindow(const QString& windowAddress, const QString& workspaceName, const QString& windowClass, const QString& windowTitle);
-    void closedWindow(const QString& windowAddress);
-    void movedWindow(const QString& windowAddress, const QString& workspaceName);
-    void movedWindowV2(const QString& windowAddress, const int workspaceId, const QString& workspaceName);
+    void openedWindow(quint64 windowAddress, const QString& workspaceName, const QString& windowClass, const QString& windowTitle);
+    void closedWindow(quint64 windowAddress);
+    void movedWindow(quint64 windowAddress, const QString& workspaceName);
+    void movedWindowV2(quint64 windowAddress, const int workspaceId, const QString& workspaceName);
+    void activedWindowV2(quint64 windowAddress);
 };
 
 #endif // HYPRLANDSERVICE_H

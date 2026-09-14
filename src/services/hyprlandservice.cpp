@@ -67,7 +67,7 @@ QList<HyprlandClient> HyprlandService::getClients()
     {
         QJsonObject obj = val.toObject();
         HyprlandClient client;
-        client.address = obj.value("address").toString();
+        client.address = obj.value("address").toString().toULongLong(nullptr, 16);
         client.mapped = obj.value("mapped").toBool();
         client.hidden = obj.value("hidden").toBool();
         client.visible = obj.value("visible").toBool();
@@ -117,9 +117,9 @@ HyprlandWorkspace HyprlandService::getWorkspace(int id)
     return workspace;
 }
 
-void HyprlandService::focusWindow(const QString address)
+void HyprlandService::focusWindow(quint64 address)
 {
-    sendIpcCommand(QString("dispatch hl.dsp.focus({ window = \"address:%1\" })").arg(address).toUtf8());
+    sendIpcCommand(QString("dispatch hl.dsp.focus({ window = \"address:0x%1\" })").arg(address, 0, 16).toUtf8());
 }
 
 int HyprlandService::getActiveWorkspaceId()
@@ -215,7 +215,8 @@ void HyprlandService::onReadReady()
                 const QString workspaceName = parts.at(1);
                 const QString windowClass = parts.at(2);
                 const QString windowTitle = parts.mid(3).join(',');
-                emit openedWindow(windowAddress, workspaceName, windowClass, windowTitle);
+                bool ok;
+                emit openedWindow(windowAddress.toULongLong(&ok, 16), workspaceName, windowClass, windowTitle);
                 emit clientsChanged();
             }
             continue;
@@ -223,7 +224,8 @@ void HyprlandService::onReadReady()
         if(line.startsWith("closewindow"))
         {
             const QString windowAddress = line.section(">>", 1);
-            emit closedWindow(windowAddress);
+            bool ok;
+            emit closedWindow(windowAddress.toULongLong(&ok, 16));
             emit clientsChanged();
             continue;
         }
@@ -234,7 +236,8 @@ void HyprlandService::onReadReady()
             {
                 const QString windowAddress = parts.at(0);
                 const QString workspaceName = parts.at(1);
-                emit movedWindow(windowAddress, workspaceName);
+                bool ok;
+                emit movedWindow(windowAddress.toULongLong(&ok, 16), workspaceName);
                 emit clientsChanged();
             }
             continue;
@@ -253,9 +256,21 @@ void HyprlandService::onReadReady()
                     continue;
                 }
                 const QString workspaceName = parts.at(2);
-                emit movedWindowV2(windowAddress, workspaceId, workspaceName);
+                emit movedWindowV2(windowAddress.toULongLong(&ok, 16), workspaceId, workspaceName);
                 emit clientsChanged();
             }
+            continue;
+        }
+        if(line.startsWith("activewindowv2"))
+        {
+            const QString windowAddress = line.section(">>", 1);
+            bool ok;
+            emit activedWindowV2(windowAddress.toULongLong(&ok, 16));
+            continue;
+        }
+        if(line.startsWith("activewindow"))
+        {
+
             continue;
         }
     }

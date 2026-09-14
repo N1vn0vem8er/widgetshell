@@ -14,6 +14,7 @@ OpenedAppsComponent::OpenedAppsComponent(QWidget *parent)
     updateClients();
 
     connect(hyprlandService, &HyprlandService::clientsChanged, this, &OpenedAppsComponent::updateClients);
+    connect(hyprlandService, &HyprlandService::activedWindowV2, this, &OpenedAppsComponent::activateClient);
 }
 
 OpenedAppsComponent::~OpenedAppsComponent()
@@ -34,6 +35,7 @@ void OpenedAppsComponent::updateClients()
     {
         QPushButton* button = new QPushButton(this);
         button->setFlat(true);
+        button->setCheckable(true);
         mainLayout->addWidget(button);
         buttons.append(button);
     }
@@ -52,7 +54,7 @@ void OpenedAppsComponent::updateClients()
             button->setFlat(true);
             button->setToolTip(client.title);
             button->setProperty("clientAddress", client.address);
-            connect(button, &QPushButton::clicked, this, [this, button]{hyprlandService->focusWindow(button->property("clientAddress").toString());});
+            connect(button, &QPushButton::clicked, this, [this, button]{hyprlandService->focusWindow(button->property("clientAddress").toULongLong());});
             button->show();
         }
         else
@@ -61,5 +63,16 @@ void OpenedAppsComponent::updateClients()
             mainLayout->removeWidget(button);
             button->deleteLater();
         }
+    }
+}
+
+void OpenedAppsComponent::activateClient(quint64 address)
+{
+    for(const auto& button : std::as_const(buttons))
+    {
+        if(button->property("clientAddress") == address)
+            button->setChecked(true);
+        else
+            button->setChecked(false);
     }
 }

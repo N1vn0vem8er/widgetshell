@@ -17,7 +17,7 @@ Wallpaper::Wallpaper(QWidget *parent) : QWidget{parent}
 
 void Wallpaper::initWallpaper()
 {
-    const QString wallpaper = QSettings().value("wallpaper", "").toString();
+    const QString wallpaper = QSettings().value("Wallpaper/wallpaper", "").toString();
     if(wallpaper.isEmpty())
         return;
     QMimeDatabase mimeDatabase;

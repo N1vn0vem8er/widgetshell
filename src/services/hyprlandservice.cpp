@@ -216,7 +216,14 @@ void HyprlandService::onReadReady()
                 const QString windowClass = parts.at(2);
                 const QString windowTitle = parts.mid(3).join(',');
                 bool ok;
-                emit openedWindow(windowAddress.toULongLong(&ok, 16), workspaceName, windowClass, windowTitle);
+                quint64 address = windowAddress.toULongLong(&ok, 16);
+
+                if(!ok)
+                {
+                    qCritical() << "Error parsing window address";
+                    continue;
+                }
+                emit openedWindow(address, workspaceName, windowClass, windowTitle);
                 emit clientsChanged();
             }
             continue;
@@ -225,7 +232,14 @@ void HyprlandService::onReadReady()
         {
             const QString windowAddress = line.section(">>", 1);
             bool ok;
-            emit closedWindow(windowAddress.toULongLong(&ok, 16));
+            quint64 address = windowAddress.toULongLong(&ok, 16);
+
+            if(!ok)
+            {
+                qCritical() << "Error parsing window address";
+                continue;
+            }
+            emit closedWindow(address);
             emit clientsChanged();
             continue;
         }
@@ -237,7 +251,14 @@ void HyprlandService::onReadReady()
                 const QString windowAddress = parts.at(0);
                 const QString workspaceName = parts.at(1);
                 bool ok;
-                emit movedWindow(windowAddress.toULongLong(&ok, 16), workspaceName);
+                quint64 address = windowAddress.toULongLong(&ok, 16);
+
+                if(!ok)
+                {
+                    qCritical() << "Error parsing window address";
+                    continue;
+                }
+                emit movedWindow(address, workspaceName);
                 emit clientsChanged();
             }
             continue;
@@ -256,7 +277,14 @@ void HyprlandService::onReadReady()
                     continue;
                 }
                 const QString workspaceName = parts.at(2);
-                emit movedWindowV2(windowAddress.toULongLong(&ok, 16), workspaceId, workspaceName);
+                quint64 address = windowAddress.toULongLong(&ok, 16);
+
+                if(!ok)
+                {
+                    qCritical() << "Error parsing window address";
+                    continue;
+                }
+                emit movedWindowV2(address, workspaceId, workspaceName);
                 emit clientsChanged();
             }
             continue;
@@ -265,7 +293,15 @@ void HyprlandService::onReadReady()
         {
             const QString windowAddress = line.section(">>", 1);
             bool ok;
-            emit activedWindowV2(windowAddress.toULongLong(&ok, 16));
+            quint64 address = windowAddress.toULongLong(&ok, 16);
+
+            if(!ok)
+            {
+                qCritical() << "Error parsing window address";
+                continue;
+            }
+
+            emit activedWindowV2(address);
             continue;
         }
         if(line.startsWith("activewindow"))

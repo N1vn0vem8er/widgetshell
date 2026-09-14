@@ -315,5 +315,11 @@ void HyprlandService::onReadReady()
             }
             continue;
         }
+        if(line.startsWith("createworkspace"))
+        {
+            const QString workspaceName = line.section(">>", 1);
+            emit createdWorkspace(workspaceName);
+            continue;
+        }
     }
 }

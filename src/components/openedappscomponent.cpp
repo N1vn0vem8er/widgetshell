@@ -15,6 +15,7 @@ OpenedAppsComponent::OpenedAppsComponent(QWidget *parent)
 
     connect(hyprlandService, &HyprlandService::clientsChanged, this, &OpenedAppsComponent::updateClients);
     connect(hyprlandService, &HyprlandService::activedWindowV2, this, &OpenedAppsComponent::activateClient);
+    connect(hyprlandService, &HyprlandService::createdWorkspace, this, &OpenedAppsComponent::createWorkspace);
 }
 
 OpenedAppsComponent::~OpenedAppsComponent()
@@ -74,5 +75,13 @@ void OpenedAppsComponent::activateClient(quint64 address)
             button->setChecked(true);
         else
             button->setChecked(false);
+    }
+}
+
+void OpenedAppsComponent::createWorkspace(const QString &)
+{
+    for(const auto& button : std::as_const(buttons))
+    {
+        button->setChecked(false);
     }
 }

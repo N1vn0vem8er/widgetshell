@@ -88,6 +88,7 @@ signals:
     void movedWindowV2(quint64 windowAddress, const int workspaceId, const QString& workspaceName);
     void activedWindow(const QString& windowClass, const QString& windowTitle);
     void activedWindowV2(quint64 windowAddress);
+    void createdWorkspace(const QString& workspaceName);
 };
 
 #endif // HYPRLANDSERVICE_H

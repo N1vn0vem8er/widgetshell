@@ -7,6 +7,7 @@
 ControlMenu::ControlMenu(QWidget *parent)
     : QWidget{parent}
 {
+    setAttribute(Qt::WA_StyledBackground, true);
     setFixedSize(300, 600);
     winId();
     LayerShellQt::Window* layerWindow = LayerShellQt::Window::get(windowHandle());

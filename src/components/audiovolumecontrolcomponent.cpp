@@ -3,6 +3,7 @@
 AudioVolumeControlComponent::AudioVolumeControlComponent(QWidget *parent)
     : QWidget{parent}
 {
+    setAttribute(Qt::WA_StyledBackground, true);
     service = AudioService::instance();
     volume = service->currentVolume();
     muted = service->currentMute();

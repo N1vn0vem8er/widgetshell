@@ -14,6 +14,25 @@ WorkspaceButton:checked {
     background-color: #b0b9e1;
 }
 
+ControlMenu {
+    background-color: #100043;
+}
+
+ControlMenu QPushButton {
+    background-color: #38427f;
+    border: none;
+    border-radius: 4px;
+    height: 35px;
+}
+
+ControlMenu QPushButton:hover {
+    background-color: #6474e1;
+}
+
+ControlMenu QPushButton:checked {
+    background-color: #b0b9e1;
+}
+
 ControlMenuButton {
     background-color: #38427f;
 }
@@ -24,6 +43,60 @@ ControlMenuButton:hover {
 
 ControlMenuButton:checked {
     background-color: #b0b9e1;
+}
+
+AudioVolumeControlComponent {
+    background-color: #063b5c;
+    border: 1px solid #0a5a82;
+    border-radius: 10px;
+}
+
+AudioVolumeControlComponent QPushButton {
+    width: 35px;
+    background-color: #0b4d70;
+    color: #d9f3ff;
+    border: none;
+    border-radius: 8px;
+}
+
+AudioVolumeControlComponent QComboBox {
+    background-color: #0b4d70;
+}
+
+AudioVolumeControlComponent QPushButton:hover {
+    background-color: #0d638f;
+}
+
+AudioVolumeControlComponent QPushButton:pressed {
+    background-color: #08415f;
+}
+
+AudioVolumeControlComponent QSlider::groove:horizontal {
+    background-color: #082c43;
+    border-radius: 3px;
+}
+
+AudioVolumeControlComponent QSlider::sub-page:horizontal {
+    background-color: #18aee6;
+    border-radius: 3px;
+}
+
+AudioVolumeControlComponent QSlider::add-page:horizontal {
+    background-color: #0a3048;
+    border-radius: 3px;
+}
+
+AudioVolumeControlComponent QSlider::handle:horizontal {
+    width: 14px;
+    height: 14px;
+    margin: -5px 0;
+    background-color: #6dd5fa;
+    border: none;
+    border-radius: 7px;
+}
+
+AudioVolumeControlComponent QSlider::handle:horizontal:hover {
+    background-color: #9be7ff;
 }
 
 CpuUsageComponent {

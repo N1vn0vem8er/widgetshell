@@ -56,6 +56,61 @@ NetworkConnectionComponent {
     border-radius: 4px;
 }
 
+NetworkMenu {
+    background-color: #100043;
+}
+
+NetworkMenu QScrollBar:horizontal {
+    background: #100043;
+    height: 10px;
+}
+
+NetworkMenu QScrollBar::handle:horizontal {
+    background: #5b3fbf;
+    min-width: 30px;
+    border-radius: 5px;
+}
+
+NetworkMenu QScrollBar::handle:horizontal:hover {
+    background: #7956e8;
+}
+
+NetworkMenu QScrollBar::add-line:horizontal,
+NetworkMenu QScrollBar::sub-line:horizontal {
+    height: 0px;
+}
+
+NetworkMenu QScrollBar::add-page:horizontal,
+NetworkMenu QScrollBar::sub-page:horizontal {
+    background: #1b0757;
+}
+
+NetworkMenu QScrollBar:vertical {
+    background: #100043;
+    width: 10px;
+    margin: 0px;
+}
+
+NetworkMenu QScrollBar::handle:vertical {
+    background: #5b3fbf;
+    min-height: 30px;
+    border-radius: 5px;
+}
+
+NetworkMenu QScrollBar::handle:vertical:hover {
+    background: #7956e8;
+}
+
+NetworkMenu QScrollBar::add-line:vertical,
+NetworkMenu QScrollBar::sub-line:vertical {
+    height: 0px;
+}
+
+NetworkMenu QScrollBar::add-page:vertical,
+NetworkMenu QScrollBar::sub-page:vertical {
+    background: #1b0757;
+}
+
 #NetworkMenuInterfaceButton {
     background-color: transparent;
 }

@@ -306,7 +306,13 @@ void HyprlandService::onReadReady()
         }
         if(line.startsWith("activewindow"))
         {
-
+            const QStringList parts = line.mid(QStringLiteral("activewindow>>").size()).split(',');
+            if(parts.size() >= 2)
+            {
+                const QString windowClass = parts.at(0);
+                const QString windowTitle = parts.at(1);
+                activedWindow(windowClass, windowTitle);
+            }
             continue;
         }
     }

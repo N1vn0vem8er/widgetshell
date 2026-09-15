@@ -12,6 +12,7 @@ OpenedAppsComponent::OpenedAppsComponent(QWidget *parent)
     mainLayout->setSpacing(4);
     setLayout(mainLayout);
     updateClients();
+    activateClient(hyprlandService->getActiveClient().address);
 
     connect(hyprlandService, &HyprlandService::clientsChanged, this, &OpenedAppsComponent::updateClients);
     connect(hyprlandService, &HyprlandService::activedWindowV2, this, &OpenedAppsComponent::activateClient);

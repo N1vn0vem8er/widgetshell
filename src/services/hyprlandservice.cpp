@@ -1,8 +1,6 @@
 #include "hyprlandservice.h"
 #include <QDebug>
-#include <QJsonArray>
 #include <QJsonDocument>
-#include <QJsonObject>
 
 HyprlandService *HyprlandService::instance()
 {
@@ -66,42 +64,7 @@ QList<HyprlandClient> HyprlandService::getClients()
     for(const auto& val : array)
     {
         QJsonObject obj = val.toObject();
-        HyprlandClient client;
-        client.address = obj.value("address").toString().toULongLong(nullptr, 16);
-        client.mapped = obj.value("mapped").toBool();
-        client.hidden = obj.value("hidden").toBool();
-        client.visible = obj.value("visible").toBool();
-        client.acceptsInput = obj.value("acceptsInput").toBool();
-        if(const QJsonArray at = obj.value("at").toArray(); at.size() >= 2)
-        {
-            client.at = QPoint(at[0].toInt(),at[1].toInt());
-        }
-        if(const QJsonArray size = obj.value("size").toArray(); size.size() >= 2)
-        {
-            client.size = QSize(size[0].toInt(),size[1].toInt());
-        }
-        if(const QJsonObject workspace = obj.value("workspace").toObject(); !workspace.isEmpty())
-        {
-            client.workspace.id = workspace["id"].toInt();
-            client.workspace.name = workspace["name"].toString();
-        }
-        client.floating = obj.value("floating").toBool();
-        client.monitor = obj.value("monitor").toInt();
-        client.appClass = obj.value("class").toString();
-        client.title = obj.value("title").toString();
-        client.initialClass = obj.value("initialClass").toString();
-        client.initialTitle = obj.value("initialTitle").toString();
-        client.pid = obj.value("pid").toInt();
-        client.xwayland = obj.value("xwayland").toBool();
-        client.pinned = obj.value("pinned").toBool();
-        client.pinFullscreened = obj.value("pinFullscreened").toBool();
-        client.fullscreen = obj.value("fullscreen").toInt();
-        client.fullscreenClient = obj.value("fullscreenClient").toInt();
-        client.fullscreenHandler = obj.value("fullscreenHandler").toString();
-        client.allowedOverFullscreen = obj.value("allowedOverFullscreen").toBool();
-        client.tearingHint = obj.value("tearingHint").toBool();
-        client.stableId = obj.value("stableId").toInteger();
-        clients.append(client);
+        clients.append(HyprlandClient::fromJson(obj));
     }
     return clients;
 }
@@ -128,6 +91,13 @@ int HyprlandService::getActiveWorkspaceId()
 
     QJsonObject obj = QJsonDocument::fromJson(response).object();
     return obj.value("id").toInt(-1);
+}
+
+HyprlandClient HyprlandService::getActiveClient()
+{
+    QByteArray response = sendIpcCommand("j/activewindow");
+    QJsonObject obj = QJsonDocument::fromJson(response).object();
+    return HyprlandClient::fromJson(obj);
 }
 
 HyprlandService::HyprlandService(QObject *parent)

@@ -1,4 +1,5 @@
 #include "widgetfactory.h"
+#include "components/audiovolumecontrolbarcomponent.h"
 #include "components/controlmenubutton.h"
 #include "components/cpuusagecomponent.h"
 #include "components/datetimecomponent.h"
@@ -71,6 +72,10 @@ WidgetFactory::WidgetFactory(QObject *parent)
         }
         else
             widget = new NetworkConnectionComponent(NetworkConnectionComponent::Unit::MB, parent);
+        return widget;
+    });
+    registerWidget("audiocontrol", [](const QJsonObject& obj, QWidget* parent){
+        AudioVolumeControlBarComponent* widget = new AudioVolumeControlBarComponent(parent);
         return widget;
     });
 }

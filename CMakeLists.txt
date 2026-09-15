@@ -41,6 +41,7 @@ qt_add_executable(widgetshell
     src/services/networkservice.h src/services/networkservice.cpp
     src/components/networkconnectioncomponent.h src/components/networkconnectioncomponent.cpp
     src/menus/networkmenu.h src/menus/networkmenu.cpp
+    src/components/audiovolumecontrolbarcomponent.h src/components/audiovolumecontrolbarcomponent.cpp
 )
 
 target_link_libraries(widgetshell

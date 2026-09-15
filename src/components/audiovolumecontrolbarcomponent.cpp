@@ -3,15 +3,12 @@
 #include <QWheelEvent>
 
 AudioVolumeControlBarComponent::AudioVolumeControlBarComponent(QWidget *parent)
-    : QWidget{parent}
+    : QPushButton{parent}
 {
     service = AudioService::instance();
 
     volume = service->currentVolume();
     muted = service->currentMute();
-    audioButton = new QPushButton(this);
-    mainLayout = new QHBoxLayout(this);
-    mainLayout->addWidget(audioButton);
 
     connect(service, &AudioService::volumeChanged, this, &AudioVolumeControlBarComponent::volumeChanged);
     connect(service, &AudioService::muteChanged, this, &AudioVolumeControlBarComponent::muteChanged);
@@ -23,19 +20,19 @@ AudioVolumeControlBarComponent::AudioVolumeControlBarComponent(QWidget *parent)
 void AudioVolumeControlBarComponent::updateVolumeIcon()
 {
     if(muted)
-        audioButton->setIcon(QIcon::fromTheme("audio-volume-muted"));
+        setIcon(QIcon::fromTheme("audio-volume-muted"));
     else if(volume <= 0.33)
-        audioButton->setIcon(QIcon::fromTheme("audio-volume-low"));
+        setIcon(QIcon::fromTheme("audio-volume-low"));
     else if(volume > 0.33 && volume <= 0.66)
-        audioButton->setIcon(QIcon::fromTheme("audio-volume-medium"));
+        setIcon(QIcon::fromTheme("audio-volume-medium"));
     else if(volume > 0.66)
-        audioButton->setIcon(QIcon::fromTheme("audio-volume-high"));
+        setIcon(QIcon::fromTheme("audio-volume-high"));
 }
 
 void AudioVolumeControlBarComponent::volumeChanged(float val)
 {
     volume = val;
-    audioButton->setText(QString("%1%").arg(qRound(volume * 100)));
+    setText(QString("%1%").arg(qRound(volume * 100)));
     updateVolumeIcon();
 }
 

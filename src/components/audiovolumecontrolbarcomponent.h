@@ -6,7 +6,7 @@
 #include <qboxlayout.h>
 #include <qpushbutton.h>
 
-class AudioVolumeControlBarComponent : public QWidget
+class AudioVolumeControlBarComponent : public QPushButton
 {
     Q_OBJECT
 public:
@@ -14,8 +14,6 @@ public:
 
 private:
     AudioService* service;
-    QPushButton* audioButton;
-    QHBoxLayout* mainLayout;
     bool muted;
     float volume;
 

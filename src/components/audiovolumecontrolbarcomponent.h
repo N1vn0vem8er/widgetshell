@@ -25,10 +25,10 @@ private:
 private slots:
     void volumeChanged(float val);
     void muteChanged(bool val);
-    void changeVolume(int val);
     void changeMute();
 
-signals:
+protected:
+    void wheelEvent(QWheelEvent *event);
 };
 
 #endif // AUDIOVOLUMECONTROLBARCOMPONENT_H

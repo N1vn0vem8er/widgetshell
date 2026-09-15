@@ -1,5 +1,7 @@
 #include "audiovolumecontrolbarcomponent.h"
 
+#include <QWheelEvent>
+
 AudioVolumeControlBarComponent::AudioVolumeControlBarComponent(QWidget *parent)
     : QWidget{parent}
 {
@@ -43,14 +45,25 @@ void AudioVolumeControlBarComponent::muteChanged(bool val)
     updateVolumeIcon();
 }
 
-void AudioVolumeControlBarComponent::changeVolume(int val)
-{
-    if(val < 0 || val > 100)
-        return;
-    service->setVolume(static_cast<float>(val) / 100.0f);
-}
-
 void AudioVolumeControlBarComponent::changeMute()
 {
     service->setMute(!muted);
+}
+
+void AudioVolumeControlBarComponent::wheelEvent(QWheelEvent *event)
+{
+    const int delta = event->angleDelta().y();
+    if(delta == 0)
+        return;
+
+    float newVolume = volume;
+    if(delta > 0)
+        newVolume += 0.05f;
+    else
+        newVolume -= 0.05f;
+
+    newVolume = qBound(0.0f, newVolume, 1.0f);
+
+    service->setVolume(newVolume);
+    event->accept();
 }

@@ -18,7 +18,7 @@ UptimeBarComponent::UptimeBarComponent(QWidget *parent)
     connect(timer, &QTimer::timeout, this, [this]{
         uptime++;
         long long seconds = uptime;
-        long long days = uptime / 86400;
+        long long days = seconds / 86400;
         seconds %= 86400;
         long long hours = seconds / 3600;
         seconds %= 3600;

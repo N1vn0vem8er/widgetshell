@@ -43,6 +43,7 @@ qt_add_executable(widgetshell
     src/menus/networkmenu.h src/menus/networkmenu.cpp
     src/components/audiovolumecontrolbarcomponent.h src/components/audiovolumecontrolbarcomponent.cpp
     src/components/uptimebarcomponent.h src/components/uptimebarcomponent.cpp
+    src/services/notificationservice.h src/services/notificationservice.cpp
 )
 
 target_link_libraries(widgetshell

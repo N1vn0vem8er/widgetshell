@@ -12,6 +12,7 @@ AudioVolumeControlBarComponent::AudioVolumeControlBarComponent(QWidget *parent)
 
     connect(service, &AudioService::volumeChanged, this, &AudioVolumeControlBarComponent::volumeChanged);
     connect(service, &AudioService::muteChanged, this, &AudioVolumeControlBarComponent::muteChanged);
+    connect(this, &QPushButton::clicked, this, &AudioVolumeControlBarComponent::changeMute);
 
     volumeChanged(volume);
     muteChanged(muted);

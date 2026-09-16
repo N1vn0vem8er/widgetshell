@@ -6,6 +6,7 @@
 #include "components/memoryusagecomponent.h"
 #include "components/networkconnectioncomponent.h"
 #include "components/openedappscomponent.h"
+#include "components/uptimebarcomponent.h"
 #include "components/workspaceswitchercomponent.h"
 
 #include <QJsonObject>
@@ -76,6 +77,10 @@ WidgetFactory::WidgetFactory(QObject *parent)
     });
     registerWidget("audiocontrol", [](const QJsonObject& obj, QWidget* parent){
         AudioVolumeControlBarComponent* widget = new AudioVolumeControlBarComponent(parent);
+        return widget;
+    });
+    registerWidget("uptime", [](const QJsonObject& obj, QWidget* parent){
+        UptimeBarComponent* widget = new UptimeBarComponent(parent);
         return widget;
     });
 }

@@ -3,6 +3,17 @@
 
 #include <QWidget>
 
+struct Notification {
+    uint id;
+    QString appName;
+    QString appIcon;
+    QString summary;
+    QString body;
+    QStringList actions;
+    QVariantMap hints;
+    int expireTimeout;
+};
+
 class NotificationService : public QObject
 {
     Q_OBJECT
@@ -29,7 +40,8 @@ public slots:
     void GetServerInformation(QString& name, QString& vendor, QString& version, QString& specVersion);
 
 signals:
-    void notificationReceived(uint id, const QString& appName, const QString& appIcon, const QString& summary, const QString& body, const QStringList& actions, const QVariantMap& hints, int expireTimeout);
+    // void notificationReceived(uint id, const QString& appName, const QString& appIcon, const QString& summary, const QString& body, const QStringList& actions, const QVariantMap& hints, int expireTimeout);
+    void notificationReceived(const Notification& notification);
     void notificationClosed(uint id, uint reason);
     void actionInvoked(uint id, const QString& action);
 };

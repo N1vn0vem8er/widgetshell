@@ -44,6 +44,8 @@ qt_add_executable(widgetshell
     src/components/audiovolumecontrolbarcomponent.h src/components/audiovolumecontrolbarcomponent.cpp
     src/components/uptimebarcomponent.h src/components/uptimebarcomponent.cpp
     src/services/notificationservice.h src/services/notificationservice.cpp
+    src/components/notificationpopupcomponent.h src/components/notificationpopupcomponent.cpp
+    src/controllers/notificationpopupscontroller.h src/controllers/notificationpopupscontroller.cpp
 )
 
 target_link_libraries(widgetshell

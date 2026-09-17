@@ -1,5 +1,6 @@
 #include "barwidget.h"
 #include "components/wallpaper.h"
+#include "controllers/notificationpopupscontroller.h"
 #include "services/hyprlandservice.h"
 #include "services/desktopappsservice.h"
 #include "services/systemmonitorservice.h"
@@ -28,6 +29,7 @@ int main(int argc, char *argv[])
     SystemMonitorService::create();
     NetworkService::create();
     NotificationService::create();
+    NotificationPopupsController notifications;
     BarWidget bar;
     bar.show();
     Wallpaper wallpaper;

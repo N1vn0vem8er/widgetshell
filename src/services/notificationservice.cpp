@@ -67,17 +67,18 @@ uint NotificationService::Notify(const QString &appName, uint replacesId, const 
     if(id == 0)
         id = m_nextId++;
 
-    qDebug() << "Notification received:";
-    qDebug() << "id:" << id;
-    qDebug() << "app:" << appName;
-    qDebug() << "icon:" << appIcon;
-    qDebug() << "summary:" << summary;
-    qDebug() << "body:" << body;
-    qDebug() << "actions:" << actions;
-    qDebug() << "hints:" << hints;
-    qDebug() << "timeout:" << expireTimeout;
+    Notification notification;
+    notification.id = id;
+    notification.appName = appName;
+    notification.appIcon = appIcon;
+    notification.summary = summary;
+    notification.body = body;
+    notification.actions = actions;
+    notification.hints = hints;
+    notification.expireTimeout = expireTimeout;
 
-    emit notificationReceived(id, appName, appIcon, summary, body, actions, hints, expireTimeout);
+    // emit notificationReceived(id, appName, appIcon, summary, body, actions, hints, expireTimeout);
+    emit notificationReceived(notification);
     return id;
 }
 

@@ -12,9 +12,10 @@ void NotificationPopupsController::showNotification(const Notification &notifica
     NotificationPopupComponent* popup = new NotificationPopupComponent(notification);
 
     m_popups.append(popup);
-    connect(popup, &QObject::destroyed, this, [this, popup](){
+    connect(popup, &NotificationPopupComponent::closed, this, [this, popup](){
         m_popups.removeOne(popup);
         repositionPopups();
+        popup->deleteLater();
     });
 
     popup->show();

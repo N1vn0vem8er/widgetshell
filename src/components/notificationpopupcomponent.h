@@ -17,6 +17,7 @@ private:
     QTimer* timer;
 
 signals:
+    void closed();
 };
 
 #endif // NOTIFICATIONPOPUPCOMPONENT_H

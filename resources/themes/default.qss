@@ -202,3 +202,7 @@ AudioVolumeControlBarComponent {
 AudioVolumeControlBarComponent:hover {
     background-color: #547f57;
 }
+
+NotificationPopupComponent {
+    background-color: #100043;
+}

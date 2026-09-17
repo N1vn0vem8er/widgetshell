@@ -5,6 +5,7 @@
 NotificationPopupComponent::NotificationPopupComponent(const Notification &notification, QWidget *parent)
     : QWidget{parent}
 {
+    setAttribute(Qt::WA_StyledBackground, true);
     setFixedSize(200, 50);
     winId();
     LayerShellQt::Window* layerWindow = LayerShellQt::Window::get(windowHandle());
@@ -18,7 +19,7 @@ NotificationPopupComponent::NotificationPopupComponent(const Notification &notif
     layout->addWidget(body);
 
     timer = new QTimer(this);
-    connect(timer, &QTimer::timeout, this, [this]{hide(); deleteLater();});
+    connect(timer, &QTimer::timeout, this, [this]{hide(); emit closed();});
     timer->setInterval(notification.expireTimeout <= 0 ? 5000 : notification.expireTimeout);
     timer->setSingleShot(true);
     timer->start();

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.19)
 project(widgetshell LANGUAGES CXX)
 set (CMAKE_CXX_STANDARD 23)
 
-find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets Network)
+find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets Network DBus)
 find_package(Qt6 REQUIRED COMPONENTS MultimediaWidgets)
 find_package(LayerShellQt REQUIRED)
 find_package(PkgConfig REQUIRED)
@@ -51,6 +51,7 @@ target_link_libraries(widgetshell
         Qt::Core
         Qt::Widgets
         Qt::Network
+        Qt::DBus
         LayerShellQt::Interface
 )
 target_link_libraries(widgetshell

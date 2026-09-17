@@ -4,6 +4,7 @@
 #include "services/desktopappsservice.h"
 #include "services/systemmonitorservice.h"
 #include "services/networkservice.h"
+#include "services/notificationservice.h"
 
 #include <QApplication>
 #include <QFile>
@@ -26,6 +27,7 @@ int main(int argc, char *argv[])
     DesktopAppsService::create();
     SystemMonitorService::create();
     NetworkService::create();
+    NotificationService::create();
     BarWidget bar;
     bar.show();
     Wallpaper wallpaper;

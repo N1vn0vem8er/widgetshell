@@ -61,6 +61,16 @@ NotificationService::~NotificationService()
     dbus.unregisterService("org.freedesktop.Notifications");
 }
 
+QList<Notification> NotificationService::notificationHistory() const
+{
+    return m_notificationHistory;
+}
+
+void NotificationService::clearNotificationHistory()
+{
+    m_notificationHistory.clear();
+}
+
 uint NotificationService::Notify(const QString &appName, uint replacesId, const QString &appIcon, const QString &summary, const QString &body, const QStringList &actions, const QVariantMap &hints, int expireTimeout)
 {
     uint id = replacesId;
@@ -77,7 +87,7 @@ uint NotificationService::Notify(const QString &appName, uint replacesId, const 
     notification.hints = hints;
     notification.expireTimeout = expireTimeout;
 
-    // emit notificationReceived(id, appName, appIcon, summary, body, actions, hints, expireTimeout);
+    m_notificationHistory.append(notification);
     emit notificationReceived(notification);
     return id;
 }

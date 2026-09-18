@@ -25,6 +25,8 @@ public:
     NotificationService(const NotificationService&) = delete;
     NotificationService& operator=(const NotificationService&) = delete;
     void closeNotification(uint id);
+    QList<Notification> notificationHistory() const;
+    void clearNotificationHistory();
 
 private:
     explicit NotificationService(QObject *parent = nullptr);
@@ -33,6 +35,7 @@ private:
 private:
     inline static NotificationService* m_instance {nullptr};
     uint m_nextId = 1;
+    QList<Notification> m_notificationHistory;
 
 public slots:
     uint Notify(const QString& appName, uint replacesId, const QString& appIcon, const QString& summary, const QString& body, const QStringList& actions, const QVariantMap& hints, int expireTimeout);
@@ -40,7 +43,6 @@ public slots:
     void GetServerInformation(QString& name, QString& vendor, QString& version, QString& specVersion);
 
 signals:
-    // void notificationReceived(uint id, const QString& appName, const QString& appIcon, const QString& summary, const QString& body, const QStringList& actions, const QVariantMap& hints, int expireTimeout);
     void notificationReceived(const Notification& notification);
     void notificationClosed(uint id, uint reason);
     void actionInvoked(uint id, const QString& action);

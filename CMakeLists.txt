@@ -46,6 +46,7 @@ qt_add_executable(widgetshell
     src/services/notificationservice.h src/services/notificationservice.cpp
     src/components/notificationpopupcomponent.h src/components/notificationpopupcomponent.cpp
     src/controllers/notificationpopupscontroller.h src/controllers/notificationpopupscontroller.cpp
+    src/components/notificationhistorycomponent.h src/components/notificationhistorycomponent.cpp
 )
 
 target_link_libraries(widgetshell

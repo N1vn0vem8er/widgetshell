@@ -2,6 +2,7 @@
 #define CONTROLMENU_H
 
 #include "components/audiovolumecontrolcomponent.h"
+#include "components/notificationhistorycomponent.h"
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QWidget>
@@ -21,6 +22,7 @@ private:
     QPushButton* rebootButton;
     QCalendarWidget* calendar;
     AudioVolumeControlComponent* audioVolumeControl;
+    NotificationHistoryComponent* notificationHistory;
 
 private slots:
     void onShutdown();

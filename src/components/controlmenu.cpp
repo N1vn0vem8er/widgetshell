@@ -38,6 +38,9 @@ ControlMenu::ControlMenu(QWidget *parent)
     calendar = new QCalendarWidget(this);
     mainLayout->addWidget(calendar);
 
+    notificationHistory = new NotificationHistoryComponent(this);
+    mainLayout->addWidget(notificationHistory);
+
     setLayout(mainLayout);
 }
 

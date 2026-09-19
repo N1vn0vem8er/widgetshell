@@ -26,8 +26,10 @@ NotificationPopupComponent::NotificationPopupComponent(const Notification &notif
 
     if(!notification.appIcon.isEmpty())
     {
-        QIcon appIcon(notification.appIcon);
-        icon->setPixmap(appIcon.pixmap(40, 40));
+        if(QUrl(notification.appIcon).isValid())
+            icon->setPixmap(QIcon(notification.appIcon).pixmap(40, 40));
+        else
+            icon->setPixmap(QIcon::fromTheme(notification.appIcon).pixmap(40, 40));
     }
 
     QVBoxLayout* textLayout = new QVBoxLayout();

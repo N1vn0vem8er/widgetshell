@@ -23,6 +23,7 @@ private:
 
 private slots:
     void addNotification(const Notification& notification);
+    void clearNotifications();
 
 signals:
 };

@@ -23,13 +23,30 @@ NotificationHistoryComponent::NotificationHistoryComponent(QWidget *parent)
     for(const auto& notification : service->notificationHistory())
     {
         auto* item = new QListWidgetItem(notification.body, listWidget);
+        if(QUrl(notification.appIcon).isValid())
+            item->setIcon(QIcon(notification.appIcon));
+        else
+            item->setIcon(QIcon::fromTheme(notification.appIcon));
+        item->setToolTip(notification.appName);
         listWidget->addItem(item);
     }
     connect(service, &NotificationService::notificationReceived, this, &NotificationHistoryComponent::addNotification);
+    connect(clearButton, &QPushButton::clicked, this, &NotificationHistoryComponent::clearNotifications);
 }
 
 void NotificationHistoryComponent::addNotification(const Notification &notification)
 {
     auto* item = new QListWidgetItem(notification.body, listWidget);
+    if(QUrl(notification.appIcon).isValid())
+        item->setIcon(QIcon(notification.appIcon));
+    else
+        item->setIcon(QIcon::fromTheme(notification.appIcon));
+    item->setToolTip(notification.appName);
     listWidget->addItem(item);
+}
+
+void NotificationHistoryComponent::clearNotifications()
+{
+    service->clearNotificationHistory();
+    listWidget->clear();
 }

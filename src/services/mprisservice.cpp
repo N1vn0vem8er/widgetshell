@@ -57,12 +57,12 @@ bool MprisService::isStopped() const
 
 void MprisService::play()
 {
-
+    callPlayerMethod("Play");
 }
 
 void MprisService::pause()
 {
-
+    callPlayerMethod("Pause");
 }
 
 void MprisService::playPause()
@@ -100,41 +100,45 @@ MprisService::MprisService(QObject *parent)
 
 void MprisService::refreshPlayers()
 {
-    QDBusInterface dbus("org.freedesktop.DBus", "/org/freedesktop/DBus", "org.freedesktop.DBus", QDBusConnection::sessionBus());
+    const auto bus = QDBusConnection::sessionBus();
+    const QDBusMessage message = QDBusMessage::createMethodCall("org.freedesktop.DBus", "/org/freedesktop/DBus", "org.freedesktop.DBus", "ListNames" );
+    const QDBusMessage reply = bus.call(message);
 
-    if(!dbus.isValid())
+    if(reply.type() == QDBusMessage::ErrorMessage)
+    {
+        qWarning() << "ListNames failed:" << reply.errorName() << reply.errorMessage();
         return;
+    }
 
-    const QDBusReply<QStringList> reply = dbus.call("ListNames");
-
-    if (!reply.isValid())
+    if(reply.arguments().isEmpty())
+    {
+        qWarning() << "ListNames returned no arguments";
         return;
+    }
 
+    const QStringList names = reply.arguments().first().toStringList();
     QStringList players;
 
-    for(const QString& name : reply.value())
+    for(const QString& name : names)
     {
         if(name.startsWith("org.mpris.MediaPlayer2."))
             players.append(name);
     }
 
     players.sort();
-
-    if (players == m_players)
+    if(players == m_players)
         return;
 
     for(const auto& player : m_players)
     {
         unwatchPlayer(player);
     }
-
     m_players = players;
 
     for(const auto& player : m_players)
     {
         watchPlayer(player);
     }
-
     emit playersChanged();
 
     if(!m_players.contains(m_currentPlayer))

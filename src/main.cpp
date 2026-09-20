@@ -6,6 +6,7 @@
 #include "services/systemmonitorservice.h"
 #include "services/networkservice.h"
 #include "services/notificationservice.h"
+#include "services/mprisservice.h"
 
 #include <QApplication>
 #include <QFile>
@@ -29,6 +30,7 @@ int main(int argc, char *argv[])
     SystemMonitorService::create();
     NetworkService::create();
     NotificationService::create();
+    MprisService::create();
     NotificationPopupsController notifications;
     BarWidget bar;
     bar.show();

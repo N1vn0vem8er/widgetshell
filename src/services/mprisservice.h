@@ -2,6 +2,7 @@
 #define MPRISSERVICE_H
 
 #include <QObject>
+#include <qdbusargument.h>
 
 struct Track
 {
@@ -47,6 +48,7 @@ private:
     void updatePlaybackStatus();
     void watchPlayer(const QString& service);
     void unwatchPlayer(const QString& service);
+    QVariantMap dbusArgumentToMap(const QDBusArgument& argument) const;
 
 private:
     inline static MprisService* m_instance {nullptr};

@@ -194,17 +194,24 @@ QVariant MprisService::getProperty(const QString &interfaceName, const QString &
     if(m_currentPlayer.isEmpty())
         return {};
 
-    QDBusInterface properties(m_currentPlayer, "/org/mpris/MediaPlayer2", "org.freedesktop.DBus.Properties", QDBusConnection::sessionBus());
+    QDBusInterface properties(m_currentPlayer, "/org/mpris/MediaPlayer2", "org.freedesktop.DBus.Properties", QDBusConnection::sessionBus() );
 
     if(!properties.isValid())
         return {};
 
-    const QDBusReply<QVariant> reply = properties.call("Get", interfaceName, propertyName);
+    const QDBusMessage reply = properties.call("Get", interfaceName, propertyName);
 
-    if(!reply.isValid())
+    if(reply.type() == QDBusMessage::ErrorMessage || reply.arguments().isEmpty())
         return {};
 
-    return reply.value();
+    const QDBusVariant outer = qvariant_cast<QDBusVariant>(reply.arguments().constFirst());
+
+    const QVariant value = outer.variant();
+
+    if(value.userType() == qMetaTypeId<QDBusArgument>())
+        return dbusArgumentToMap(qvariant_cast<QDBusArgument>(value));
+
+    return value;
 }
 
 void MprisService::updateTrack()
@@ -216,7 +223,7 @@ void MprisService::updateTrack()
         return;
 
     const auto map = metadata.value<QVariantMap>();
-    track.title = map.value("xesam:title").toString();
+    track.title = map.value("xesam:title").isNull() ? map.value("xesam:url").toString() : map.value("xesam:title").toString();
     const QVariant artists = map.value("xesam:artist");
 
     if(artists.canConvert<QStringList>())
@@ -259,6 +266,24 @@ void MprisService::watchPlayer(const QString &service)
 void MprisService::unwatchPlayer(const QString &service)
 {
     QDBusConnection::sessionBus().disconnect(service, "/org/mpris/MediaPlayer2", "org.freedesktop.DBus.Properties", "PropertiesChanged", this, nullptr);
+}
+
+QVariantMap MprisService::dbusArgumentToMap(const QDBusArgument &argument) const
+{
+    QVariantMap map;
+    argument.beginMap();
+
+    while(!argument.atEnd())
+    {
+        QString key;
+        QDBusVariant value;
+        argument.beginMapEntry();
+        argument >> key >> value;
+        argument.endMapEntry();
+        map.insert(key, value.variant());
+    }
+    argument.endMap();
+    return map;
 }
 
 void MprisService::onNameOwnerChanged(const QString &name, const QString &oldOwner, const QString &newOwner)

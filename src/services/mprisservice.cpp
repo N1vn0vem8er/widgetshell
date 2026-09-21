@@ -27,32 +27,32 @@ void MprisService::destroy()
 
 QStringList MprisService::players() const
 {
-
+    return m_players;
 }
 
 QString MprisService::currentPlayer() const
 {
-
+    return m_currentPlayer;
 }
 
 Track MprisService::currentTrack() const
 {
-
+    return m_track;
 }
 
 bool MprisService::isPlaying() const
 {
-
+    return m_playbackStatus == "Playing";
 }
 
 bool MprisService::isPaused() const
 {
-
+    return m_playbackStatus == "Paused";
 }
 
 bool MprisService::isStopped() const
 {
-
+    return m_playbackStatus == "Stopped";
 }
 
 void MprisService::play()
@@ -67,27 +67,35 @@ void MprisService::pause()
 
 void MprisService::playPause()
 {
-
+    callPlayerMethod("PlayPause");
 }
 
 void MprisService::stop()
 {
-
+    callPlayerMethod("Stop");
 }
 
 void MprisService::next()
 {
-
+    callPlayerMethod("Next");
 }
 
 void MprisService::previous()
 {
-
+    callPlayerMethod("Previous");
 }
 
 void MprisService::setPlayer(const QString &player)
 {
+    if(!m_players.contains(player))
+        return;
+    if(m_currentPlayer == player)
+        return;
+    m_currentPlayer = player;
+    updateTrack();
+    updatePlaybackStatus();
 
+    emit playerChanged(m_currentPlayer);
 }
 
 MprisService::MprisService(QObject *parent)

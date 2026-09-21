@@ -3,6 +3,7 @@
 #include "components/controlmenubutton.h"
 #include "components/cpuusagecomponent.h"
 #include "components/datetimecomponent.h"
+#include "components/mediaplayerbarcomponent.h"
 #include "components/memoryusagecomponent.h"
 #include "components/networkconnectioncomponent.h"
 #include "components/openedappscomponent.h"
@@ -81,6 +82,10 @@ WidgetFactory::WidgetFactory(QObject *parent)
     });
     registerWidget("uptime", [](const QJsonObject& obj, QWidget* parent){
         UptimeBarComponent* widget = new UptimeBarComponent(parent);
+        return widget;
+    });
+    registerWidget("mediaplayer", [](const QJsonObject& obj, QWidget* parent){
+        MediaPlayerBarComponent* widget = new MediaPlayerBarComponent(parent);
         return widget;
     });
 }

@@ -48,6 +48,7 @@ qt_add_executable(widgetshell
     src/controllers/notificationpopupscontroller.h src/controllers/notificationpopupscontroller.cpp
     src/components/notificationhistorycomponent.h src/components/notificationhistorycomponent.cpp
     src/services/mprisservice.h src/services/mprisservice.cpp
+    src/components/mediaplayerbarcomponent.h src/components/mediaplayerbarcomponent.cpp
 )
 
 target_link_libraries(widgetshell

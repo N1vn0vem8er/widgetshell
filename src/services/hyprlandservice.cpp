@@ -291,5 +291,42 @@ void HyprlandService::onReadReady()
             emit createdWorkspace(workspaceName);
             continue;
         }
+        if(line.startsWith("screencastv2"))
+        {
+            const QStringList parts = line.mid(QStringLiteral("screencastv2>>").size()).split(',');
+            if(parts.size() >= 3)
+            {
+                bool ok;
+                const int state = parts.at(0).toInt(&ok);
+
+                if(!ok)
+                {
+                    qCritical() << "Error parsing state in screencastv2";
+                    continue;
+                }
+                const QString owner = parts.at(1);
+                const QString name = parts.at(2);
+                emit screenCastedV2(state, owner, name);
+            }
+            continue;
+        }
+        if(line.startsWith("screencast"))
+        {
+            const QStringList parts = line.mid(QStringLiteral("screencast>>").size()).split(',');
+            if(parts.size() >= 2)
+            {
+                bool ok;
+                const int state = parts.at(0).toInt(&ok);
+
+                if(!ok)
+                {
+                    qCritical() << "Error parsing state in screencast";
+                    continue;
+                }
+                const QString owner = parts.at(1);
+                emit screenCasted(state, owner);
+            }
+            continue;
+        }
     }
 }

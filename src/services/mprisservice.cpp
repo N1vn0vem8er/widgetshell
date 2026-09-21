@@ -3,6 +3,7 @@
 #include <QDBusConnection>
 #include <QDBusInterface>
 #include <QDBusReply>
+#include <qfileinfo.h>
 
 MprisService *MprisService::instance()
 {
@@ -223,7 +224,7 @@ void MprisService::updateTrack()
         return;
 
     const auto map = metadata.value<QVariantMap>();
-    track.title = map.value("xesam:title").isNull() ? map.value("xesam:url").toString() : map.value("xesam:title").toString();
+    track.title = map.value("xesam:title").isNull() ? QFileInfo(map.value("xesam:url").toString()).fileName() : map.value("xesam:title").toString();
     const QVariant artists = map.value("xesam:artist");
 
     if(artists.canConvert<QStringList>())

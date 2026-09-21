@@ -132,6 +132,8 @@ signals:
     void activedWindow(const QString& windowClass, const QString& windowTitle);
     void activedWindowV2(quint64 windowAddress);
     void createdWorkspace(const QString& workspaceName);
+    void screenCasted(int state, const QString& owner);
+    void screenCastedV2(int state, const QString& owner, const QString& name);
 };
 
 #endif // HYPRLANDSERVICE_H

@@ -281,7 +281,7 @@ void HyprlandService::onReadReady()
             {
                 const QString windowClass = parts.at(0);
                 const QString windowTitle = parts.at(1);
-                activedWindow(windowClass, windowTitle);
+                emit activedWindow(windowClass, windowTitle);
             }
             continue;
         }

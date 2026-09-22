@@ -1,6 +1,6 @@
-#include "workspaceswitchercomponent.h"
+#include "workspaceswitcherhyprlandcomponent.h"
 
-WorkspaceSwitcherComponent::WorkspaceSwitcherComponent(QWidget *parent)
+WorkspaceSwitcherHyprlandComponent::WorkspaceSwitcherHyprlandComponent(QWidget *parent)
     : QWidget{parent}
 {
     setAttribute(Qt::WA_StyledBackground, true);
@@ -15,13 +15,13 @@ WorkspaceSwitcherComponent::WorkspaceSwitcherComponent(QWidget *parent)
 
     if(service)
     {
-        connect(service, &HyprlandService::workspacesChanged, this, &WorkspaceSwitcherComponent::refreshWorkspaces);
-        connect(service, &HyprlandService::workspaceChanged, this, &WorkspaceSwitcherComponent::workspaceChanged);
+        connect(service, &HyprlandService::workspacesChanged, this, &WorkspaceSwitcherHyprlandComponent::refreshWorkspaces);
+        connect(service, &HyprlandService::workspaceChanged, this, &WorkspaceSwitcherHyprlandComponent::workspaceChanged);
     }
     refreshWorkspaces();
 }
 
-void WorkspaceSwitcherComponent::refreshWorkspaces()
+void WorkspaceSwitcherHyprlandComponent::refreshWorkspaces()
 {
     if(!service)
         return;
@@ -60,7 +60,7 @@ void WorkspaceSwitcherComponent::refreshWorkspaces()
     }
 }
 
-void WorkspaceSwitcherComponent::workspaceChanged(int id)
+void WorkspaceSwitcherHyprlandComponent::workspaceChanged(int id)
 {
     currentWorkspace = id;
     for(auto* button : std::as_const(buttons))

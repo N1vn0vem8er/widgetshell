@@ -1,5 +1,5 @@
-#ifndef WORKSPACESWITCHERCOMPONENT_H
-#define WORKSPACESWITCHERCOMPONENT_H
+#ifndef WORKSPACESWITCHERHYPRLANDCOMPONENT_H
+#define WORKSPACESWITCHERHYPRLANDCOMPONENT_H
 
 #include <QHBoxLayout>
 #include <QPushButton>
@@ -8,11 +8,11 @@
 #include "components/bar/workspacebutton.h"
 #include "services/hyprlandservice.h"
 
-class WorkspaceSwitcherComponent : public QWidget
+class WorkspaceSwitcherHyprlandComponent : public QWidget
 {
     Q_OBJECT
 public:
-    explicit WorkspaceSwitcherComponent(QWidget *parent = nullptr);
+    explicit WorkspaceSwitcherHyprlandComponent(QWidget *parent = nullptr);
 
 private:
     QHBoxLayout* mainLayout;
@@ -27,4 +27,4 @@ private slots:
 signals:
 };
 
-#endif // WORKSPACESWITCHERCOMPONENT_H
+#endif // WORKSPACESWITCHERHYPRLANDCOMPONENT_H

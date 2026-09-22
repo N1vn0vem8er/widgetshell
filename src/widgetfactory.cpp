@@ -8,7 +8,7 @@
 #include "components/bar/networkconnectioncomponent.h"
 #include "components/bar/hyprland/openedappshyprlandcomponent.h"
 #include "components/bar/uptimebarcomponent.h"
-#include "components/bar/hyprland/workspaceswitchercomponent.h"
+#include "components/bar/hyprland/workspaceswitcherhyprlandcomponent.h"
 
 #include <QJsonObject>
 
@@ -16,7 +16,7 @@ WidgetFactory::WidgetFactory(QObject *parent)
     : QObject{parent}
 {
     registerWidget("workspaceswitcher", [](const QJsonObject& obj, QWidget* parent){
-        WorkspaceSwitcherComponent* widget = new WorkspaceSwitcherComponent(parent);
+        WorkspaceSwitcherHyprlandComponent* widget = new WorkspaceSwitcherHyprlandComponent(parent);
         return widget;
     });
     registerWidget("datetime", [](const QJsonObject& obj, QWidget* parent){

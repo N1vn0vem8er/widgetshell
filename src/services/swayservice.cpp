@@ -34,9 +34,9 @@ void SwayService::refreshWorkspaces()
     sendIpcCommand(GET_WORKSPACES, {});
 }
 
-void SwayService::focusWorkspace(const SwayWorkspace &workspace)
+void SwayService::focusWorkspace(const QString &name)
 {
-    const QByteArray command = QByteArray("workspace \"") + workspace.name.toUtf8() + QByteArray("\"");
+    const QByteArray command = QByteArray("workspace \"") + name.toUtf8() + QByteArray("\"");
     sendIpcCommand(RUN_COMMAND, command);
 }
 

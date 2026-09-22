@@ -43,7 +43,7 @@ public:
     SwayService& operator=(const SwayService&) = delete;
     QList<SwayWorkspace> workspaces() const;
     void refreshWorkspaces();
-    void focusWorkspace(const SwayWorkspace &workspace);
+    void focusWorkspace(const QString& name);
 
 private:
     explicit SwayService(QObject *parent = nullptr);

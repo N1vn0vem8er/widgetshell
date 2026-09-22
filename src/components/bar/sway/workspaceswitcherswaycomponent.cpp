@@ -39,15 +39,14 @@ void WorkspaceSwitcherSwayComponent::workspacesChanged()
             const auto& ws = workspaces.at(i);
             WorkspaceButton* button = buttons.at(i);
             button->setText(ws.name);
-            button->setProperty("workspaceId", ws.id);
-            // if(ws.id == currentWorkspace)
-            //     button->setChecked(true);
+            button->setProperty("workspaceName", ws.name);
+            if(ws.focused)
+                button->setChecked(true);
+            else
+                button->setChecked(false);
             connect(button, &WorkspaceButton::clicked, this, [button, this]{
-                int workspaceId = button->property("workspaceId").toInt();
-                // if(workspaceId == currentWorkspace)
-                //     button->setChecked(true);
-                // else
-                //     service->switchWorkspace(workspaceId);
+                auto workspaceName = button->property("workspaceName").toString();
+                service->focusWorkspace(workspaceName);
             });
             button->show();
         }

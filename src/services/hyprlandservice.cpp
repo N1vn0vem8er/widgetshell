@@ -158,7 +158,7 @@ void HyprlandService::onReadReady()
             if(ok)
                 emit workspaceChanged(id);
             else
-                qCritical() << "Error parsing workspace id";
+                qCritical() << "Error parsing workspace id in workspace";
             continue;
         }
         if(line.startsWith("createdworkspace>>"))
@@ -190,7 +190,7 @@ void HyprlandService::onReadReady()
 
                 if(!ok)
                 {
-                    qCritical() << "Error parsing window address";
+                    qCritical() << "Error parsing window address in openwindow";
                     continue;
                 }
                 emit openedWindow(address, workspaceName, windowClass, windowTitle);
@@ -206,7 +206,7 @@ void HyprlandService::onReadReady()
 
             if(!ok)
             {
-                qCritical() << "Error parsing window address";
+                qCritical() << "Error parsing window address in closewindow";
                 continue;
             }
             emit closedWindow(address);
@@ -225,7 +225,7 @@ void HyprlandService::onReadReady()
 
                 if(!ok)
                 {
-                    qCritical() << "Error parsing window address";
+                    qCritical() << "Error parsing window address in movewindow";
                     continue;
                 }
                 emit movedWindow(address, workspaceName);
@@ -243,7 +243,7 @@ void HyprlandService::onReadReady()
                 const int workspaceId = parts.at(1).toInt(&ok);
                 if(!ok)
                 {
-                    qCritical() << "Error parsing workspace id";
+                    qCritical() << "Error parsing workspace id in movewindowv2";
                     continue;
                 }
                 const QString workspaceName = parts.at(2);
@@ -251,7 +251,7 @@ void HyprlandService::onReadReady()
 
                 if(!ok)
                 {
-                    qCritical() << "Error parsing window address";
+                    qCritical() << "Error parsing window address in movewindowv2";
                     continue;
                 }
                 emit movedWindowV2(address, workspaceId, workspaceName);
@@ -267,7 +267,7 @@ void HyprlandService::onReadReady()
 
             if(!ok)
             {
-                qCritical() << "Error parsing window address";
+                qCritical() << "Error parsing window address in activewindowv2";
                 continue;
             }
 

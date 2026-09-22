@@ -6,7 +6,7 @@ MediaPlayerBarComponent::MediaPlayerBarComponent(QWidget *parent)
 {
     service = MprisService::instance();
 
-    trackNameLabel = new QLabel(this);
+    trackNameLabel = new QLabel("Not playing", this);
     auto layout = new QHBoxLayout(this);
     layout->addWidget(trackNameLabel);
     nextButton = new QPushButton(QIcon::fromTheme("media-skip-forward"), "", this);

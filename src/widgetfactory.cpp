@@ -7,6 +7,7 @@
 #include "components/bar/memoryusagecomponent.h"
 #include "components/bar/networkconnectioncomponent.h"
 #include "components/bar/hyprland/openedappshyprlandcomponent.h"
+#include "components/bar/sway/workspaceswitcherswaycomponent.h"
 #include "components/bar/uptimebarcomponent.h"
 #include "components/bar/hyprland/workspaceswitcherhyprlandcomponent.h"
 
@@ -16,7 +17,17 @@ WidgetFactory::WidgetFactory(QObject *parent)
     : QObject{parent}
 {
     registerWidget("workspaceswitcher", [](const QJsonObject& obj, QWidget* parent){
-        WorkspaceSwitcherHyprlandComponent* widget = new WorkspaceSwitcherHyprlandComponent(parent);
+        QWidget* widget;
+        if(getenv("HYPRLAND_INSTANCE_SIGNATURE") != NULL)
+        {
+            widget = new WorkspaceSwitcherHyprlandComponent(parent);
+        }
+        else if(getenv("SWAYSOCK") != NULL)
+        {
+            widget = new WorkspaceSwitcherSwayComponent(parent);
+        }
+        else
+            widget = new QWidget(parent);
         return widget;
     });
     registerWidget("datetime", [](const QJsonObject& obj, QWidget* parent){

@@ -55,6 +55,9 @@ qt_add_executable(widgetshell
     src/controllers/notificationpopupscontroller.h src/controllers/notificationpopupscontroller.cpp
 
     resources/resources.qrc
+    src/services/swayservice.h src/services/swayservice.cpp
+    src/components/bar/sway/openedappsswaycomponent.h src/components/bar/sway/openedappsswaycomponent.cpp
+    src/components/bar/sway/workspaceswitcherswaycomponent.h src/components/bar/sway/workspaceswitcherswaycomponent.cpp
 )
 
 target_link_libraries(widgetshell

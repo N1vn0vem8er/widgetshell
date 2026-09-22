@@ -5,7 +5,7 @@
 #include <QPushButton>
 #include <QWidget>
 
-#include "components/workspacebutton.h"
+#include "components/bar/workspacebutton.h"
 #include "services/hyprlandservice.h"
 
 class WorkspaceSwitcherComponent : public QWidget

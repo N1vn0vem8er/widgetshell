@@ -20,35 +20,41 @@ qt_add_executable(widgetshell
     WIN32 MACOSX_BUNDLE
     src/main.cpp
     src/barwidget.h src/barwidget.cpp
-    src/services/hyprlandservice.h src/services/hyprlandservice.cpp
-    src/components/workspaceswitchercomponent.h src/components/workspaceswitchercomponent.cpp
-
-    src/components/controlmenu.h src/components/controlmenu.cpp
     src/components/wallpaper.h src/components/wallpaper.cpp
-    src/services/audioservice.h src/services/audioservice.cpp
-    src/components/audiovolumecontrolcomponent.h src/components/audiovolumecontrolcomponent.cpp
 
-    src/components/openedappscomponent.h src/components/openedappscomponent.cpp
+    src/services/hyprlandservice.h src/services/hyprlandservice.cpp
+    src/services/audioservice.h src/services/audioservice.cpp
     src/services/desktopappsservice.h src/services/desktopappsservice.cpp
-    src/widgetfactory.h src/widgetfactory.cpp
-    src/components/datetimecomponent.h src/components/datetimecomponent.cpp
-    src/components/controlmenubutton.h src/components/controlmenubutton.cpp
-    src/services/systemmonitorservice.h src/services/systemmonitorservice.cpp
-    src/components/cpuusagecomponent.h src/components/cpuusagecomponent.cpp
-    src/components/memoryusagecomponent.h src/components/memoryusagecomponent.cpp
-    resources/resources.qrc
-    src/components/workspacebutton.h src/components/workspacebutton.cpp
-    src/services/networkservice.h src/services/networkservice.cpp
-    src/components/networkconnectioncomponent.h src/components/networkconnectioncomponent.cpp
-    src/menus/networkmenu.h src/menus/networkmenu.cpp
-    src/components/audiovolumecontrolbarcomponent.h src/components/audiovolumecontrolbarcomponent.cpp
-    src/components/uptimebarcomponent.h src/components/uptimebarcomponent.cpp
     src/services/notificationservice.h src/services/notificationservice.cpp
+    src/services/mprisservice.h src/services/mprisservice.cpp
+    src/services/systemmonitorservice.h src/services/systemmonitorservice.cpp
+    src/services/networkservice.h src/services/networkservice.cpp
+
+    src/widgetfactory.h src/widgetfactory.cpp
+
+    src/components/bar/hyprland/openedappscomponent.h src/components/bar/hyprland/openedappscomponent.cpp
+    src/components/bar/hyprland/workspaceswitchercomponent.h src/components/bar/hyprland/workspaceswitchercomponent.cpp
+
+    src/components/bar/workspacebutton.h src/components/bar/workspacebutton.cpp
+    src/components/bar/audiovolumecontrolbarcomponent.h src/components/bar/audiovolumecontrolbarcomponent.cpp
+    src/components/bar/uptimebarcomponent.h src/components/bar/uptimebarcomponent.cpp
+    src/components/bar/mediaplayerbarcomponent.h src/components/bar/mediaplayerbarcomponent.cpp
+    src/components/bar/cpuusagecomponent.h src/components/bar/cpuusagecomponent.cpp
+    src/components/bar/memoryusagecomponent.h src/components/bar/memoryusagecomponent.cpp
+    src/components/bar/datetimecomponent.h src/components/bar/datetimecomponent.cpp
+    src/components/bar/controlmenubutton.h src/components/bar/controlmenubutton.cpp
+    src/components/bar/networkconnectioncomponent.h src/components/bar/networkconnectioncomponent.cpp
+
+    src/menus/networkmenu.h src/menus/networkmenu.cpp
+    src/menus/controlmenu.h src/menus/controlmenu.cpp
+
+    src/components/menus/audiovolumecontrolcomponent.h src/components/menus/audiovolumecontrolcomponent.cpp
+    src/components/menus/notificationhistorycomponent.h src/components/menus/notificationhistorycomponent.cpp
+
     src/components/notificationpopupcomponent.h src/components/notificationpopupcomponent.cpp
     src/controllers/notificationpopupscontroller.h src/controllers/notificationpopupscontroller.cpp
-    src/components/notificationhistorycomponent.h src/components/notificationhistorycomponent.cpp
-    src/services/mprisservice.h src/services/mprisservice.cpp
-    src/components/mediaplayerbarcomponent.h src/components/mediaplayerbarcomponent.cpp
+
+    resources/resources.qrc
 )
 
 target_link_libraries(widgetshell

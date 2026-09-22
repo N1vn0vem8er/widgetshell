@@ -6,9 +6,9 @@
 #include <QTimer>
 #include <QWidget>
 
-#include "components/openedappscomponent.h"
-#include "components/workspaceswitchercomponent.h"
-#include "components/controlmenu.h"
+#include "components/bar/hyprland/openedappscomponent.h"
+#include "components/bar/hyprland/workspaceswitchercomponent.h"
+#include "menus/controlmenu.h"
 
 class BarWidget : public QWidget
 {

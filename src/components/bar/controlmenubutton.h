@@ -2,7 +2,7 @@
 #define CONTROLMENUBUTTON_H
 
 #include <QPushButton>
-#include "components/controlmenu.h"
+#include "menus/controlmenu.h"
 
 class ControlMenuButton : public QPushButton
 {

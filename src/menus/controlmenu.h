@@ -1,8 +1,8 @@
 #ifndef CONTROLMENU_H
 #define CONTROLMENU_H
 
-#include "components/audiovolumecontrolcomponent.h"
-#include "components/notificationhistorycomponent.h"
+#include "components/menus/audiovolumecontrolcomponent.h"
+#include "components/menus/notificationhistorycomponent.h"
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QWidget>

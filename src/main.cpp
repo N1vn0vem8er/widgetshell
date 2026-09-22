@@ -7,6 +7,7 @@
 #include "services/networkservice.h"
 #include "services/notificationservice.h"
 #include "services/mprisservice.h"
+#include "services/swayservice.h"
 
 #include <QApplication>
 #include <QFile>
@@ -25,6 +26,7 @@ int main(int argc, char *argv[])
     }
 
     HyprlandService::create();
+    SwayService::create();
     AudioService::create();
     DesktopAppsService::create();
     SystemMonitorService::create();

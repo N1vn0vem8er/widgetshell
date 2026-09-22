@@ -1,5 +1,7 @@
 #include "swayservice.h"
 #include <qdebug.h>
+#include <qjsonarray.h>
+#include <qjsonobject.h>
 
 SwayService *SwayService::instance()
 {
@@ -22,6 +24,52 @@ void SwayService::destroy()
     }
 }
 
+QList<SwayWorkspace> SwayService::workspaces() const
+{
+    return m_workspaces;
+}
+
+void SwayService::refreshWorkspaces()
+{
+    sendIpcCommand(GET_WORKSPACES, {});
+}
+
+void SwayService::focusWorkspace(const SwayWorkspace &workspace)
+{
+    const QByteArray command = QByteArray("workspace \"") + workspace.name.toUtf8() + QByteArray("\"");
+    sendIpcCommand(RUN_COMMAND, command);
+}
+
+void SwayService::updateWorkspaces(const QJsonArray &array)
+{
+    QList<SwayWorkspace> workspaces;
+    workspaces.reserve(array.size());
+
+    for(const auto &value : array)
+    {
+        if(!value.isObject())
+            continue;
+        workspaces.append(parseWorkspace(value.toObject()));
+    }
+
+    m_workspaces = std::move(workspaces);
+
+    emit workspacesChanged();
+}
+
+SwayWorkspace SwayService::parseWorkspace(const QJsonObject &object) const
+{
+    SwayWorkspace workspace;
+    workspace.id = object.value("id").toInt();
+    workspace.number = object.value("num").toInt(-1);
+    workspace.name = object.value("name").toString();
+    workspace.output = object.value("output").toString();
+    workspace.focused = object.value("focused").toBool();
+    workspace.visible = object.value("visible").toBool();
+    workspace.urgent = object.value("urgent").toBool();
+    return workspace;
+}
+
 SwayService::SwayService(QObject *parent)
     : QObject{parent}
 {
@@ -35,16 +83,137 @@ SwayService::SwayService(QObject *parent)
     }
 
     connect(socket2, &QLocalSocket::readyRead, this, &SwayService::onReadReady);
+    connect(socket2, &QLocalSocket::connected, this, &SwayService::onConnected);
+    connect(socket2, &QLocalSocket::disconnected, this, &SwayService::onDisconnected);
+    connect(socket2, &QLocalSocket::errorOccurred, this, &SwayService::onError);
 
     socket2->connectToServer(path);
 }
 
-QByteArray SwayService::sendIpcCommand(const QByteArray &command)
+SwayService::~SwayService()
 {
+    socket2->disconnect();
+}
 
+void SwayService::sendIpcCommand(quint32 type, const QByteArray &payload)
+{
+    if(socket2->state() != QLocalSocket::ConnectedState)
+    {
+        qWarning() << "Sway IPC socket is not connected";
+        return;
+    }
+
+    QByteArray message;
+    message.reserve(14 + payload.size());
+    message.append("i3-ipc");
+
+    const quint32 length = payload.size();
+    message.append(char(length & 0xff));
+    message.append(char((length >> 8) & 0xff));
+    message.append(char((length >> 16) & 0xff));
+    message.append(char((length >> 24) & 0xff));
+    message.append(char(type & 0xff));
+    message.append(char((type >> 8) & 0xff));
+    message.append(char((type >> 16) & 0xff));
+    message.append(char((type >> 24) & 0xff));
+    message.append(payload);
+
+    socket2->write(message);
+}
+
+void SwayService::subscribeToWorkspaceEvents()
+{
+    const QJsonArray events {"workspace"};
+
+    const auto payload = QJsonDocument(events).toJson(QJsonDocument::Compact);
+
+    sendIpcCommand(SUBSCRIBE, payload);
 }
 
 void SwayService::onReadReady()
 {
+    m_readBuffer.append(socket2->readAll());
+    while(true)
+    {
+        if(m_readBuffer.size() < 14)
+            return;
 
+        if(m_readBuffer.left(6) != "i3-ipc")
+        {
+            qWarning() << "Invalid Sway IPC magic";
+            const auto index = m_readBuffer.indexOf("i3-ipc", 1);
+            if(index < 0)
+            {
+                m_readBuffer.clear();
+                return;
+            }
+
+            m_readBuffer.remove(0, index);
+            continue;
+        }
+
+        const auto readUint32LE = [](const QByteArray& data, qsizetype offset) -> quint32 {
+            return static_cast<quint32>(static_cast<quint8>(data.at(offset))) |
+                   (static_cast<quint32>(static_cast<quint8>(data.at(offset + 1))) << 8) |
+                   (static_cast<quint32>(static_cast<quint8>(data.at(offset + 2))) << 16) |
+                   (static_cast<quint32>(static_cast<quint8>(data.at(offset + 3))) << 24);
+        };
+
+        const quint32 payloadLength = readUint32LE(m_readBuffer, 6);
+        const quint32 type = readUint32LE(m_readBuffer, 10);
+        const qsizetype messageSize = 14 + payloadLength;
+
+        if(m_readBuffer.size() < messageSize)
+            return;
+
+        const QByteArray payload = m_readBuffer.mid(14, payloadLength);
+
+        m_readBuffer.remove(0, messageSize);
+
+        const QJsonDocument json = QJsonDocument::fromJson(payload);
+
+        if(json.isNull())
+        {
+            qWarning() << "Invalid json from Sway:" << payload;
+            continue;
+        }
+
+        if(type == GET_WORKSPACES)
+        {
+            if(!json.isArray())
+            {
+                qWarning() << "GET_WORKSPACES returned non array";
+                continue;
+            }
+
+            updateWorkspaces(json.array());
+        }
+        else if(type == EVENT_WORKSPACE)
+        {
+            if(!json.isObject())
+            {
+                qWarning() << "Workspace event is not an object";
+                continue;
+            }
+
+            refreshWorkspaces();
+        }
+    }
+}
+
+void SwayService::onConnected()
+{
+    qDebug() << "Connected to Sway IPC";
+    refreshWorkspaces();
+    subscribeToWorkspaceEvents();
+}
+
+void SwayService::onDisconnected()
+{
+    qDebug() << "Disconnected from Sway IPC";
+}
+
+void SwayService::onError()
+{
+    qWarning() << "Sway IPC error:" << socket2->errorString();
 }

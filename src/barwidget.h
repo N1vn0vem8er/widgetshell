@@ -6,8 +6,6 @@
 #include <QTimer>
 #include <QWidget>
 
-#include "components/bar/hyprland/openedappscomponent.h"
-#include "components/bar/hyprland/workspaceswitchercomponent.h"
 #include "menus/controlmenu.h"
 
 class BarWidget : public QWidget
@@ -19,12 +17,7 @@ public:
 
 private:
     QGridLayout* mainLayout;
-    QLabel* dateTimeLabel;
-    QTimer* dateTimeTimer;
-    QPushButton* controlMenuButton;
-    WorkspaceSwitcherComponent* workspaceSwitcher;
     ControlMenu* controlMenu {nullptr};
-    OpenedAppsComponent* openedApps;
 
 private:
     void createBar();

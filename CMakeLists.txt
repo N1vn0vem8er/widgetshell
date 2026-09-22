@@ -32,7 +32,7 @@ qt_add_executable(widgetshell
 
     src/widgetfactory.h src/widgetfactory.cpp
 
-    src/components/bar/hyprland/openedappscomponent.h src/components/bar/hyprland/openedappscomponent.cpp
+    src/components/bar/hyprland/openedappshyprlandcomponent.h src/components/bar/hyprland/openedappshyprlandcomponent.cpp
     src/components/bar/hyprland/workspaceswitchercomponent.h src/components/bar/hyprland/workspaceswitchercomponent.cpp
 
     src/components/bar/workspacebutton.h src/components/bar/workspacebutton.cpp

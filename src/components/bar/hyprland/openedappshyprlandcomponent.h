@@ -1,5 +1,5 @@
-#ifndef OPENEDAPPSCOMPONENT_H
-#define OPENEDAPPSCOMPONENT_H
+#ifndef OPENEDAPPSHYPRLANDCOMPONENT_H
+#define OPENEDAPPSHYPRLANDCOMPONENT_H
 
 #include "services/desktopappsservice.h"
 #include "services/hyprlandservice.h"
@@ -7,12 +7,12 @@
 #include <qboxlayout.h>
 #include <qpushbutton.h>
 
-class OpenedAppsComponent : public QWidget
+class OpenedAppsHyprlandComponent : public QWidget
 {
     Q_OBJECT
 public:
-    explicit OpenedAppsComponent(QWidget *parent = nullptr);
-    ~OpenedAppsComponent();
+    explicit OpenedAppsHyprlandComponent(QWidget *parent = nullptr);
+    ~OpenedAppsHyprlandComponent();
 
 private:
     HyprlandService* hyprlandService;
@@ -28,4 +28,4 @@ private slots:
 signals:
 };
 
-#endif // OPENEDAPPSCOMPONENT_H
+#endif // OPENEDAPPSHYPRLANDCOMPONENT_H

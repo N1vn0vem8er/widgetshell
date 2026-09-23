@@ -34,6 +34,11 @@ void SwayService::refreshWorkspaces()
     sendIpcCommand(GET_WORKSPACES, {});
 }
 
+void SwayService::refreshClients()
+{
+    sendIpcCommand(GET_TREE, {});
+}
+
 void SwayService::focusWorkspace(const QString &name)
 {
     const QByteArray command = QByteArray("workspace \"") + name.toUtf8() + QByteArray("\"");
@@ -68,6 +73,89 @@ SwayWorkspace SwayService::parseWorkspace(const QJsonObject &object) const
     workspace.visible = object.value("visible").toBool();
     workspace.urgent = object.value("urgent").toBool();
     return workspace;
+}
+
+SwayClient SwayService::parseClient(const QJsonObject &object) const
+{
+    SwayClient client;
+    client.id = object.value("id").toInt();
+    client.pid = object.value("pid").toInt(-1);
+    client.appId = object.value("app_id").toString();
+    client.title = object.value("name").toString();
+    client.focused = object.value("focused").toBool();
+    client.urgent = object.value("urgent").toBool();
+    const QJsonObject properties = object.value("window_properties").toObject();
+    client.windowClass = properties.value("class").toString();
+    client.windowInstance = properties.value("instance").toString();
+    return client;
+}
+
+void SwayService::handleWindowEvent(const QJsonObject &event)
+{
+    const QString change = event.value("change").toString();
+    const QJsonObject container = event.value("container").toObject();
+    const int id = container.value("id").toInt();
+
+    if(id == 0)
+    {
+        qWarning() << "Window event without container id";
+        return;
+    }
+
+    if(change == "new")
+    {
+        const SwayClient client =  parseClient(container);
+        m_clients.insert(client.id, client);
+        emit clientOpened(client);
+    }
+    else if(change == "close")
+    {
+        if(m_clients.remove(id))
+            emit clientClosed(id);
+    }
+    else if(change == "focus" || change == "title" || change == "move")
+        refreshClients();
+}
+
+void SwayService::updateClients(const QJsonObject &tree)
+{
+    QHash<int, SwayClient> clients;
+    collectClients(tree, clients, {}, {});
+    m_clients = std::move(clients);
+    emit clientsChanged();
+}
+
+void SwayService::collectClients(const QJsonObject &node, QHash<int, SwayClient> &clients, const QString &workspace, const QString &output)
+{
+    const QString type = node["type"].toString();
+    QString currentWorkspace = workspace;
+    QString currentOutput = output;
+
+    if(type == "output")
+        currentOutput = node["name"].toString();
+    else if(type == "workspace")
+        currentWorkspace = node["name"].toString();
+
+    const QJsonArray nodes = node["nodes"].toArray();
+    const QJsonArray floatingNodes = node["floating_nodes"].toArray();
+
+    if(type == "con" && nodes.isEmpty() && floatingNodes.isEmpty())
+    {
+        SwayClient client = parseClient(node);
+        client.workspace = currentWorkspace;
+        client.output = currentOutput;
+        clients[client.id] = client;
+    }
+
+    for(const QJsonValue& value : nodes)
+    {
+        collectClients(value.toObject(), clients, currentWorkspace, currentOutput);
+    }
+
+    for(const QJsonValue& value : floatingNodes)
+    {
+        collectClients(value.toObject(), clients, currentWorkspace, currentOutput);
+    }
 }
 
 SwayService::SwayService(QObject *parent)
@@ -187,6 +275,7 @@ void SwayService::onReadReady()
             }
 
             updateWorkspaces(json.array());
+            continue;
         }
         else if(type == EVENT_WORKSPACE)
         {
@@ -197,6 +286,29 @@ void SwayService::onReadReady()
             }
 
             refreshWorkspaces();
+            continue;
+        }
+        else if(type == GET_TREE)
+        {
+            if(!json.isObject())
+            {
+                qWarning() << "GET_TREE returned non object";
+                continue;
+            }
+
+            updateClients(json.object());
+            continue;
+        }
+        else if(type == EVENT_WINDOW)
+        {
+            if(!json.isObject())
+            {
+                qWarning() << "Window event is not an object";
+                continue;
+            }
+
+            handleWindowEvent(json.object());
+            continue;
         }
     }
 }
@@ -205,6 +317,7 @@ void SwayService::onConnected()
 {
     qDebug() << "Connected to Sway IPC";
     refreshWorkspaces();
+    refreshClients();
     subscribeToWorkspaceEvents();
 }
 
@@ -216,4 +329,9 @@ void SwayService::onDisconnected()
 void SwayService::onError()
 {
     qWarning() << "Sway IPC error:" << socket2->errorString();
+}
+
+QHash<int, SwayClient> SwayService::clients() const
+{
+    return m_clients;
 }

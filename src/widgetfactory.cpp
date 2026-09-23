@@ -7,6 +7,7 @@
 #include "components/bar/memoryusagecomponent.h"
 #include "components/bar/networkconnectioncomponent.h"
 #include "components/bar/hyprland/openedappshyprlandcomponent.h"
+#include "components/bar/sway/openedappsswaycomponent.h"
 #include "components/bar/sway/workspaceswitcherswaycomponent.h"
 #include "components/bar/uptimebarcomponent.h"
 #include "components/bar/hyprland/workspaceswitcherhyprlandcomponent.h"
@@ -38,7 +39,17 @@ WidgetFactory::WidgetFactory(QObject *parent)
         return widget;
     });
     registerWidget("openedapps", [](const QJsonObject& obj, QWidget* parent){
-        OpenedAppsHyprlandComponent* widget = new OpenedAppsHyprlandComponent(parent);
+        QWidget* widget;
+        if(getenv("HYPRLAND_INSTANCE_SIGNATURE") != NULL)
+        {
+            widget = new OpenedAppsHyprlandComponent(parent);
+        }
+        else if(getenv("SWAYSOCK") != NULL)
+        {
+            widget = new OpenedAppsSwayComponent(parent);
+        }
+        else
+            widget = new QWidget(parent);
         return widget;
     });
     registerWidget("controlmenu", [](const QJsonObject& obj, QWidget* parent){

@@ -104,14 +104,14 @@ void SwayService::handleWindowEvent(const QJsonObject &event)
 
     if(change == "new")
     {
-        const SwayClient client =  parseClient(container);
-        m_clients.insert(client.id, client);
+        const SwayClient client = parseClient(container);
+        m_clients.append(client);
         emit clientOpened(client);
     }
     else if(change == "close")
     {
-        if(m_clients.remove(id))
-            emit clientClosed(id);
+        m_clients.removeIf([id](const auto client){return id == client.id;});
+        emit clientClosed(id);
     }
     else if(change == "focus" || change == "title" || change == "move")
         refreshClients();
@@ -119,13 +119,13 @@ void SwayService::handleWindowEvent(const QJsonObject &event)
 
 void SwayService::updateClients(const QJsonObject &tree)
 {
-    QHash<int, SwayClient> clients;
+    QList<SwayClient> clients;
     collectClients(tree, clients, {}, {});
     m_clients = std::move(clients);
     emit clientsChanged();
 }
 
-void SwayService::collectClients(const QJsonObject &node, QHash<int, SwayClient> &clients, const QString &workspace, const QString &output)
+void SwayService::collectClients(const QJsonObject &node, QList<SwayClient> &clients, const QString &workspace, const QString &output)
 {
     const QString type = node["type"].toString();
     QString currentWorkspace = workspace;
@@ -144,7 +144,7 @@ void SwayService::collectClients(const QJsonObject &node, QHash<int, SwayClient>
         SwayClient client = parseClient(node);
         client.workspace = currentWorkspace;
         client.output = currentOutput;
-        clients[client.id] = client;
+        clients.append(client);
     }
 
     for(const QJsonValue& value : nodes)
@@ -209,9 +209,9 @@ void SwayService::sendIpcCommand(quint32 type, const QByteArray &payload)
     socket2->write(message);
 }
 
-void SwayService::subscribeToWorkspaceEvents()
+void SwayService::subscribeToEvents()
 {
-    const QJsonArray events {"workspace"};
+    const QJsonArray events {"workspace", "window"};
 
     const auto payload = QJsonDocument(events).toJson(QJsonDocument::Compact);
 
@@ -318,7 +318,7 @@ void SwayService::onConnected()
     qDebug() << "Connected to Sway IPC";
     refreshWorkspaces();
     refreshClients();
-    subscribeToWorkspaceEvents();
+    subscribeToEvents();
 }
 
 void SwayService::onDisconnected()
@@ -331,7 +331,7 @@ void SwayService::onError()
     qWarning() << "Sway IPC error:" << socket2->errorString();
 }
 
-QHash<int, SwayClient> SwayService::clients() const
+QList<SwayClient> SwayService::clients() const
 {
     return m_clients;
 }

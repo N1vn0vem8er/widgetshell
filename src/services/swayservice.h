@@ -69,19 +69,19 @@ public:
     void refreshWorkspaces();
     void refreshClients();
     void focusWorkspace(const QString& name);
-    QHash<int, SwayClient> clients() const;
+    QList<SwayClient> clients() const;
 
 private:
     explicit SwayService(QObject *parent = nullptr);
     ~SwayService();
     void sendIpcCommand(quint32 type, const QByteArray& payload);
-    void subscribeToWorkspaceEvents();
+    void subscribeToEvents();
     void updateWorkspaces(const QJsonArray& array);
     SwayWorkspace parseWorkspace(const QJsonObject& object) const;
     SwayClient parseClient(const QJsonObject& object) const;
     void handleWindowEvent(const QJsonObject& event);
     void updateClients(const QJsonObject& tree);
-    void collectClients(const QJsonObject& node, QHash<int, SwayClient>& clients, const QString& workspace, const QString& output);
+    void collectClients(const QJsonObject& node, QList<SwayClient>& clients, const QString& workspace, const QString& output);
 
 private slots:
     void onReadReady();
@@ -94,7 +94,7 @@ private:
     inline static SwayService* m_instance {nullptr};
     QByteArray m_readBuffer;
     QList<SwayWorkspace> m_workspaces;
-    QHash<int, SwayClient> m_clients;
+    QList<SwayClient> m_clients;
 
 signals:
     void clientOpened(const SwayClient& client);

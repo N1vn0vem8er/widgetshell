@@ -21,7 +21,7 @@ private:
 
 private slots:
     void updateClients();
-    void activateClient(quint64 address);
+    void activateClient(int id);
 
 signals:
 };

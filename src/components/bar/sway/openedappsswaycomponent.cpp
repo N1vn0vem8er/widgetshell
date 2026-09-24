@@ -14,6 +14,7 @@ OpenedAppsSwayComponent::OpenedAppsSwayComponent(QWidget *parent)
     updateClients();
 
     connect(swayService, &SwayService::clientsChanged, this, &OpenedAppsSwayComponent::updateClients);
+    connect(swayService, &SwayService::clientFocused, this, &OpenedAppsSwayComponent::activateClient);
 }
 
 void OpenedAppsSwayComponent::updateClients()
@@ -62,7 +63,13 @@ void OpenedAppsSwayComponent::updateClients()
     }
 }
 
-void OpenedAppsSwayComponent::activateClient(quint64 address)
+void OpenedAppsSwayComponent::activateClient(int id)
 {
-
+    for(const auto& button : std::as_const(buttons))
+    {
+        if(button->property("clientId") == id)
+            button->setChecked(true);
+        else
+            button->setChecked(false);
+    }
 }

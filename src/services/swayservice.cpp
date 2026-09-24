@@ -118,7 +118,9 @@ void SwayService::handleWindowEvent(const QJsonObject &event)
         emit clientClosed(id);
     }
     else if(change == "focus" || change == "title" || change == "move")
+    {
         refreshClients();
+    }
 }
 
 void SwayService::updateClients(const QJsonObject &tree)
@@ -146,6 +148,8 @@ void SwayService::collectClients(const QJsonObject &node, QList<SwayClient> &cli
     if(type == "con" && nodes.isEmpty() && floatingNodes.isEmpty())
     {
         SwayClient client = parseClient(node);
+        if(client.focused)
+            emit clientFocused(client.id);
         client.workspace = currentWorkspace;
         client.output = currentOutput;
         clients.append(client);

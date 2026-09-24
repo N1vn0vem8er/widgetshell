@@ -25,19 +25,19 @@ int main(int argc, char *argv[])
         file.close();
     }
 
-    HyprlandService::create();
-    SwayService::create();
-    AudioService::create();
-    DesktopAppsService::create();
-    SystemMonitorService::create();
-    NetworkService::create();
-    NotificationService::create();
-    MprisService::create();
+    HyprlandService::create(&a);
+    SwayService::create(&a);
+    AudioService::create(&a);
+    DesktopAppsService::create(&a);
+    SystemMonitorService::create(&a);
+    NetworkService::create(&a);
+    NotificationService::create(&a);
+    MprisService::create(&a);
     NotificationPopupsController notifications;
     BarWidget bar;
     bar.show();
     Wallpaper wallpaper;
     wallpaper.show();
     wallpaper.initWallpaper();
-    return QApplication::exec();
+    return a.exec();
 }

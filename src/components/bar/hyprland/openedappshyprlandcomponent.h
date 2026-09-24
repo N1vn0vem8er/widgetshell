@@ -23,7 +23,7 @@ private:
 private slots:
     void updateClients();
     void activateClient(quint64 address);
-    void createWorkspace(const QString&);
+    void activeEmpty();
 
 signals:
 };

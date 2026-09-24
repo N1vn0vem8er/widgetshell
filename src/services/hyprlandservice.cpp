@@ -262,6 +262,11 @@ void HyprlandService::onReadReady()
         if(line.startsWith("activewindowv2"))
         {
             const QString windowAddress = line.section(">>", 1);
+            if(windowAddress.isEmpty())
+            {
+                emit activeWindowEmpty();
+                continue;
+            }
             bool ok;
             quint64 address = windowAddress.toULongLong(&ok, 16);
 

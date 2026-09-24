@@ -48,7 +48,9 @@ void OpenedAppsSwayComponent::updateClients()
             button->setFlat(true);
             button->setToolTip(client.title);
             button->setProperty("clientId", client.id);
-            connect(button, &QPushButton::clicked, this, [this, button]{});
+            connect(button, &QPushButton::clicked, this, [this, button]{
+                swayService->focusClient(button->property("clientId").toInt());
+            });
             button->show();
         }
         else

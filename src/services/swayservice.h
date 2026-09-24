@@ -68,6 +68,7 @@ public:
     QList<SwayWorkspace> workspaces() const;
     void refreshWorkspaces();
     void refreshClients();
+    void focusClient(int id);
     void focusWorkspace(const QString& name);
     QList<SwayClient> clients() const;
 

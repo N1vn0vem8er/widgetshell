@@ -39,10 +39,14 @@ void SwayService::refreshClients()
     sendIpcCommand(GET_TREE, {});
 }
 
+void SwayService::focusClient(int id)
+{
+    sendIpcCommand(RUN_COMMAND, QString("[con_id=%1] focus").arg(id).toUtf8());
+}
+
 void SwayService::focusWorkspace(const QString &name)
 {
-    const QByteArray command = QByteArray("workspace \"") + name.toUtf8() + QByteArray("\"");
-    sendIpcCommand(RUN_COMMAND, command);
+    sendIpcCommand(RUN_COMMAND, QString("workspace \"%1\"").arg(name).toUtf8());
 }
 
 void SwayService::updateWorkspaces(const QJsonArray &array)

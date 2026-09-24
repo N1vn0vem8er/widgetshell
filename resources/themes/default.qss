@@ -2,10 +2,6 @@ BarWidget {
     background-color: #100043;
 }
 
-OpenedAppsComponentQPushButton:checked {
-    background-color: #b0b9e1;
-}
-
 WorkspaceButton {
     background-color: #38427f;
 }

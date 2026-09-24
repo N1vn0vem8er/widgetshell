@@ -25,8 +25,10 @@ int main(int argc, char *argv[])
         file.close();
     }
 
-    HyprlandService::create(&a);
-    SwayService::create(&a);
+    if(getenv("HYPRLAND_INSTANCE_SIGNATURE") != NULL)
+        HyprlandService::create(&a);
+    else if(getenv("SWAYSOCK") != NULL)
+        SwayService::create(&a);
     AudioService::create(&a);
     DesktopAppsService::create(&a);
     SystemMonitorService::create(&a);

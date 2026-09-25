@@ -24,6 +24,7 @@ private:
 private slots:
     void addNotification(const Notification& notification);
     void clearNotifications();
+    void searchTextChanged(const QString& text);
 
 signals:
 };

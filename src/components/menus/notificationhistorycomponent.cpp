@@ -28,10 +28,12 @@ NotificationHistoryComponent::NotificationHistoryComponent(QWidget *parent)
         else
             item->setIcon(QIcon::fromTheme(notification.appIcon));
         item->setToolTip(notification.appName);
+        item->setData(Qt::UserRole, QVariant::fromValue(notification));
         listWidget->addItem(item);
     }
     connect(service, &NotificationService::notificationReceived, this, &NotificationHistoryComponent::addNotification);
     connect(clearButton, &QPushButton::clicked, this, &NotificationHistoryComponent::clearNotifications);
+    connect(searchLineEdit, &QLineEdit::textChanged, this, &NotificationHistoryComponent::searchTextChanged);
 }
 
 void NotificationHistoryComponent::addNotification(const Notification &notification)
@@ -42,6 +44,7 @@ void NotificationHistoryComponent::addNotification(const Notification &notificat
     else
         item->setIcon(QIcon::fromTheme(notification.appIcon));
     item->setToolTip(notification.appName);
+    item->setData(Qt::UserRole, QVariant::fromValue(notification));
     listWidget->addItem(item);
 }
 
@@ -49,4 +52,21 @@ void NotificationHistoryComponent::clearNotifications()
 {
     service->clearNotificationHistory();
     listWidget->clear();
+}
+
+void NotificationHistoryComponent::searchTextChanged(const QString &text)
+{
+    for(int i = 0; i < listWidget->count(); i++)
+    {
+        auto* item = listWidget->item(i);
+        auto notification = item->data(Qt::UserRole).value<Notification>();
+
+        if(text.isEmpty())
+        {
+            item->setHidden(false);
+            continue;
+        }
+        bool matches = notification.appName.contains(text, Qt::CaseInsensitive) || notification.summary.contains(text, Qt::CaseInsensitive) || notification.body.contains(text, Qt::CaseInsensitive);
+        item->setHidden(!matches);
+    }
 }

@@ -14,6 +14,8 @@ struct Notification {
     int expireTimeout;
 };
 
+Q_DECLARE_METATYPE(Notification)
+
 class NotificationService : public QObject
 {
     Q_OBJECT

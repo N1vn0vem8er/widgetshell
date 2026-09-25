@@ -58,6 +58,7 @@ qt_add_executable(widgetshell
     src/services/swayservice.h src/services/swayservice.cpp
     src/components/bar/sway/openedappsswaycomponent.h src/components/bar/sway/openedappsswaycomponent.cpp
     src/components/bar/sway/workspaceswitcherswaycomponent.h src/components/bar/sway/workspaceswitcherswaycomponent.cpp
+    src/components/bar/openedappscomponent.h
 )
 
 target_link_libraries(widgetshell

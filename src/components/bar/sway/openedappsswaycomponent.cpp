@@ -1,7 +1,7 @@
 #include "openedappsswaycomponent.h"
 
 OpenedAppsSwayComponent::OpenedAppsSwayComponent(QWidget *parent)
-    : QWidget{parent}
+    : OpenedAppsComponent{parent}
 {
     setAttribute(Qt::WA_StyledBackground, true);
     swayService = SwayService::instance();

@@ -1,7 +1,7 @@
 #include "openedappshyprlandcomponent.h"
 
 OpenedAppsHyprlandComponent::OpenedAppsHyprlandComponent(QWidget *parent)
-    : QWidget{parent}
+    : OpenedAppsComponent{parent}
 {
     setAttribute(Qt::WA_StyledBackground, true);
     hyprlandService = HyprlandService::instance();

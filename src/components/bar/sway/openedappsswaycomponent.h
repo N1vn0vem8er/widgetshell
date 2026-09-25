@@ -3,11 +3,12 @@
 
 #include "services/desktopappsservice.h"
 #include "services/swayservice.h"
+#include "components/bar/openedappscomponent.h"
 #include <QWidget>
 #include <qboxlayout.h>
 #include <qpushbutton.h>
 
-class OpenedAppsSwayComponent : public QWidget
+class OpenedAppsSwayComponent : public OpenedAppsComponent
 {
     Q_OBJECT
 public:

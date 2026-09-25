@@ -3,11 +3,12 @@
 
 #include "services/desktopappsservice.h"
 #include "services/hyprlandservice.h"
+#include "components/bar/openedappscomponent.h"
 #include <QWidget>
 #include <qboxlayout.h>
 #include <qpushbutton.h>
 
-class OpenedAppsHyprlandComponent : public QWidget
+class OpenedAppsHyprlandComponent : public OpenedAppsComponent
 {
     Q_OBJECT
 public:

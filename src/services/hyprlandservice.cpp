@@ -43,6 +43,7 @@ QList<HyprlandWorkspace> HyprlandService::getWorkspaces()
         workspace.hasFullscreen = obj.value("hasfullscreen").toBool();
         workspaces.append(workspace);
     }
+    std::sort(workspaces.begin(), workspaces.end(), [](const auto& a, const auto& b){return a.id < b.id;});
     return workspaces;
 }
 

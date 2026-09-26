@@ -35,9 +35,10 @@ WidgetFactory::WidgetFactory(QObject *parent)
     });
     registerWidget("activeappname", [](const QJsonObject& obj, QWidget* parent){
         QWidget* widget;
+        uint maxLength = obj.value("maxLength").toInt(100);
         if(getenv("HYPRLAND_INSTANCE_SIGNATURE") != NULL)
         {
-            widget = new ActiveAppNameHyprlandComponent(parent);
+            widget = new ActiveAppNameHyprlandComponent(maxLength, parent);
         }
         else if(getenv("SWAYSOCK") != NULL)
         {

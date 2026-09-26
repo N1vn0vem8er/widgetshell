@@ -63,11 +63,11 @@ void OpenedAppsSwayComponent::updateClients()
     }
 }
 
-void OpenedAppsSwayComponent::activateClient(int id)
+void OpenedAppsSwayComponent::activateClient(const SwayClient& client)
 {
     for(const auto& button : std::as_const(buttons))
     {
-        if(button->property("clientId") == id)
+        if(button->property("clientId") == client.id)
             button->setChecked(true);
         else
             button->setChecked(false);

@@ -42,7 +42,7 @@ WidgetFactory::WidgetFactory(QObject *parent)
         }
         else if(getenv("SWAYSOCK") != NULL)
         {
-            widget = new ActiveAppNameSwayComponent(parent);
+            widget = new ActiveAppNameSwayComponent(maxLength, parent);
         }
         else
             widget = new QWidget(parent);

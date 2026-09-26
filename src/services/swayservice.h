@@ -103,7 +103,7 @@ signals:
     void clientChanged(const SwayClient& client);
     void clientsChanged();
     void workspacesChanged();
-    void clientFocused(int id);
+    void clientFocused(const SwayClient& client);
 };
 
 #endif // SWAYSERVICE_H

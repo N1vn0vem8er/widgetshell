@@ -22,7 +22,7 @@ private:
 
 private slots:
     void updateClients();
-    void activateClient(int id);
+    void activateClient(const SwayClient& client);
 
 signals:
 };

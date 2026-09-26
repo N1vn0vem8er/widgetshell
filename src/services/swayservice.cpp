@@ -149,7 +149,7 @@ void SwayService::collectClients(const QJsonObject &node, QList<SwayClient> &cli
     {
         SwayClient client = parseClient(node);
         if(client.focused)
-            emit clientFocused(client.id);
+            emit clientFocused(client);
         client.workspace = currentWorkspace;
         client.output = currentOutput;
         clients.append(client);

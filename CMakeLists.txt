@@ -59,6 +59,9 @@ qt_add_executable(widgetshell
     src/components/bar/sway/openedappsswaycomponent.h src/components/bar/sway/openedappsswaycomponent.cpp
     src/components/bar/sway/workspaceswitcherswaycomponent.h src/components/bar/sway/workspaceswitcherswaycomponent.cpp
     src/components/bar/openedappscomponent.h
+    src/components/bar/activeappnamecomponent.h
+    src/components/bar/hyprland/activeappnamehyprlandcomponent.h src/components/bar/hyprland/activeappnamehyprlandcomponent.cpp
+    src/components/bar/sway/activeappnameswaycomponent.h src/components/bar/sway/activeappnameswaycomponent.cpp
 )
 
 target_link_libraries(widgetshell

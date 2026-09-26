@@ -3,10 +3,12 @@
 #include "components/bar/controlmenubutton.h"
 #include "components/bar/cpuusagecomponent.h"
 #include "components/bar/datetimecomponent.h"
+#include "components/bar/hyprland/activeappnamehyprlandcomponent.h"
 #include "components/bar/mediaplayerbarcomponent.h"
 #include "components/bar/memoryusagecomponent.h"
 #include "components/bar/networkconnectioncomponent.h"
 #include "components/bar/hyprland/openedappshyprlandcomponent.h"
+#include "components/bar/sway/activeappnameswaycomponent.h"
 #include "components/bar/sway/openedappsswaycomponent.h"
 #include "components/bar/sway/workspaceswitcherswaycomponent.h"
 #include "components/bar/uptimebarcomponent.h"
@@ -26,6 +28,20 @@ WidgetFactory::WidgetFactory(QObject *parent)
         else if(getenv("SWAYSOCK") != NULL)
         {
             widget = new WorkspaceSwitcherSwayComponent(parent);
+        }
+        else
+            widget = new QWidget(parent);
+        return widget;
+    });
+    registerWidget("activeappname", [](const QJsonObject& obj, QWidget* parent){
+        QWidget* widget;
+        if(getenv("HYPRLAND_INSTANCE_SIGNATURE") != NULL)
+        {
+            widget = new ActiveAppNameHyprlandComponent(parent);
+        }
+        else if(getenv("SWAYSOCK") != NULL)
+        {
+            widget = new ActiveAppNameSwayComponent(parent);
         }
         else
             widget = new QWidget(parent);

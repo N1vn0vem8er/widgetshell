@@ -55,7 +55,16 @@ void ControlMenu::onShutdown()
 
 void ControlMenu::onLogout()
 {
-    QProcess::startDetached("loginctl", {"terminate-session", getenv("XDG_SESSION_ID")});
+    if(getenv("HYPRLAND_INSTANCE_SIGNATURE") != NULL)
+    {
+        QProcess::startDetached("hyprctl", {"dispatch", "exit"});
+    }
+    else if(getenv("SWAYSOCK") != NULL)
+    {
+        QProcess::startDetached("swaymsg", {"exit"});
+    }
+    else
+        QProcess::startDetached("loginctl", {"terminate-session", getenv("XDG_SESSION_ID")});
 }
 
 void ControlMenu::onSleep()

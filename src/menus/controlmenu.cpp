@@ -19,9 +19,13 @@ ControlMenu::ControlMenu(QWidget *parent)
     QWidget* topButtonsWidget = new QWidget(this);
     QHBoxLayout* topButtonsLayout = new QHBoxLayout(topButtonsWidget);
     shutdownButton = new QPushButton(QIcon::fromTheme("system-shutdown"), "", this);
+    shutdownButton->setToolTip("Shutdown");
     logoutButton = new QPushButton(QIcon::fromTheme("system-log-out"), "", this);
+    logoutButton->setToolTip("Logout");
     sleepButton = new QPushButton(QIcon::fromTheme("system-suspend"), "", this);
+    sleepButton->setToolTip("Sleep");
     rebootButton = new QPushButton(QIcon::fromTheme("system-reboot"), "", this);
+    rebootButton->setToolTip("Reboot");
     connect(shutdownButton, &QPushButton::clicked, this, &ControlMenu::onShutdown);
     connect(logoutButton, &QPushButton::clicked, this, &ControlMenu::onLogout);
     connect(sleepButton, &QPushButton::clicked, this, &ControlMenu::onSleep);

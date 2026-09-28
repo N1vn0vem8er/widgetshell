@@ -45,3 +45,53 @@ It should work in other compositors bub with limited features.
 
 # Basic Configuration
 
+Configuration is loaded from the `~/.config/widgetshell/` directory.
+
+The `widgetshell.conf` file contains the general configuration. Configuration options are divided into groups. 
+For example, to set the height of the bar, set `barHeight` in `[Bar]` group:
+
+```
+[Bar]
+barHeight=40
+```
+
+To set a wallpaper, set the `wallpaper` option in the `[Wallpaper]` group to the path of the wallpaper 
+file. Both images and videos are supported. Set it to an empty string to disable the wallpaper.
+
+The `bar.json` configures layout and widgets for bar. It uses json format. Some widgets can be configured
+from this file. For more information see [Configuration](Configuration.md).
+Layout is devited into 3 sections: left, center and right. Example configuration can look like this:
+
+```json
+{
+    "left": [
+        {
+            "component": "openedapps"
+        },
+        {
+            "component": "activeappname"
+        }
+    ],
+    "center": [
+        {
+            "component": "workspaceswitcher"
+        }
+    ],
+    "right": [
+        {
+            "component": "networkconnection",
+            "unit": "kb"
+        },
+        {
+            "component": "audiocontrol"
+        },
+        {
+            "component": "datetime",
+            "format": "hh::mm:ss | dd:MM:yyyy"
+        },
+        {
+            "component": "controlmenu"
+        }
+    ]
+}
+```

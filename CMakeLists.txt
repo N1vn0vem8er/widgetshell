@@ -9,7 +9,7 @@ find_package(PkgConfig REQUIRED)
 pkg_check_modules(PULSEAUDIO REQUIRED libpulse)
 
 if(NOT DEFINED ENV{QT_QPA_PLATFORMTHEME})
-    message(WARNING "QT_QPA_PLATFORMTHEME not defined")
+    message(WARNING "QT_QPA_PLATFORMTHEME not defined" OR "$ENV{QT_QPA_PLATFORMTHEME}" STREQUAL "")
 endif()
 
 qt_standard_project_setup()

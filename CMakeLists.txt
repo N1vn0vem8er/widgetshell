@@ -8,11 +8,14 @@ find_package(LayerShellQt REQUIRED)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(PULSEAUDIO REQUIRED libpulse)
 
-include_directories(${PULSEAUDIO_INCLUDE_DIRS})
+if(NOT DEFINED ENV{QT_QPA_PLATFORMTHEME})
+    message(WARNING "QT_QPA_PLATFORMTHEME not defined")
+endif()
 
 qt_standard_project_setup()
 
 include_directories(src)
+include_directories(${PULSEAUDIO_INCLUDE_DIRS})
 
 set(CMAKE_AUTORCC ON)
 

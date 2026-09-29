@@ -102,16 +102,16 @@ WidgetFactory::WidgetFactory(QObject *parent)
         {
             const QString unit = obj.value("unit").toString().trimmed().toLower();
             if(unit == "tb")
-                widget = new StorageUsageBarComponent(obj.value("format").toString("%1%6 / %2%6"), StorageUsageBarComponent::Unit::TB, parent);
+                widget = new StorageUsageBarComponent(obj.value("format").toString("%1%3 / %2%3"), StorageUsageBarComponent::Unit::TB, parent);
             else if(unit == "mb")
-                widget = new StorageUsageBarComponent(obj.value("format").toString("%1%6 / %2%6"), StorageUsageBarComponent::Unit::MB, parent);
+                widget = new StorageUsageBarComponent(obj.value("format").toString("%1%3 / %2%3"), StorageUsageBarComponent::Unit::MB, parent);
             else if(unit == "gb")
-                widget = new StorageUsageBarComponent(obj.value("format").toString("%1%6 / %2%6"), StorageUsageBarComponent::Unit::GB, parent);
+                widget = new StorageUsageBarComponent(obj.value("format").toString("%1%3 / %2%3"), StorageUsageBarComponent::Unit::GB, parent);
             else
-                widget = new StorageUsageBarComponent(obj.value("format").toString("%1%6 / %2%6"), StorageUsageBarComponent::Unit::KB, parent);
+                widget = new StorageUsageBarComponent(obj.value("format").toString("%1%3 / %2%3"), StorageUsageBarComponent::Unit::KB, parent);
         }
         else
-            widget = new StorageUsageBarComponent(obj.value("format").toString("%1%6 / %2%6"), StorageUsageBarComponent::Unit::KB, parent);
+            widget = new StorageUsageBarComponent(obj.value("format").toString("%1%3 / %2%3"), StorageUsageBarComponent::Unit::KB, parent);
         return widget;
     });
     registerWidget("networkconnection", [](const QJsonObject& obj, QWidget* parent){

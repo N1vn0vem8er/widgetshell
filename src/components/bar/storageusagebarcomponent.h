@@ -21,7 +21,7 @@ private:
     SystemMonitorService* service;
     QLabel* label;
     Unit unit;
-    QString labelText {"%1%6 / %2%6"};
+    QString labelText {"%1%3 / %2%3"};
     QString path {"/"};
 
 private slots:

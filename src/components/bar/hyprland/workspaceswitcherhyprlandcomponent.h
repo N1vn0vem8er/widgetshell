@@ -7,8 +7,9 @@
 
 #include "components/bar/workspacebutton.h"
 #include "services/hyprlandservice.h"
+#include "components/bar/workspaceswitchercomponent.h"
 
-class WorkspaceSwitcherHyprlandComponent : public QWidget
+class WorkspaceSwitcherHyprlandComponent : public WorkspaceSwitcherComponent
 {
     Q_OBJECT
 public:

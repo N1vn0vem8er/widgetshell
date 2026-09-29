@@ -2,11 +2,12 @@
 #define WORKSPACESWITCHERSWAYCOMPONENT_H
 
 #include "components/bar/workspacebutton.h"
+#include "components/bar/workspaceswitchercomponent.h"
 #include "services/swayservice.h"
 #include <QWidget>
 #include <qboxlayout.h>
 
-class WorkspaceSwitcherSwayComponent : public QWidget
+class WorkspaceSwitcherSwayComponent : public WorkspaceSwitcherComponent
 {
     Q_OBJECT
 public:

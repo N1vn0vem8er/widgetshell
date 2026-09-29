@@ -1,7 +1,7 @@
 #include "workspaceswitcherswaycomponent.h"
 
 WorkspaceSwitcherSwayComponent::WorkspaceSwitcherSwayComponent(QWidget *parent)
-    : QWidget{parent}
+    : WorkspaceSwitcherComponent{parent}
 {
     setAttribute(Qt::WA_StyledBackground, true);
     mainLayout = new QHBoxLayout(this);

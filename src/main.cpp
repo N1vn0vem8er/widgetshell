@@ -11,14 +11,19 @@
 
 #include <QApplication>
 #include <QFile>
+#include <qdir.h>
+#include <qfileinfo.h>
+#include <qsettings.h>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     QCoreApplication::setOrganizationName("widgetshell");
     QCoreApplication::setApplicationName("widgetshell");
-
-    QFile file(":/themes/default.qss");
+    QSettings settings;
+    const QString theme = settings.value("theme", "").toString();
+    const QString path = theme.isEmpty() ? ":/themes/default.qss" : QFileInfo(settings.fileName()).dir().absolutePath() + "/themes/" + theme;
+    QFile file(path);
     if(file.open(QIODevice::ReadOnly))
     {
         a.setStyleSheet(file.readAll());

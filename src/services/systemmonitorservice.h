@@ -18,6 +18,13 @@ struct CpuTimes
     quint64 guestNice {0};
 };
 
+struct Disk {
+    QString path;
+    unsigned long long total;
+    unsigned long long free;
+    unsigned long long available;
+};
+
 class SystemMonitorService : public QObject
 {
     Q_OBJECT
@@ -27,6 +34,7 @@ public:
     static void destroy();
     SystemMonitorService(const SystemMonitorService&) = delete;
     SystemMonitorService& operator=(const SystemMonitorService&) = delete;
+    Disk checkStorage(const QString& path);
 
 private:
     inline static SystemMonitorService* m_instance {nullptr};

@@ -8,6 +8,7 @@
 #include "components/bar/memoryusagecomponent.h"
 #include "components/bar/networkconnectioncomponent.h"
 #include "components/bar/hyprland/openedappshyprlandcomponent.h"
+#include "components/bar/storageusagebarcomponent.h"
 #include "components/bar/sway/activeappnameswaycomponent.h"
 #include "components/bar/sway/openedappsswaycomponent.h"
 #include "components/bar/sway/workspaceswitcherswaycomponent.h"
@@ -93,6 +94,24 @@ WidgetFactory::WidgetFactory(QObject *parent)
         }
         else
             widget = new MemoryUsageComponent(obj.value("format").toString("%1 %3 / %2 %3"), MemoryUsageComponent::Unit::KB, parent);
+        return widget;
+    });
+    registerWidget("storageusage", [](const QJsonObject& obj, QWidget* parent){
+        StorageUsageBarComponent* widget;
+        if(obj.contains("unit"))
+        {
+            const QString unit = obj.value("unit").toString().trimmed().toLower();
+            if(unit == "tb")
+                widget = new StorageUsageBarComponent(obj.value("format").toString("%1%6 / %2%6"), StorageUsageBarComponent::Unit::TB, parent);
+            else if(unit == "mb")
+                widget = new StorageUsageBarComponent(obj.value("format").toString("%1%6 / %2%6"), StorageUsageBarComponent::Unit::MB, parent);
+            else if(unit == "gb")
+                widget = new StorageUsageBarComponent(obj.value("format").toString("%1%6 / %2%6"), StorageUsageBarComponent::Unit::GB, parent);
+            else
+                widget = new StorageUsageBarComponent(obj.value("format").toString("%1%6 / %2%6"), StorageUsageBarComponent::Unit::KB, parent);
+        }
+        else
+            widget = new StorageUsageBarComponent(obj.value("format").toString("%1%6 / %2%6"), StorageUsageBarComponent::Unit::KB, parent);
         return widget;
     });
     registerWidget("networkconnection", [](const QJsonObject& obj, QWidget* parent){

@@ -66,6 +66,7 @@ qt_add_executable(widgetshell
     src/components/bar/hyprland/activeappnamehyprlandcomponent.h src/components/bar/hyprland/activeappnamehyprlandcomponent.cpp
     src/components/bar/sway/activeappnameswaycomponent.h src/components/bar/sway/activeappnameswaycomponent.cpp
     src/components/bar/workspaceswitchercomponent.h
+    src/components/bar/storageusagebarcomponent.h src/components/bar/storageusagebarcomponent.cpp
 )
 
 target_link_libraries(widgetshell

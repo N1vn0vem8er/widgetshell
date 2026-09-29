@@ -2,6 +2,7 @@
 
 #include <QFile>
 #include <QTextStream>
+#include <sys/statvfs.h>
 
 SystemMonitorService *SystemMonitorService::instance()
 {
@@ -96,6 +97,18 @@ void SystemMonitorService::checkMemory()
     if(total == 0)
         return;
     emit memoryUsage(total - available, available);
+}
+
+Disk SystemMonitorService::checkStorage(const QString &path)
+{
+    struct statvfs fs;
+    statvfs(path.toUtf8(), &fs);
+    Disk disk;
+    disk.path = path;
+    disk.total = static_cast<unsigned long long>(fs.f_blocks) * fs.f_frsize;
+    disk.free = static_cast<unsigned long long>(fs.f_bfree) * fs.f_frsize;
+    disk.available = static_cast<unsigned long long>(fs.f_bavail) * fs.f_frsize;
+    return disk;
 }
 
 void SystemMonitorService::timeout()

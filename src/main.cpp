@@ -21,13 +21,16 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationName("widgetshell");
     QCoreApplication::setApplicationName("widgetshell");
     QSettings settings;
-    const QString theme = settings.value("theme", "").toString();
-    const QString path = theme.isEmpty() ? ":/themes/default.qss" : QFileInfo(settings.fileName()).dir().absolutePath() + "/themes/" + theme;
-    QFile file(path);
-    if(file.open(QIODevice::ReadOnly))
+    const QString theme = settings.value("theme", "default").toString();
+    if(theme != "system")
     {
-        a.setStyleSheet(file.readAll());
-        file.close();
+        const QString path = theme.isEmpty() || theme == "default" ? ":/themes/default.qss" : QFileInfo(settings.fileName()).dir().absolutePath() + "/themes/" + theme;
+        QFile file(path);
+        if(file.open(QIODevice::ReadOnly))
+        {
+            a.setStyleSheet(file.readAll());
+            file.close();
+        }
     }
 
     if(getenv("HYPRLAND_INSTANCE_SIGNATURE") != NULL)

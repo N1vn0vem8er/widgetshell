@@ -1,5 +1,21 @@
 # Configuration
 
+## Themes
+
+Widget Shell uses Qt Style Sheets (QSS) for theming. QSS is similar to CSS, but it does not support all of its features.
+
+User-created themes should be placed in the `~/.config/widgetshell/themes/` directory. 
+A theme can be selected using the `theme` option in the `[General]` section of the `widgetshell.conf` file. 
+For example:
+
+```
+[General]
+theme=customtheme.qss
+```
+
+This will load the `customtheme.qss` theme file from the `themes` directory. 
+To use the built-in default theme, set `theme=default`. To use the system Qt theme, set `theme=system`.
+
 ## Bar
 
 Bar layout can be configured with bar.json file. This is the list of all avaliable widgets that can be placed

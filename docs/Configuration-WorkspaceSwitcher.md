@@ -18,3 +18,11 @@ WorkspaceButton:checked {
     background-color: #b0b9e1;
 }
 ```
+
+In order to add Workspace Switcher to the bar use:
+
+```json
+{
+    "component": "workspaceswitcher"
+}
+```

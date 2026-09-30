@@ -15,7 +15,7 @@ OpenedAppsComponent QPushButton {
 }
 ```
 
-In order to add Workspace Switcher to the bar use:
+In order to add Opened Apps to the bar use:
 
 ```json
 {

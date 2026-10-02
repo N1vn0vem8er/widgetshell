@@ -21,16 +21,6 @@ ControlMenu::ControlMenu(QWidget *parent)
     layerWindow->setAnchors(LayerShellQt::Window::Anchors(LayerShellQt::Window::AnchorTop | LayerShellQt::Window::AnchorRight));
 
     mainLayout = new QVBoxLayout(this);
-
-    // audioVolumeControl = new AudioVolumeControlComponent(this);
-    // mainLayout->addWidget(audioVolumeControl);
-
-    // calendar = new QCalendarWidget(this);
-    // mainLayout->addWidget(calendar);
-
-    // notificationHistory = new NotificationHistoryComponent(this);
-    // mainLayout->addWidget(notificationHistory);
-
     createMenu();
 }
 

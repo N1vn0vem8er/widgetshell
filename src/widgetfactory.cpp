@@ -151,6 +151,18 @@ WidgetFactory::WidgetFactory(QObject *parent)
         SystemActionsMenuComponent* widget = new SystemActionsMenuComponent(parent);
         return widget;
     });
+    registerWidget("menuaudiocontrol", [](const QJsonObject& obj, QWidget* parent){
+        AudioVolumeControlComponent* widget = new AudioVolumeControlComponent(parent);
+        return widget;
+    });
+    registerWidget("menunotificationhistory", [](const QJsonObject& obj, QWidget* parent){
+        NotificationHistoryComponent* widget = new NotificationHistoryComponent(parent);
+        return widget;
+    });
+    registerWidget("menucalendar", [](const QJsonObject& obj, QWidget* parent){
+        QCalendarWidget* widget = new QCalendarWidget(parent);
+        return widget;
+    });
 }
 
 void WidgetFactory::registerWidget(const QString &name, Creator creator)

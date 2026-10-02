@@ -16,19 +16,9 @@ public:
 
 private:
     QVBoxLayout* mainLayout;
-    QPushButton* shutdownButton;
-    QPushButton* logoutButton;
-    QPushButton* sleepButton;
-    QPushButton* rebootButton;
     QCalendarWidget* calendar;
     AudioVolumeControlComponent* audioVolumeControl;
     NotificationHistoryComponent* notificationHistory;
-
-private slots:
-    void onShutdown();
-    void onLogout();
-    void onSleep();
-    void onReboot();
 
 signals:
 };

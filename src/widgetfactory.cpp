@@ -14,6 +14,7 @@
 #include "components/bar/sway/workspaceswitcherswaycomponent.h"
 #include "components/bar/uptimebarcomponent.h"
 #include "components/bar/hyprland/workspaceswitcherhyprlandcomponent.h"
+#include "components/menus/systemactionsmenucomponent.h"
 
 #include <QJsonObject>
 
@@ -144,6 +145,10 @@ WidgetFactory::WidgetFactory(QObject *parent)
     });
     registerWidget("mediaplayer", [](const QJsonObject& obj, QWidget* parent){
         MediaPlayerBarComponent* widget = new MediaPlayerBarComponent(parent);
+        return widget;
+    });
+    registerWidget("systemactions", [](const QJsonObject& obj, QWidget* parent){
+        SystemActionsMenuComponent* widget = new SystemActionsMenuComponent(parent);
         return widget;
     });
 }

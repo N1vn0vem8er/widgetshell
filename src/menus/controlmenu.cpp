@@ -3,6 +3,12 @@
 #include <LayerShellQt/Window>
 
 #include <QProcess>
+#include <QStandardPaths>
+#include <qdir.h>
+#include <qjsonarray.h>
+#include <qjsondocument.h>
+#include <qjsonobject.h>
+#include <widgetfactory.h>
 
 ControlMenu::ControlMenu(QWidget *parent)
     : QWidget{parent}
@@ -16,14 +22,37 @@ ControlMenu::ControlMenu(QWidget *parent)
 
     mainLayout = new QVBoxLayout(this);
 
-    audioVolumeControl = new AudioVolumeControlComponent(this);
-    mainLayout->addWidget(audioVolumeControl);
+    // audioVolumeControl = new AudioVolumeControlComponent(this);
+    // mainLayout->addWidget(audioVolumeControl);
 
-    calendar = new QCalendarWidget(this);
-    mainLayout->addWidget(calendar);
+    // calendar = new QCalendarWidget(this);
+    // mainLayout->addWidget(calendar);
 
-    notificationHistory = new NotificationHistoryComponent(this);
-    mainLayout->addWidget(notificationHistory);
+    // notificationHistory = new NotificationHistoryComponent(this);
+    // mainLayout->addWidget(notificationHistory);
 
-    setLayout(mainLayout);
+    createMenu();
+}
+
+void ControlMenu::createMenu()
+{
+    QFile configFile(QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + "/" + QCoreApplication::organizationName() + "/controlmenu.json");
+    if(!configFile.open(QIODevice::ReadOnly))
+        return;
+
+    const QJsonDocument doc = QJsonDocument::fromJson(configFile.readAll());
+    configFile.close();
+
+    if(!doc.isArray())
+        return;
+
+    const QJsonArray root = doc.array();
+    WidgetFactory factory;
+
+    for(const auto& val : root)
+    {
+        const QJsonObject element = val.toObject();
+        if(element.contains("component"))
+            mainLayout->addWidget(factory.create(element.value("component").toString(), element, this));
+    }
 }

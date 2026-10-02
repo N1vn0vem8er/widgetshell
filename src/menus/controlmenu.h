@@ -20,6 +20,9 @@ private:
     AudioVolumeControlComponent* audioVolumeControl;
     NotificationHistoryComponent* notificationHistory;
 
+private:
+    void createMenu();
+
 signals:
 };
 

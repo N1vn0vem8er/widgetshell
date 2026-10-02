@@ -1,5 +1,6 @@
 #include "systemactionsmenucomponent.h"
 #include <QProcess>
+#include <qapplication.h>
 #include <qboxlayout.h>
 
 SystemActionsMenuComponent::SystemActionsMenuComponent(QWidget *parent)

@@ -1,6 +1,7 @@
 #ifndef SYSTEMMONITORSERVICE_H
 #define SYSTEMMONITORSERVICE_H
 
+#include <QMap>
 #include <QObject>
 #include <qtimer.h>
 
@@ -25,6 +26,13 @@ struct Disk {
     unsigned long long available;
 };
 
+struct DiskStats
+{
+    QString name;
+    double read {0.0};
+    double write {0.0};
+};
+
 class SystemMonitorService : public QObject
 {
     Q_OBJECT
@@ -40,6 +48,8 @@ private:
     inline static SystemMonitorService* m_instance {nullptr};
     QTimer* timer;
     CpuTimes previousCpuTimes;
+    QMap<QString, DiskStats> m_previousStats;
+    qint64 m_previousTime;
 
 private:
     explicit SystemMonitorService(QObject *parent = nullptr);
@@ -47,6 +57,7 @@ private:
     double countCpuUsage(const CpuTimes& old, const CpuTimes& current);
     void checkCpu();
     void checkMemory();
+    void updateDiskStats();
 
 private slots:
     void timeout();
@@ -54,6 +65,7 @@ private slots:
 signals:
     void cpuUsage(double val);
     void memoryUsage(quint64 used, quint64 free);
+    void diskStatsChanged(const QList<DiskStats>& stats);
 };
 
 #endif // SYSTEMMONITORSERVICE_H

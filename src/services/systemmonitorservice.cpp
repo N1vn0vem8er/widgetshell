@@ -1,7 +1,9 @@
 #include "systemmonitorservice.h"
 
 #include <QFile>
+#include <QRegularExpression>
 #include <QTextStream>
+#include <qdatetime.h>
 #include <sys/statvfs.h>
 
 SystemMonitorService *SystemMonitorService::instance()
@@ -31,6 +33,7 @@ SystemMonitorService::SystemMonitorService(QObject *parent)
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &SystemMonitorService::timeout);
     timer->setInterval(1000);
+    m_previousTime = QDateTime::currentMSecsSinceEpoch();
     timer->start();
 }
 
@@ -83,7 +86,7 @@ void SystemMonitorService::checkMemory()
     quint64 available = 0;
     const QList<QByteArray> lines = data.split('\n');
 
-    for(const QByteArray &line : lines)
+    for(const QByteArray&  line : lines)
     {
         const QList<QByteArray> parts = line.simplified().split(' ');
         if(parts.size() < 2)
@@ -97,6 +100,64 @@ void SystemMonitorService::checkMemory()
     if(total == 0)
         return;
     emit memoryUsage(total - available, available);
+}
+
+void SystemMonitorService::updateDiskStats()
+{
+    QFile file("/proc/diskstats");
+
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return;
+
+    const qint64 currentTime = QDateTime::currentMSecsSinceEpoch();
+    const double elapsedSeconds = (currentTime - m_previousTime) / 1000.0;
+
+    if(elapsedSeconds <= 0.0)
+        return;
+
+    m_previousTime = currentTime;
+
+    QList<DiskStats> result;
+    const QByteArray data = file.readAll();
+    file.close();
+    const QList<QByteArray> lines = data.split('\n');
+
+    for(const auto& line : lines)
+    {
+        if(line.isEmpty())
+            continue;
+
+        static QRegularExpression regex("\\s+");
+        const QStringList fields = QString::fromUtf8(line).split(regex);
+
+        if(fields.size() < 10)
+            continue;
+
+        const QString deviceName = fields[3];
+        const quint64 readSectors = fields[5].toULongLong();
+        const quint64 writeSectors = fields[9].toULongLong();
+
+        DiskStats current;
+        current.read = readSectors;
+        current.write = writeSectors;
+
+        if(m_previousStats.contains(deviceName))
+        {
+            const DiskStats previous = m_previousStats.value(deviceName);
+            const quint64 readDelta = readSectors >= previous.read ? readSectors - previous.read : 0;
+            const quint64 writeDelta = writeSectors >= previous.write ? writeSectors - previous.write : 0;
+
+            DiskStats stats;
+            stats.name = deviceName;
+            stats.read = (readDelta * 512.0) / elapsedSeconds;
+            stats.write = (writeDelta * 512.0) / elapsedSeconds;
+            result.append(stats);
+        }
+
+        m_previousStats[deviceName] = current;
+    }
+
+    emit diskStatsChanged(result);
 }
 
 Disk SystemMonitorService::checkStorage(const QString &path)
@@ -115,4 +176,5 @@ void SystemMonitorService::timeout()
 {
     checkCpu();
     checkMemory();
+    updateDiskStats();
 }

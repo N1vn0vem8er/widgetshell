@@ -3,6 +3,7 @@
 #include "components/bar/controlmenubutton.h"
 #include "components/bar/cpuusagecomponent.h"
 #include "components/bar/datetimecomponent.h"
+#include "components/bar/diskusagebarcomponent.h"
 #include "components/bar/hyprland/activeappnamehyprlandcomponent.h"
 #include "components/bar/mediaplayerbarcomponent.h"
 #include "components/bar/memoryusagecomponent.h"
@@ -161,6 +162,10 @@ WidgetFactory::WidgetFactory(QObject *parent)
     });
     registerWidget("menucalendar", [](const QJsonObject& obj, QWidget* parent){
         QCalendarWidget* widget = new QCalendarWidget(parent);
+        return widget;
+    });
+    registerWidget("diskusage", [](const QJsonObject& obj, QWidget* parent){
+        DiskUsageBarComponent* widget = new DiskUsageBarComponent(parent);
         return widget;
     });
 }

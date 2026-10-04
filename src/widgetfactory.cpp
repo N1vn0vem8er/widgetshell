@@ -165,7 +165,21 @@ WidgetFactory::WidgetFactory(QObject *parent)
         return widget;
     });
     registerWidget("diskusage", [](const QJsonObject& obj, QWidget* parent){
-        DiskUsageBarComponent* widget = new DiskUsageBarComponent(parent);
+        DiskUsageBarComponent* widget;
+        if(obj.contains("unit"))
+        {
+            const QString unit = obj.value("unit").toString().trimmed().toLower();
+            if(unit == "tb")
+                widget = new DiskUsageBarComponent(obj.value("format").toString("%1 ↑ %2 %4 | ↓ %3 %4"), DiskUsageBarComponent::Unit::TB, parent);
+            else if(unit == "mb")
+                widget = new DiskUsageBarComponent(obj.value("format").toString("%1 ↑ %2 %4 | ↓ %3 %4"), DiskUsageBarComponent::Unit::MB, parent);
+            else if(unit == "gb")
+                widget = new DiskUsageBarComponent(obj.value("format").toString("%1 ↑ %2 %4 | ↓ %3 %4"), DiskUsageBarComponent::Unit::GB, parent);
+            else
+                widget = new DiskUsageBarComponent(obj.value("format").toString("%1 ↑ %2 %4 | ↓ %3 %4"), DiskUsageBarComponent::Unit::KB, parent);
+        }
+        else
+            widget = new DiskUsageBarComponent(obj.value("format").toString("%1 ↑ %2 %4 | ↓ %3 %4"), DiskUsageBarComponent::Unit::KB, parent);
         return widget;
     });
 }

@@ -3,17 +3,24 @@
 
 #include "services/systemmonitorservice.h"
 #include <QWidget>
-#include <qlabel.h>
+#include <qpushbutton.h>
 
-class DiskUsageBarComponent : public QWidget
+class DiskUsageBarComponent : public QPushButton
 {
     Q_OBJECT
 public:
-    explicit DiskUsageBarComponent(QWidget *parent = nullptr);
+    enum class Unit {
+        KB,
+        MB,
+        GB,
+        TB
+    };
+    explicit DiskUsageBarComponent(const QString& labelText, DiskUsageBarComponent::Unit unit, QWidget *parent = nullptr);
 
 private:
-    QLabel* label;
     SystemMonitorService* service;
+    Unit unit;
+    QString labelText {"%1 ↑ %2 %4 | ↓ %3 %4"};
 
 private slots:
     void diskStatsChanged(const QList<DiskStats>& stats);

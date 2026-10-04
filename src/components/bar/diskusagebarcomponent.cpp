@@ -1,14 +1,11 @@
 #include "diskusagebarcomponent.h"
 #include <qboxlayout.h>
 
-DiskUsageBarComponent::DiskUsageBarComponent(QWidget *parent)
-    : QWidget{parent}
+DiskUsageBarComponent::DiskUsageBarComponent(const QString &labelText, DiskUsageBarComponent::Unit unit, QWidget *parent)
+    : QPushButton{parent}
 {
     service = SystemMonitorService::instance();
-
-    label = new QLabel(this);
-    QHBoxLayout* layout = new QHBoxLayout(this);
-    layout->addWidget(label);
+    setFlat(true);
 
     connect(service, &SystemMonitorService::diskStatsChanged, this, &DiskUsageBarComponent::diskStatsChanged);
 }
@@ -18,6 +15,35 @@ void DiskUsageBarComponent::diskStatsChanged(const QList<DiskStats> &stats)
     if(!stats.isEmpty())
     {
         auto disk = stats.first();
-        label->setText(QString("%1 %2 %3").arg(disk.name).arg(disk.read).arg(disk.write));
+        auto convert = [this](quint64 value) -> double{
+            switch(unit)
+            {
+            case Unit::KB:
+                return value;
+            case Unit::MB:
+                return value / 1024.0;
+            case Unit::GB:
+                return value / (1024.0 * 1024.0);
+            case Unit::TB:
+                return value / (1024.0 * 1024.0 * 1024.0);
+            }
+            return value;
+        };
+        const QString unitText = [this](){
+            switch(unit)
+            {
+            case Unit::KB:
+                return "KB";
+            case Unit::MB:
+                return "MB";
+            case Unit::GB:
+                return "GB";
+            case Unit::TB:
+                return "TB";
+            }
+            return "KB";
+        }();
+
+        setText(labelText.arg(disk.name).arg(convert(disk.read), 0, 'f', 2).arg(convert(disk.write), 0, 'f', 2).arg(unitText));
     }
 }

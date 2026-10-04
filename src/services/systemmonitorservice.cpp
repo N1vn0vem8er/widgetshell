@@ -117,7 +117,7 @@ void SystemMonitorService::updateDiskStats()
 
     m_previousTime = currentTime;
 
-    QList<DiskStats> result;
+    QMap<QString, DiskStats> result;
     const QByteArray data = file.readAll();
     file.close();
     const QList<QByteArray> lines = data.split('\n');
@@ -151,7 +151,7 @@ void SystemMonitorService::updateDiskStats()
             stats.name = deviceName;
             stats.read = (readDelta * 512.0) / elapsedSeconds;
             stats.write = (writeDelta * 512.0) / elapsedSeconds;
-            result.append(stats);
+            result[deviceName] = stats;
         }
 
         m_previousStats[deviceName] = current;

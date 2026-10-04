@@ -65,7 +65,7 @@ private slots:
 signals:
     void cpuUsage(double val);
     void memoryUsage(quint64 used, quint64 free);
-    void diskStatsChanged(const QList<DiskStats>& stats);
+    void diskStatsChanged(const QMap<QString, DiskStats>& stats);
 };
 
 #endif // SYSTEMMONITORSERVICE_H

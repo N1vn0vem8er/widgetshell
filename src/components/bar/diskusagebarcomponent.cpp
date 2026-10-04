@@ -1,8 +1,8 @@
 #include "diskusagebarcomponent.h"
 #include <qboxlayout.h>
 
-DiskUsageBarComponent::DiskUsageBarComponent(const QString &labelText, DiskUsageBarComponent::Unit unit, QWidget *parent)
-    : QPushButton{parent}
+DiskUsageBarComponent::DiskUsageBarComponent(const QString &diskName, const QString &labelText, DiskUsageBarComponent::Unit unit, QWidget *parent)
+    : QPushButton{parent}, diskName(diskName), labelText(labelText), unit(unit)
 {
     service = SystemMonitorService::instance();
     setFlat(true);
@@ -10,11 +10,11 @@ DiskUsageBarComponent::DiskUsageBarComponent(const QString &labelText, DiskUsage
     connect(service, &SystemMonitorService::diskStatsChanged, this, &DiskUsageBarComponent::diskStatsChanged);
 }
 
-void DiskUsageBarComponent::diskStatsChanged(const QList<DiskStats> &stats)
+void DiskUsageBarComponent::diskStatsChanged(const QMap<QString, DiskStats> &stats)
 {
-    if(!stats.isEmpty())
+    if(stats.contains(diskName))
     {
-        auto disk = stats.first();
+        auto disk = stats.value(diskName);
         auto convert = [this](quint64 value) -> double{
             switch(unit)
             {

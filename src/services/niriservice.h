@@ -15,8 +15,11 @@ public:
     NiriService& operator=(const NiriService&) = delete;
 
 private:
-    QLocalSocket* socket {nullptr};
+    QLocalSocket* commandSocket {nullptr};
+    QLocalSocket* eventSocket {nullptr};
     inline static NiriService* m_instance {nullptr};
+    QByteArray m_commandReadBuffer;
+    QByteArray m_eventReadBuffer;
 
 private:
     explicit NiriService(QObject *parent = nullptr);
@@ -24,7 +27,8 @@ private:
     void sendIpcCommand(const QByteArray& command);
 
 private slots:
-    void onReadReady();
+    void onCommandReadReady();
+    void onEventReadReady();
 
 signals:
 };

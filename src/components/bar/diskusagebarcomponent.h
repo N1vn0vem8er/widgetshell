@@ -16,15 +16,18 @@ public:
         TB
     };
     explicit DiskUsageBarComponent(const QString& diskName, const QString& labelText, DiskUsageBarComponent::Unit unit, QWidget *parent = nullptr);
+    ~DiskUsageBarComponent();
 
 private:
     SystemMonitorService* service;
     Unit unit;
     QString labelText {"%1 ↑ %2 %4 | ↓ %3 %4"};
     QString diskName;
+    QWidget* selectDiskWidget {nullptr};
 
 private slots:
     void diskStatsChanged(const QMap<QString, DiskStats>& stats);
+    void onSelectDisk();
 
 signals:
 };

@@ -1,4 +1,5 @@
 #include "diskusagebarcomponent.h"
+#include <LayerShellQt/window.h>
 #include <qboxlayout.h>
 
 DiskUsageBarComponent::DiskUsageBarComponent(const QString &diskName, const QString &labelText, DiskUsageBarComponent::Unit unit, QWidget *parent)
@@ -8,6 +9,34 @@ DiskUsageBarComponent::DiskUsageBarComponent(const QString &diskName, const QStr
     setFlat(true);
 
     connect(service, &SystemMonitorService::diskStatsChanged, this, &DiskUsageBarComponent::diskStatsChanged);
+    connect(this, &QPushButton::clicked, this, &DiskUsageBarComponent::onSelectDisk);
+}
+
+DiskUsageBarComponent::~DiskUsageBarComponent()
+{
+    if(selectDiskWidget)
+        selectDiskWidget->deleteLater();
+}
+
+void DiskUsageBarComponent::onSelectDisk()
+{
+    if(!selectDiskWidget)
+        selectDiskWidget = new QWidget();
+    if(!selectDiskWidget->isVisible())
+    {
+        selectDiskWidget->setFixedSize(200, 300);
+        selectDiskWidget->winId();
+        LayerShellQt::Window* layerWindow = LayerShellQt::Window::get(selectDiskWidget->windowHandle());
+        layerWindow->setLayer(LayerShellQt::Window::Layer::LayerTop);
+        layerWindow->setAnchors(LayerShellQt::Window::Anchors(LayerShellQt::Window::AnchorTop | LayerShellQt::Window::AnchorLeft));
+        QPoint position = mapToGlobal(QPoint(0, height()));
+        layerWindow->setMargins(QMargins(position.x(), 0, 0, position.y()));
+        selectDiskWidget->show();
+    }
+    else
+    {
+        selectDiskWidget->hide();
+    }
 }
 
 void DiskUsageBarComponent::diskStatsChanged(const QMap<QString, DiskStats> &stats)

@@ -31,6 +31,7 @@ NiriService::NiriService(QObject *parent)
     commandSocket->connectToServer(path);
     connect(commandSocket, &QLocalSocket::readyRead, this, &NiriService::onCommandReadReady);
 
+    eventSocket = new QLocalSocket(this);
     eventSocket->connectToServer(path);
     connect(eventSocket, &QLocalSocket::connected, this, [this]{
         const QByteArray request = R"({"EventStream":{}})" "\n";
@@ -38,8 +39,6 @@ NiriService::NiriService(QObject *parent)
         eventSocket->flush();
     });
     connect(eventSocket, &QLocalSocket::readyRead, this, &NiriService::onEventReadReady);
-
-    eventSocket = new QLocalSocket(this);
 }
 
 NiriService::~NiriService()

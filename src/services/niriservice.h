@@ -2,6 +2,7 @@
 #define NIRISERVICE_H
 
 #include <QObject>
+#include <qlocalsocket.h>
 
 class NiriService : public QObject
 {
@@ -14,11 +15,13 @@ public:
     NiriService& operator=(const NiriService&) = delete;
 
 private:
+    QLocalSocket* socket {nullptr};
     inline static NiriService* m_instance {nullptr};
 
 private:
     explicit NiriService(QObject *parent = nullptr);
-    QByteArray sendIpcCommand(const QByteArray& command);
+    ~NiriService();
+    void sendIpcCommand(const QByteArray& command);
 
 private slots:
     void onReadReady();

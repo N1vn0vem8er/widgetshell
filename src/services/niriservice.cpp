@@ -1,4 +1,5 @@
 #include "niriservice.h"
+#include <qdebug.h>
 
 NiriService *NiriService::instance()
 {
@@ -24,12 +25,29 @@ void NiriService::destroy()
 NiriService::NiriService(QObject *parent)
     : QObject{parent}
 {
+    socket = new QLocalSocket(this);
 
+    auto path = QString::fromLocal8Bit(qgetenv("NIRI_SOCKET"));
+    socket->connectToServer(path);
 }
 
-QByteArray NiriService::sendIpcCommand(const QByteArray &command)
+NiriService::~NiriService()
 {
+    socket->disconnect();
+}
 
+void NiriService::sendIpcCommand(const QByteArray &command)
+{
+    if(socket->state() != QLocalSocket::ConnectedState)
+    {
+        qWarning() << "Niri IPC socket is not connected";
+        return;
+    }
+    QByteArray message = command;
+    if(!message.endsWith('\n'))
+        message.append('\n');
+
+    socket->write(message);
 }
 
 void NiriService::onReadReady()

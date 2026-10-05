@@ -3,6 +3,7 @@
 
 #include "services/systemmonitorservice.h"
 #include <QWidget>
+#include <qlistwidget.h>
 #include <qpushbutton.h>
 
 class DiskUsageBarComponent : public QPushButton
@@ -24,6 +25,8 @@ private:
     QString labelText {"%1 ↑ %2 %4 | ↓ %3 %4"};
     QString diskName;
     QWidget* selectDiskWidget {nullptr};
+    QList<QString> disks;
+    QListWidget* listWidget;
 
 private slots:
     void diskStatsChanged(const QMap<QString, DiskStats>& stats);

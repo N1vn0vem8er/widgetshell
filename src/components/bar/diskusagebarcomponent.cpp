@@ -1,6 +1,7 @@
 #include "diskusagebarcomponent.h"
 #include <LayerShellQt/window.h>
 #include <qboxlayout.h>
+#include <qlistwidget.h>
 
 DiskUsageBarComponent::DiskUsageBarComponent(const QString &diskName, const QString &labelText, DiskUsageBarComponent::Unit unit, QWidget *parent)
     : QPushButton{parent}, diskName(diskName), labelText(labelText), unit(unit)
@@ -21,9 +22,19 @@ DiskUsageBarComponent::~DiskUsageBarComponent()
 void DiskUsageBarComponent::onSelectDisk()
 {
     if(!selectDiskWidget)
-        selectDiskWidget = new QWidget();
-    if(!selectDiskWidget->isVisible())
     {
+        selectDiskWidget = new QWidget();
+
+        auto* layout = new QVBoxLayout(selectDiskWidget);
+        listWidget = new QListWidget(selectDiskWidget);
+        listWidget->setFrameShape(QFrame::NoFrame);
+        listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        layout->addWidget(listWidget);
+
+        connect(listWidget, &QListWidget::itemClicked, this, [this](auto* item){
+            diskName = item->data(Qt::UserRole).toString();
+        });
+
         selectDiskWidget->setFixedSize(200, 300);
         selectDiskWidget->winId();
         LayerShellQt::Window* layerWindow = LayerShellQt::Window::get(selectDiskWidget->windowHandle());
@@ -31,6 +42,24 @@ void DiskUsageBarComponent::onSelectDisk()
         layerWindow->setAnchors(LayerShellQt::Window::Anchors(LayerShellQt::Window::AnchorTop | LayerShellQt::Window::AnchorLeft));
         QPoint position = mapToGlobal(QPoint(0, height()));
         layerWindow->setMargins(QMargins(position.x(), 0, 0, position.y()));
+    }
+    if(!selectDiskWidget->isVisible())
+    {
+        listWidget->clear();
+
+        for(const auto& disk : std::as_const(disks))
+        {
+            auto* item = new QListWidgetItem(disk);
+            item->setData(Qt::UserRole, disk);
+            listWidget->addItem(item);
+        }
+
+        if(listWidget->count() == 0)
+        {
+            auto* item = new QListWidgetItem("No disks");
+            item->setFlags(Qt::NoItemFlags);
+            listWidget->addItem(item);
+        }
         selectDiskWidget->show();
     }
     else
@@ -41,6 +70,7 @@ void DiskUsageBarComponent::onSelectDisk()
 
 void DiskUsageBarComponent::diskStatsChanged(const QMap<QString, DiskStats> &stats)
 {
+    disks = stats.keys();
     if(stats.contains(diskName))
     {
         auto disk = stats.value(diskName);

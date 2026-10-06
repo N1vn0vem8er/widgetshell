@@ -1,4 +1,6 @@
 #include "niriservice.h"
+#include <QJsonDocument>
+#include <QJsonParseError>
 #include <qdebug.h>
 
 NiriService *NiriService::instance()
@@ -59,11 +61,44 @@ void NiriService::sendIpcCommand(const QByteArray &command)
 
     commandSocket->write(message);
 }
+void NiriService::processCommandResponse(const QJsonObject &object)
+{
+
+}
 
 void NiriService::onCommandReadReady()
 {
     m_commandReadBuffer.append(commandSocket->readAll());
+    while(true)
+    {
+        const qsizetype newline = m_commandReadBuffer.indexOf('\n');
 
+        if(newline < 0)
+            return;
+
+        const QByteArray line = m_commandReadBuffer.left(newline);
+        m_commandReadBuffer.remove(0, newline + 1);
+
+        if(line.trimmed().isEmpty())
+            continue;
+
+        QJsonParseError error;
+        const QJsonDocument document = QJsonDocument::fromJson(line, &error);
+
+        if(error.error != QJsonParseError::NoError)
+        {
+            qWarning() << "Invalid Niri IPC JSON:" << error.errorString() << line;
+            continue;
+        }
+
+        if(!document.isObject())
+        {
+            qWarning() << "Niri IPC response is not an object:" << line;
+            continue;
+        }
+
+        processCommandResponse(document.object());
+    }
 }
 
 void NiriService::onEventReadReady()

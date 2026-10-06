@@ -1,6 +1,7 @@
 #ifndef NIRISERVICE_H
 #define NIRISERVICE_H
 
+#include <QJsonObject>
 #include <QObject>
 #include <qlocalsocket.h>
 
@@ -25,6 +26,7 @@ private:
     explicit NiriService(QObject *parent = nullptr);
     ~NiriService();
     void sendIpcCommand(const QByteArray& command);
+    void processCommandResponse(const QJsonObject& object);
 
 private slots:
     void onCommandReadReady();

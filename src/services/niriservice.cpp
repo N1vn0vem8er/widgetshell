@@ -66,18 +66,22 @@ void NiriService::processCommandResponse(const QJsonObject &object)
 
 }
 
-void NiriService::onCommandReadReady()
+void NiriService::processEventResponse(const QJsonObject &object)
 {
-    m_commandReadBuffer.append(commandSocket->readAll());
+
+}
+
+QList<QJsonObject> NiriService::parseJsonLines(QByteArray &buffer)
+{
+    QList<QJsonObject> result;
     while(true)
     {
-        const qsizetype newline = m_commandReadBuffer.indexOf('\n');
-
+        const qsizetype newline = buffer.indexOf('\n');
         if(newline < 0)
-            return;
+            break;
 
-        const QByteArray line = m_commandReadBuffer.left(newline);
-        m_commandReadBuffer.remove(0, newline + 1);
+        const QByteArray line = buffer.left(newline);
+        buffer.remove(0, newline + 1);
 
         if(line.trimmed().isEmpty())
             continue;
@@ -87,22 +91,31 @@ void NiriService::onCommandReadReady()
 
         if(error.error != QJsonParseError::NoError)
         {
-            qWarning() << "Invalid Niri IPC JSON:" << error.errorString() << line;
+            qWarning() << "Invalid Niri JSON:" << error.errorString() << line;
             continue;
         }
 
-        if(!document.isObject())
-        {
-            qWarning() << "Niri IPC response is not an object:" << line;
-            continue;
-        }
+        if(document.isObject())
+            result.append(document.object());
+    }
 
-        processCommandResponse(document.object());
+    return result;
+}
+
+void NiriService::onCommandReadReady()
+{
+    m_commandReadBuffer.append(commandSocket->readAll());
+    for(const auto& response : parseJsonLines(m_commandReadBuffer))
+    {
+        processCommandResponse(response);
     }
 }
 
 void NiriService::onEventReadReady()
 {
     m_eventReadBuffer.append(eventSocket->readAll());
-
+    for(const auto& event : parseJsonLines(m_eventReadBuffer))
+    {
+        processEventResponse(event);
+    }
 }

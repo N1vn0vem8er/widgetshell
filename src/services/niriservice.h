@@ -27,6 +27,8 @@ private:
     ~NiriService();
     void sendIpcCommand(const QByteArray& command);
     void processCommandResponse(const QJsonObject& object);
+    void processEventResponse(const QJsonObject& object);
+    QList<QJsonObject> parseJsonLines(QByteArray& buffer);
 
 private slots:
     void onCommandReadReady();

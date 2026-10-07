@@ -70,6 +70,7 @@ qt_add_executable(widgetshell
     src/components/menus/systemactionsmenucomponent.h src/components/menus/systemactionsmenucomponent.cpp
     src/components/bar/diskusagebarcomponent.h src/components/bar/diskusagebarcomponent.cpp
     src/services/niriservice.h src/services/niriservice.cpp
+    src/components/bar/niri/workspaceswitcherniricomponent.h src/components/bar/niri/workspaceswitcherniricomponent.cpp
 )
 
 target_link_libraries(widgetshell

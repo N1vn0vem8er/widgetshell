@@ -8,6 +8,7 @@
 #include "services/notificationservice.h"
 #include "services/mprisservice.h"
 #include "services/swayservice.h"
+#include "services/niriservice.h"
 
 #include <QApplication>
 #include <QFile>
@@ -37,6 +38,7 @@ int main(int argc, char *argv[])
         HyprlandService::create(&a);
     else if(getenv("SWAYSOCK") != NULL)
         SwayService::create(&a);
+    NiriService::create(&a);
     AudioService::create(&a);
     DesktopAppsService::create(&a);
     SystemMonitorService::create(&a);

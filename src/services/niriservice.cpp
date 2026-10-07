@@ -68,7 +68,12 @@ void NiriService::processCommandResponse(const QJsonObject &object)
 
 void NiriService::processEventResponse(const QJsonObject &object)
 {
-
+    if(object.contains("WorkspaceActivated"))
+    {
+        const QJsonObject value = object.value("WorkspaceActivated").toObject();
+        emit(value.value("id").toVariant().toULongLong());
+        return;
+    }
 }
 
 QList<QJsonObject> NiriService::parseJsonLines(QByteArray &buffer)

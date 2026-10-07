@@ -35,6 +35,7 @@ private slots:
     void onEventReadReady();
 
 signals:
+    void workspaceActivated(quint64 id);
 };
 
 #endif // NIRISERVICE_H

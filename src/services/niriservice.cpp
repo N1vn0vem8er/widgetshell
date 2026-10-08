@@ -115,6 +115,27 @@ void NiriService::processEventResponse(const QJsonObject &object)
         emit workspaceActivated(value.value("id").toInteger());
         return;
     }
+    if(object.contains("WorkspacesChanged"))
+    {
+        const auto workspacesArray = object.value("WorkspacesChanged").toObject().value("workspaces").toArray();
+        m_workspaces.clear();
+        for(const auto& ws : workspacesArray)
+        {
+            const auto wsObj = ws.toObject();
+            NiriWorkspace workspace;
+            workspace.id = wsObj.value("id").toInteger();
+            workspace.idx = wsObj.value("idx").toInteger();
+            workspace.isActive = wsObj.value("is_active").toBool();
+            workspace.isFocused = wsObj.value("is_focused").toBool();
+            workspace.isUrgent = wsObj.value("is_urgent").toBool();
+            workspace.activeWindowId = wsObj.value("active_window_id").isNull() ? std::nullopt : std::optional<quint64>{wsObj.value("active_window_id").toInteger()};
+            workspace.name = wsObj.value("name").toString();
+            workspace.output = wsObj.value("output").toString();
+            m_workspaces.append(workspace);
+        }
+        std::sort(m_workspaces.begin(), m_workspaces.end(), [](const auto& a, const auto& b){return a.id < b.id;});
+        emit workspacesRefreshed();
+    }
 }
 
 QList<QJsonObject> NiriService::parseJsonLines(QByteArray &buffer)

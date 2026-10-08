@@ -53,5 +53,11 @@ void WorkspaceSwitcherNiriComponent::refreshWorkspaces()
 
 void WorkspaceSwitcherNiriComponent::workspaceChanged(quint64 id)
 {
-
+    for(auto* button : std::as_const(buttons))
+    {
+        if(button->property("id").toULongLong() == id)
+            button->setChecked(true);
+        else
+            button->setChecked(false);
+    }
 }

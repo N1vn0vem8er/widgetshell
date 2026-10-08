@@ -96,6 +96,7 @@ void NiriService::processCommandResponse(const QJsonObject &object)
                 workspace.output = wsObj.value("output").toString();
                 m_workspaces.append(workspace);
             }
+            emit workspacesRefreshed();
         }
     }
 }

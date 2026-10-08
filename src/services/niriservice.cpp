@@ -30,6 +30,11 @@ QList<NiriWorkspace> NiriService::workspaces() const
     return m_workspaces;
 }
 
+void NiriService::focusWorkspace(quint64 id)
+{
+    sendIpcCommand(QString(R"({"Action":{"FocusWorkspace":{"reference":{"Id":%1}}}})").arg(id).toUtf8());
+}
+
 void NiriService::refreshWorkspaces()
 {
     sendIpcCommand(R"({"Workspaces":null})");

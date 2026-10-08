@@ -27,6 +27,7 @@ public:
     NiriService& operator=(const NiriService&) = delete;
     void refreshWorkspaces();
     QList<NiriWorkspace> workspaces() const;
+    void focusWorkspace(quint64 id);
 
 private:
     QLocalSocket* commandSocket {nullptr};

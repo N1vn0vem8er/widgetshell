@@ -42,7 +42,8 @@ void WorkspaceSwitcherNiriComponent::refreshWorkspaces()
             else
                 button->setChecked(false);
             connect(button, &WorkspaceButton::clicked, this, [button, this]{
-                auto workspaceName = button->property("id").toULongLong();
+                auto workspaceId = button->property("id").toULongLong();
+                service->focusWorkspace(workspaceId);
             });
             button->show();
         }

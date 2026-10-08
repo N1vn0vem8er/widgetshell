@@ -2,6 +2,7 @@
 #include <QJsonDocument>
 #include <QJsonParseError>
 #include <qdebug.h>
+#include <qjsonarray.h>
 
 NiriService *NiriService::instance()
 {
@@ -22,6 +23,16 @@ void NiriService::destroy()
         delete m_instance;
         m_instance = nullptr;
     }
+}
+
+QList<NiriWorkspace> NiriService::workspaces() const
+{
+    return m_workspaces;
+}
+
+void NiriService::refreshWorkspaces()
+{
+    sendIpcCommand(R"({"Workspaces":null})");
 }
 
 NiriService::NiriService(QObject *parent)
@@ -61,9 +72,32 @@ void NiriService::sendIpcCommand(const QByteArray &command)
 
     commandSocket->write(message);
 }
+
 void NiriService::processCommandResponse(const QJsonObject &object)
 {
-
+    if(object.contains("Ok") && object.value("Ok").isObject())
+    {
+        const auto& obj = object.value("Ok").toObject();
+        if(obj.contains("Workspaces"))
+        {
+            const auto workspacesArray = obj.value("Workspaces").toArray();
+            m_workspaces.clear();
+            for(const auto& ws : workspacesArray)
+            {
+                const auto wsObj = ws.toObject();
+                NiriWorkspace workspace;
+                workspace.id = wsObj.value("id").toInteger();
+                workspace.idx = wsObj.value("idx").toInteger();
+                workspace.isActive = wsObj.value("is_active").toBool();
+                workspace.isFocused = wsObj.value("is_focused").toBool();
+                workspace.isUrgent = wsObj.value("is_urgent").toBool();
+                workspace.activeWindowId = wsObj.value("active_window_id").isNull() ? std::nullopt : std::optional<quint64>{wsObj.value("active_window_id").toInteger()};
+                workspace.name = wsObj.value("name").toString();
+                workspace.output = wsObj.value("output").toString();
+                m_workspaces.append(workspace);
+            }
+        }
+    }
 }
 
 void NiriService::processEventResponse(const QJsonObject &object)
@@ -71,7 +105,7 @@ void NiriService::processEventResponse(const QJsonObject &object)
     if(object.contains("WorkspaceActivated"))
     {
         const QJsonObject value = object.value("WorkspaceActivated").toObject();
-        emit(value.value("id").toVariant().toULongLong());
+        emit(value.value("id").toInteger());
         return;
     }
 }

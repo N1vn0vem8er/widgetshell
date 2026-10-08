@@ -5,6 +5,17 @@
 #include <QObject>
 #include <qlocalsocket.h>
 
+struct NiriWorkspace {
+    quint64 id;
+    quint64 idx;
+    std::optional<quint64> activeWindowId;
+    bool isActive;
+    bool isFocused;
+    bool isUrgent;
+    QString name;
+    QString output;
+};
+
 class NiriService : public QObject
 {
     Q_OBJECT
@@ -14,6 +25,8 @@ public:
     static void destroy();
     NiriService(const NiriService&) = delete;
     NiriService& operator=(const NiriService&) = delete;
+    void refreshWorkspaces();
+    QList<NiriWorkspace> workspaces() const;
 
 private:
     QLocalSocket* commandSocket {nullptr};
@@ -21,6 +34,7 @@ private:
     inline static NiriService* m_instance {nullptr};
     QByteArray m_commandReadBuffer;
     QByteArray m_eventReadBuffer;
+    QList<NiriWorkspace> m_workspaces;
 
 private:
     explicit NiriService(QObject *parent = nullptr);
@@ -36,6 +50,7 @@ private slots:
 
 signals:
     void workspaceActivated(quint64 id);
+    void workspacesRefreshed();
 };
 
 #endif // NIRISERVICE_H

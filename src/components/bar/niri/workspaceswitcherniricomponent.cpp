@@ -11,11 +11,11 @@ WorkspaceSwitcherNiriComponent::WorkspaceSwitcherNiriComponent(QWidget *parent) 
     service = NiriService::instance();
     connect(service, &NiriService::workspaceActivated, this, &WorkspaceSwitcherNiriComponent::workspaceChanged);
     refreshWorkspaces();
+    service->refreshWorkspaces();
 }
 
 void WorkspaceSwitcherNiriComponent::refreshWorkspaces()
 {
-
 }
 
 void WorkspaceSwitcherNiriComponent::workspaceChanged(quint64 id)

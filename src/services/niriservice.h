@@ -16,6 +16,16 @@ struct NiriWorkspace {
     QString output;
 };
 
+struct NiriClient {
+    quint64 id;
+    QString appId;
+    QString title;
+    quint64 workspaceId;
+    bool isFloating;
+    bool isFocused;
+    bool isUrgent;
+};
+
 class NiriService : public QObject
 {
     Q_OBJECT
@@ -28,6 +38,7 @@ public:
     void refreshWorkspaces();
     QList<NiriWorkspace> workspaces() const;
     void focusWorkspace(quint64 id);
+    void refreshClients();
 
 private:
     QLocalSocket* commandSocket {nullptr};

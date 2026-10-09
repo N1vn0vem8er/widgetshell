@@ -35,6 +35,11 @@ void NiriService::focusWorkspace(quint64 id)
     sendIpcCommand(QString(R"({"Action":{"FocusWorkspace":{"reference":{"Id":%1}}}})").arg(id).toUtf8());
 }
 
+void NiriService::refreshClients()
+{
+    sendIpcCommand(R"({"Windows":null})");
+}
+
 void NiriService::refreshWorkspaces()
 {
     sendIpcCommand(R"({"Workspaces":null})");
@@ -140,6 +145,14 @@ void NiriService::processEventResponse(const QJsonObject &object)
     if(object.contains("WindowFocusChanged"))
     {
         emit clientFocused(object.value("WindowFocusChanged").toObject().value("id").toInteger());
+        return;
+    }
+    if(object.contains("WindowOpenedOrChanged"))
+    {
+        return;
+    }
+    if(object.contains("WorkspaceActiveWindowChanged"))
+    {
         return;
     }
 }

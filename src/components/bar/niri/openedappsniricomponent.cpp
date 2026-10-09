@@ -10,7 +10,8 @@ OpenedAppsNiriComponent::OpenedAppsNiriComponent(QWidget *parent) : OpenedAppsCo
     mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSpacing(4);
     setLayout(mainLayout);
-    updateClients();
+
+    niriService->refreshClients();
 }
 
 void OpenedAppsNiriComponent::updateClients()

@@ -135,6 +135,12 @@ void NiriService::processEventResponse(const QJsonObject &object)
         }
         std::sort(m_workspaces.begin(), m_workspaces.end(), [](const auto& a, const auto& b){return a.id < b.id;});
         emit workspacesRefreshed();
+        return;
+    }
+    if(object.contains("WindowFocusChanged"))
+    {
+        emit clientFocused(object.value("WindowFocusChanged").toObject().value("id").toInteger());
+        return;
     }
 }
 

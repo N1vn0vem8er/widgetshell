@@ -111,7 +111,7 @@ void NiriService::processCommandResponse(const QJsonObject &object)
                 workspace.output = wsObj.value("output").toString();
                 m_workspaces.append(workspace);
             }
-            std::sort(m_workspaces.begin(), m_workspaces.end(), [](const auto& a, const auto& b){return a.id < b.id;});
+            std::sort(m_workspaces.begin(), m_workspaces.end(), [](const auto& a, const auto& b){return a.idx < b.idx;});
             emit workspacesRefreshed();
             return;
         }

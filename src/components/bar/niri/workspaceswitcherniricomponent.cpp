@@ -35,7 +35,7 @@ void WorkspaceSwitcherNiriComponent::refreshWorkspaces()
         {
             const auto& ws = workspaces.at(i);
             WorkspaceButton* button = buttons.at(i);
-            button->setText(QString::number(ws.id));
+            button->setText(QString::number(ws.idx));
             button->setProperty("id", QString::number(ws.id));
             if(ws.isFocused)
                 button->setChecked(true);

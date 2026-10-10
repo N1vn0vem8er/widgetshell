@@ -205,6 +205,13 @@ void NiriService::processEventResponse(const QJsonObject &object)
     {
         return;
     }
+    if(object.contains("WindowClosed"))
+    {
+        const auto id = object.value("WindowClosed").toObject().value("id").toInteger();
+        m_clients.removeIf([id](const auto& c){return c.id == id;});
+        emit clientsRefreshed();
+        return;
+    }
 }
 
 QList<QJsonObject> NiriService::parseJsonLines(QByteArray &buffer)

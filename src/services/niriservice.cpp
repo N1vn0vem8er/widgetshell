@@ -40,6 +40,11 @@ void NiriService::refreshClients()
     sendIpcCommand(R"({"Windows":null})");
 }
 
+QList<NiriClient> NiriService::clients() const
+{
+    return m_clients;
+}
+
 void NiriService::refreshWorkspaces()
 {
     sendIpcCommand(R"({"Workspaces":null})");

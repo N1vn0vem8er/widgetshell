@@ -39,6 +39,7 @@ public:
     QList<NiriWorkspace> workspaces() const;
     void focusWorkspace(quint64 id);
     void refreshClients();
+    QList<NiriClient> clients() const;
 
 private:
     QLocalSocket* commandSocket {nullptr};

@@ -175,6 +175,30 @@ void NiriService::processEventResponse(const QJsonObject &object)
     }
     if(object.contains("WindowOpenedOrChanged"))
     {
+        const auto obj = object.value("WindowOpenedOrChanged").toObject().value("window").toObject();
+        NiriClient client;
+        client.id = obj.value("id").toInteger();
+        client.appId = obj.value("app_id").toString();
+        client.isFloating = obj.value("is_floating").toBool();
+        client.isFocused = obj.value("is_focused").toBool();
+        client.workspaceId = obj.value("workspace_id").toInteger();
+        client.title = obj.value("title").toString();
+        client.isUrgent = obj.value("is_urgent").toBool();
+        auto found = std::find_if(m_clients.begin(), m_clients.end(), [&client](const auto& c){return c.id == client.id;});
+        if(found != m_clients.end())
+        {
+            found->appId = client.appId;
+            found->workspaceId = client.workspaceId;
+            found->title = client.title;
+            found->isFloating = client.isFloating;
+            found->isFocused = client.isFocused;
+            found->isUrgent = client.isUrgent;
+        }
+        else
+        {
+            m_clients.append(client);
+        }
+        emit clientsRefreshed();
         return;
     }
     if(object.contains("WorkspaceActiveWindowChanged"))

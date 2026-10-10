@@ -108,6 +108,27 @@ void NiriService::processCommandResponse(const QJsonObject &object)
             }
             std::sort(m_workspaces.begin(), m_workspaces.end(), [](const auto& a, const auto& b){return a.id < b.id;});
             emit workspacesRefreshed();
+            return;
+        }
+        if(obj.contains("Windows"))
+        {
+            m_clients.clear();
+            const auto array = obj.value("Windows").toArray();
+            for(const auto& co : array)
+            {
+                const auto object = co.toObject();
+                NiriClient client;
+                client.id = object.value("id").toInteger();
+                client.appId = object.value("app_id").toString();
+                client.isFloating = object.value("is_floating").toBool();
+                client.isFocused = object.value("is_focused").toBool();
+                client.workspaceId = object.value("workspace_id").toInteger();
+                client.title = object.value("title").toString();
+                client.isUrgent = object.value("is_urgent").toBool();
+                m_clients.append(client);
+            }
+            emit clientsRefreshed();
+            return;
         }
     }
 }

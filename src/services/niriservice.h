@@ -47,6 +47,7 @@ private:
     QByteArray m_commandReadBuffer;
     QByteArray m_eventReadBuffer;
     QList<NiriWorkspace> m_workspaces;
+    QList<NiriClient> m_clients;
 
 private:
     explicit NiriService(QObject *parent = nullptr);
@@ -63,6 +64,7 @@ private slots:
 signals:
     void workspaceActivated(quint64 id);
     void workspacesRefreshed();
+    void clientsRefreshed();
     void clientFocused(quint64 id);
 };
 

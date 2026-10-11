@@ -175,7 +175,14 @@ void NiriService::processEventResponse(const QJsonObject &object)
     }
     if(object.contains("WindowFocusChanged"))
     {
-        emit clientFocused(object.value("WindowFocusChanged").toObject().value("id").toInteger());
+        const auto id = object.value("WindowFocusChanged").toObject().value("id").toInteger();
+        for(auto& client : m_clients)
+        {
+            client.isFocused = (client.id == id);
+        }
+
+        emit clientsRefreshed();
+        emit clientFocused(id);
         return;
     }
     if(object.contains("WindowOpenedOrChanged"))
@@ -208,8 +215,8 @@ void NiriService::processEventResponse(const QJsonObject &object)
     }
     if(object.contains("WorkspaceActiveWindowChanged"))
     {
-        const auto id = object.value("WorkspaceActiveWindowChanged").toObject().value("id").toInteger();
-        for (auto &client : m_clients)
+        const auto id = object.value("WorkspaceActiveWindowChanged").toObject().value("active_window_id").toInteger();
+        for(auto& client : m_clients)
         {
             client.isFocused = (client.id == id);
         }

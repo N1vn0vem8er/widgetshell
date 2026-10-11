@@ -32,6 +32,11 @@ void OpenedAppsNiriComponent::updateClients()
         button->setFlat(true);
         button->setCheckable(true);
         mainLayout->addWidget(button);
+        connect(button, &QPushButton::clicked, this, [this, button]{
+            auto id = button->property("id").toULongLong();
+            niriService->focusClient(id);
+            // activateClient(id);
+        });
         buttons.append(button);
     }
 
@@ -50,11 +55,6 @@ void OpenedAppsNiriComponent::updateClients()
             button->setFlat(true);
             button->setToolTip(client.title);
             button->setProperty("id", client.id);
-            connect(button, &QPushButton::clicked, this, [this, button]{
-                auto id = button->property("id").toULongLong();
-                niriService->focusClient(id);
-                activateClient(id);
-            });
             button->show();
         }
         else
@@ -70,7 +70,9 @@ void OpenedAppsNiriComponent::activateClient(quint64 id)
 {
     for(const auto& button : std::as_const(buttons))
     {
-        if(button->property("id") == id)
+        qDebug() << "1";
+        qDebug() << button->property("id").toULongLong();
+        if(button->property("id").toULongLong() == id)
             button->setChecked(true);
         else
             button->setChecked(false);

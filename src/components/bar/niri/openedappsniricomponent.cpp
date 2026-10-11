@@ -35,7 +35,6 @@ void OpenedAppsNiriComponent::updateClients()
         connect(button, &QPushButton::clicked, this, [this, button]{
             auto id = button->property("id").toULongLong();
             niriService->focusClient(id);
-            // activateClient(id);
         });
         buttons.append(button);
     }

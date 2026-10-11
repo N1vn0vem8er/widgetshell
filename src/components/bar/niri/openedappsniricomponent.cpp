@@ -35,7 +35,7 @@ void OpenedAppsNiriComponent::updateClients()
         connect(button, &QPushButton::clicked, this, [this, button]{
             auto id = button->property("id").toULongLong();
             niriService->focusClient(id);
-            // activateClient(id);
+            activateClient(id);
         });
         buttons.append(button);
     }
@@ -70,8 +70,6 @@ void OpenedAppsNiriComponent::activateClient(quint64 id)
 {
     for(const auto& button : std::as_const(buttons))
     {
-        qDebug() << "1";
-        qDebug() << button->property("id").toULongLong();
         if(button->property("id").toULongLong() == id)
             button->setChecked(true);
         else

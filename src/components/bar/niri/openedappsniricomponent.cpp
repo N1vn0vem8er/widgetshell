@@ -14,6 +14,7 @@ OpenedAppsNiriComponent::OpenedAppsNiriComponent(QWidget *parent) : OpenedAppsCo
     niriService->refreshClients();
 
     connect(niriService, &NiriService::clientsRefreshed, this, &OpenedAppsNiriComponent::updateClients);
+    connect(niriService, &NiriService::clientFocused, this, &OpenedAppsNiriComponent::activateClient);
 }
 
 void OpenedAppsNiriComponent::updateClients()
@@ -45,11 +46,14 @@ void OpenedAppsNiriComponent::updateClients()
             {
                 button->setIcon(QIcon::fromTheme(apps->icon));
             }
+            button->setChecked(client.isFocused);
             button->setFlat(true);
             button->setToolTip(client.title);
             button->setProperty("id", client.id);
             connect(button, &QPushButton::clicked, this, [this, button]{
-                // niriService->focusClient(button->property("id").toInt());
+                auto id = button->property("id").toULongLong();
+                niriService->focusClient(id);
+                activateClient(id);
             });
             button->show();
         }

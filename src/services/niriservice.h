@@ -9,9 +9,9 @@ struct NiriWorkspace {
     quint64 id;
     quint64 idx;
     std::optional<quint64> activeWindowId;
-    bool isActive;
-    bool isFocused;
-    bool isUrgent;
+    bool isActive {false};
+    bool isFocused {false};
+    bool isUrgent {false};
     QString name;
     QString output;
 };
@@ -21,9 +21,9 @@ struct NiriClient {
     QString appId;
     QString title;
     quint64 workspaceId;
-    bool isFloating;
-    bool isFocused;
-    bool isUrgent;
+    bool isFloating {false};
+    bool isFocused {false};
+    bool isUrgent {false};
 };
 
 class NiriService : public QObject
@@ -40,6 +40,7 @@ public:
     void focusWorkspace(quint64 id);
     void refreshClients();
     QList<NiriClient> clients() const;
+    void focusClient(quint64 id);
 
 private:
     QLocalSocket* commandSocket {nullptr};

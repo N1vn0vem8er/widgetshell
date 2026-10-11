@@ -22,6 +22,7 @@ BarWidget::BarWidget(QWidget *parent)
     layerWindow->setLayer(LayerShellQt::Window::Layer::LayerTop);
     layerWindow->setAnchors(LayerShellQt::Window::Anchors(LayerShellQt::Window::AnchorTop | LayerShellQt::Window::AnchorLeft | LayerShellQt::Window::AnchorRight));
     layerWindow->setExclusiveZone(height());
+    layerWindow->setKeyboardInteractivity(LayerShellQt::Window::KeyboardInteractivityNone);
 
     mainLayout = new QGridLayout(this);
     mainLayout->setContentsMargins(0, 0, 0, 0);

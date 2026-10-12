@@ -211,6 +211,7 @@ void NiriService::processEventResponse(const QJsonObject &object)
             m_clients.append(client);
         }
         emit clientsRefreshed();
+        emit clientOpenedOrChanged(client);
         return;
     }
     if(object.contains("WorkspaceActiveWindowChanged"))

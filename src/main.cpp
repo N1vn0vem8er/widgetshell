@@ -38,7 +38,8 @@ int main(int argc, char *argv[])
         HyprlandService::create(&a);
     else if(getenv("SWAYSOCK") != NULL)
         SwayService::create(&a);
-    NiriService::create(&a);
+    else if(getenv("NIRI_SOCKET") != NULL)
+        NiriService::create(&a);
     AudioService::create(&a);
     DesktopAppsService::create(&a);
     SystemMonitorService::create(&a);

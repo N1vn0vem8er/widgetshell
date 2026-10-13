@@ -178,7 +178,12 @@ void NiriService::processEventResponse(const QJsonObject &object)
         const auto id = object.value("WindowFocusChanged").toObject().value("id").toInteger();
         for(auto& client : m_clients)
         {
-            client.isFocused = (client.id == id);
+            if(client.id == id)
+            {
+                client.isFocused = true;
+                emit clientOpenedOrChanged(client);
+            }
+            client.isFocused = false;
         }
 
         emit clientsRefreshed();

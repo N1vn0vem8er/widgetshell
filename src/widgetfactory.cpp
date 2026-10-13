@@ -9,6 +9,7 @@
 #include "components/bar/memoryusagecomponent.h"
 #include "components/bar/networkconnectioncomponent.h"
 #include "components/bar/hyprland/openedappshyprlandcomponent.h"
+#include "components/bar/niri/activeappnameniricomponent.h"
 #include "components/bar/niri/openedappsniricomponent.h"
 #include "components/bar/niri/workspaceswitcherniricomponent.h"
 #include "components/bar/storageusagebarcomponent.h"
@@ -52,6 +53,10 @@ WidgetFactory::WidgetFactory(QObject *parent)
         else if(getenv("SWAYSOCK") != NULL)
         {
             widget = new ActiveAppNameSwayComponent(maxLength, parent);
+        }
+        else if(getenv("NIRI_SOCKET") != NULL)
+        {
+            widget = new ActiveAppNameNiriComponent(maxLength, parent);
         }
         else
             widget = new QWidget(parent);

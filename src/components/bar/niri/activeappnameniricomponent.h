@@ -8,7 +8,7 @@ class ActiveAppNameNiriComponent : public ActiveAppNameComponent
 {
     Q_OBJECT
 public:
-    explicit ActiveAppNameNiriComponent(QWidget* parent = nullptr);
+    explicit ActiveAppNameNiriComponent(uint maxLength, QWidget* parent = nullptr);
 
 private:
     QLabel* label;

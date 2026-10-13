@@ -202,3 +202,14 @@ AudioVolumeControlBarComponent:hover {
 NotificationPopupComponent {
     background-color: #100043;
 }
+
+DiskUsageBarComponent {
+    background-color: #7956e8;
+    border: none;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+DiskUsageBarComponent:hover {
+    background-color: #7956ff;
+}

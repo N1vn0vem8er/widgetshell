@@ -6,6 +6,7 @@
 DiskUsageBarComponent::DiskUsageBarComponent(const QString &diskName, const QString &labelText, DiskUsageBarComponent::Unit unit, QWidget *parent)
     : QPushButton{parent}, diskName(diskName), labelText(labelText), unit(unit)
 {
+    setAttribute(Qt::WA_StyledBackground, true);
     service = SystemMonitorService::instance();
     setFlat(true);
 

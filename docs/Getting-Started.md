@@ -40,6 +40,7 @@ Widget Shell currently supports the following Wayland compositors:
 
 * Hyprland
 * Sway
+* Niri
 
 It should work in other compositors bub with limited features.
 

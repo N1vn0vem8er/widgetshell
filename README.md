@@ -8,3 +8,4 @@ Widget Shell currently supports:
 
 * Hyprland
 * Sway
+* Niri

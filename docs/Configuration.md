@@ -18,7 +18,7 @@ To use the built-in default theme, set `theme=default`. To use the system Qt the
 
 ## Bar
 
-Bar layout can be configured with bar.json file. This is the list of all avaliable widgets that can be placed
+Bar layout can be configured with `bar.json` file. This is the list of all avaliable widgets that can be placed
 in the bar:
 
 * [Workspace Switcher](Configuration-WorkspaceSwitcher.md)
@@ -33,5 +33,12 @@ in the bar:
 * [Uptime](Configuration-Uptime.md)
 
 ## Control Menu
+
+Control menu layout can be configured with `controlmenu.json` file. This is the list of all avaliable widgets that can be placed in the control menu:
+
+* [System Actions](Configuration-SystemActions.md)
+* [Audio Control](Configuration-MenuAudioControl.md)
+* [Calendar](Configuration-MenuCalendar)
+* [Notification History](Configuration-NotificationHistory.md)
 
 ## Network Menu

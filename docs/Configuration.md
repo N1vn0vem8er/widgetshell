@@ -38,7 +38,7 @@ Control menu layout can be configured with `controlmenu.json` file. This is the 
 
 * [System Actions](Configuration-SystemActions.md)
 * [Audio Control](Configuration-MenuAudioControl.md)
-* [Calendar](Configuration-MenuCalendar)
+* [Calendar](Configuration-MenuCalendar.md)
 * [Notification History](Configuration-NotificationHistory.md)
 
 ## Network Menu

@@ -20,6 +20,8 @@ private:
     QVideoWidget* videoWidget;
     QMediaPlayer* mediaPlayer;
     QPixmap currentPixmap;
+    Qt::AspectRatioMode aspectratioMode;
+    Qt::TransformationMode transformationMode;
 
 signals:
 

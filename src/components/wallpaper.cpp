@@ -3,6 +3,7 @@
 #include <QAudioOutput>
 #include <QMimeDatabase>
 #include <QSettings>
+#include <QMap>
 
 Wallpaper::Wallpaper(QWidget *parent) : QWidget{parent}
 {
@@ -17,7 +18,12 @@ Wallpaper::Wallpaper(QWidget *parent) : QWidget{parent}
 
 void Wallpaper::initWallpaper()
 {
-    const QString wallpaper = QSettings().value("Wallpaper/wallpaper", "").toString();
+    const static QMap<QString, Qt::AspectRatioMode> aspectRatioModeMap{{"ignoreaspectratio", Qt::IgnoreAspectRatio}};
+    const static QMap<QString, Qt::TransformationMode> transformationModeMap{{"fast", Qt::FastTransformation}, {"smooth", Qt::SmoothTransformation}};
+    QSettings settings;
+    aspectratioMode = aspectRatioModeMap.value(settings.value("Wallpaper/AspectRatioMode", Qt::KeepAspectRatioByExpanding).toString().trimmed().toLower());
+    transformationMode = transformationModeMap.value(settings.value("Wallpaper/TransformationMode", Qt::SmoothTransformation).toString().trimmed().toLower());
+    const QString wallpaper = settings.value("Wallpaper/wallpaper", "").toString();
     if(wallpaper.isEmpty())
         return;
     QMimeDatabase mimeDatabase;
@@ -28,7 +34,7 @@ void Wallpaper::initWallpaper()
         imageLabel = new QLabel(this);
         mainLayout->addWidget(imageLabel);
         QPixmap pixmap(wallpaper);
-        imageLabel->setPixmap(pixmap.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
+        imageLabel->setPixmap(pixmap.scaled(size(), aspectratioMode, transformationMode));
         currentPixmap = pixmap;
     }
     else if(mimeType.inherits("video/plain") || mimeType.name().startsWith("video/"))
@@ -36,7 +42,7 @@ void Wallpaper::initWallpaper()
         videoWidget = new QVideoWidget(this);
         videoWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         videoWidget->setMinimumSize(100, 100);
-        videoWidget->setAspectRatioMode(Qt::KeepAspectRatioByExpanding);
+        videoWidget->setAspectRatioMode(aspectratioMode);
         mediaPlayer = new QMediaPlayer(this);
         QAudioOutput* audioOutput = new QAudioOutput(this);
 
@@ -56,5 +62,5 @@ void Wallpaper::resizeEvent(QResizeEvent *event)
 {
     QWidget::resizeEvent(event);
     if(imageLabel && !currentPixmap.isNull())
-        imageLabel->setPixmap(currentPixmap.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
+        imageLabel->setPixmap(currentPixmap.scaled(size(), aspectratioMode, transformationMode));
 }

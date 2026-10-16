@@ -41,6 +41,7 @@ void DiskUsageBarComponent::onSelectDisk()
         LayerShellQt::Window* layerWindow = LayerShellQt::Window::get(selectDiskWidget->windowHandle());
         layerWindow->setLayer(LayerShellQt::Window::Layer::LayerTop);
         layerWindow->setAnchors(LayerShellQt::Window::Anchors(LayerShellQt::Window::AnchorTop | LayerShellQt::Window::AnchorLeft));
+        layerWindow->setKeyboardInteractivity(LayerShellQt::Window::KeyboardInteractivityNone);
         QPoint position = mapToGlobal(QPoint(0, height()));
         layerWindow->setMargins(QMargins(position.x(), 0, 0, position.y()));
     }

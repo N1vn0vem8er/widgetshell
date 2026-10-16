@@ -21,6 +21,7 @@ ControlMenu::ControlMenu(QWidget *parent)
     LayerShellQt::Window* layerWindow = LayerShellQt::Window::get(windowHandle());
     layerWindow->setLayer(LayerShellQt::Window::Layer::LayerOverlay);
     layerWindow->setAnchors(LayerShellQt::Window::Anchors(LayerShellQt::Window::AnchorTop | LayerShellQt::Window::AnchorRight));
+    layerWindow->setKeyboardInteractivity(LayerShellQt::Window::KeyboardInteractivityOnDemand);
 
     mainLayout = new QVBoxLayout(this);
     createMenu();

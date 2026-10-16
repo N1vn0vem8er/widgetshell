@@ -13,6 +13,7 @@ NetworkMenu::NetworkMenu(QWidget *parent)
     layerWindow = LayerShellQt::Window::get(windowHandle());
     layerWindow->setLayer(LayerShellQt::Window::Layer::LayerOverlay);
     layerWindow->setAnchors(LayerShellQt::Window::Anchors(LayerShellQt::Window::AnchorTop | LayerShellQt::Window::AnchorLeft));
+    layerWindow->setKeyboardInteractivity(LayerShellQt::Window::KeyboardInteractivityNone);
 
     service = NetworkService::instance();
 

@@ -3,6 +3,7 @@
 #include <LayerShellQt/Window>
 
 #include <QProcess>
+#include <QSettings>
 #include <QStandardPaths>
 #include <qdir.h>
 #include <qjsonarray.h>
@@ -14,7 +15,8 @@ ControlMenu::ControlMenu(QWidget *parent)
     : QWidget{parent}
 {
     setAttribute(Qt::WA_StyledBackground, true);
-    setFixedSize(300, 600);
+    QSettings settings;
+    setFixedSize(settings.value("ControlMenu/width", 300).toInt(), settings.value("ControlMenu/height", 600).toInt());
     winId();
     LayerShellQt::Window* layerWindow = LayerShellQt::Window::get(windowHandle());
     layerWindow->setLayer(LayerShellQt::Window::Layer::LayerOverlay);

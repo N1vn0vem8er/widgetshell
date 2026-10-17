@@ -4,11 +4,13 @@
 #include <QPushButton>
 #include <QScrollArea>
 #include <QVBoxLayout>
+#include <qsettings.h>
 
 NetworkMenu::NetworkMenu(QWidget *parent)
     : QWidget{parent}
 {
-    setFixedSize(300, 600);
+    QSettings settings;
+    setFixedSize(settings.value("NetworkMenu/width", 300).toInt(), settings.value("NetworkMenu/height", 300).toInt());
     winId();
     layerWindow = LayerShellQt::Window::get(windowHandle());
     layerWindow->setLayer(LayerShellQt::Window::Layer::LayerOverlay);

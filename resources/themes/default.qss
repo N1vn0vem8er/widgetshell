@@ -213,3 +213,12 @@ DiskUsageBarComponent {
 DiskUsageBarComponent:hover {
     background-color: #7956ff;
 }
+
+NotificationHistoryComponent QListWidget {
+    background-color: #100043;
+    border: 0px solid #100043;
+}
+
+NotificationHistoryComponent QLineEdit {
+    background-color: #063b5c;
+}

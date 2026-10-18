@@ -3,6 +3,7 @@
 NotificationHistoryComponent::NotificationHistoryComponent(QWidget *parent)
     : QWidget{parent}
 {
+    setAttribute(Qt::WA_StyledBackground, true);
     service = NotificationService::instance();
     mainLayout = new QVBoxLayout(this);
 

@@ -214,11 +214,17 @@ DiskUsageBarComponent:hover {
     background-color: #7956ff;
 }
 
+NotificationHistoryComponent {
+    background-color: #063b5c;
+    border: 1px solid #0a5a82;
+    border-radius: 10px;
+}
+
 NotificationHistoryComponent QListWidget {
-    background-color: #100043;
-    border: 0px solid #100043;
+    background-color: #063b5c;
+    border: 0px solid #063b5c;
 }
 
 NotificationHistoryComponent QLineEdit {
-    background-color: #063b5c;
+    background-color: #0b4d70;
 }

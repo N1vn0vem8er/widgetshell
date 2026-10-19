@@ -1,3 +1,4 @@
+#include "applauncher.h"
 #include "barwidget.h"
 #include "components/wallpaper.h"
 #include "controllers/notificationpopupscontroller.h"
@@ -52,5 +53,6 @@ int main(int argc, char *argv[])
     Wallpaper wallpaper;
     wallpaper.show();
     wallpaper.initWallpaper();
+    AppLauncher appLauncher;
     return a.exec();
 }

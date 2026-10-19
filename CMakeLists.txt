@@ -73,6 +73,7 @@ qt_add_executable(widgetshell
     src/components/bar/niri/workspaceswitcherniricomponent.h src/components/bar/niri/workspaceswitcherniricomponent.cpp
     src/components/bar/niri/openedappsniricomponent.h src/components/bar/niri/openedappsniricomponent.cpp
     src/components/bar/niri/activeappnameniricomponent.h src/components/bar/niri/activeappnameniricomponent.cpp
+    src/applauncher.h src/applauncher.cpp
 )
 
 target_link_libraries(widgetshell

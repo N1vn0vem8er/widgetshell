@@ -9,11 +9,12 @@ class UptimeBarComponent : public QWidget
 {
     Q_OBJECT
 public:
-    explicit UptimeBarComponent(QWidget *parent = nullptr);
+    explicit UptimeBarComponent(const QString& format, QWidget *parent = nullptr);
 
 private:
     QLabel* label;
     QTimer* timer;
+    QString format{"%1d %2h %3m %4s"};
     long long uptime;
 
 signals:

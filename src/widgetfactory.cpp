@@ -156,7 +156,7 @@ WidgetFactory::WidgetFactory(QObject *parent)
         return widget;
     });
     registerWidget("uptime", [](const QJsonObject& obj, QWidget* parent){
-        UptimeBarComponent* widget = new UptimeBarComponent(parent);
+        UptimeBarComponent* widget = new UptimeBarComponent(obj.value("format").toString("%1d %2h %3m %4s"), parent);
         return widget;
     });
     registerWidget("mediaplayer", [](const QJsonObject& obj, QWidget* parent){

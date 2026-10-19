@@ -2,8 +2,8 @@
 #include <qboxlayout.h>
 #include <sys/sysinfo.h>
 
-UptimeBarComponent::UptimeBarComponent(QWidget *parent)
-    : QWidget{parent}
+UptimeBarComponent::UptimeBarComponent(const QString &format, QWidget *parent)
+    : QWidget{parent}, format(format)
 {
     setAttribute(Qt::WA_StyledBackground, true);
     label = new QLabel(this);
@@ -24,7 +24,7 @@ UptimeBarComponent::UptimeBarComponent(QWidget *parent)
         seconds %= 3600;
         long long minutes = seconds / 60;
         seconds %= 60;
-        label->setText(QString("%1d %2h %3m %4s").arg(days).arg(hours, 2, 10, QChar('0')).arg(minutes, 2, 10, QChar('0')).arg(seconds, 2, 10, QChar('0')));
+        label->setText(this->format.arg(days).arg(hours, 2, 10, QChar('0')).arg(minutes, 2, 10, QChar('0')).arg(seconds, 2, 10, QChar('0')));
     });
     timer->setInterval(1000);
     timer->start();

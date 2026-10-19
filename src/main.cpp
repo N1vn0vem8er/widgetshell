@@ -10,6 +10,7 @@
 #include "services/mprisservice.h"
 #include "services/swayservice.h"
 #include "services/niriservice.h"
+#include "services/ipcserverservice.h"
 
 #include <QApplication>
 #include <QFile>
@@ -22,6 +23,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     QCoreApplication::setOrganizationName("widgetshell");
     QCoreApplication::setApplicationName("widgetshell");
+    IPCServerService::create();
     QSettings settings;
     const QString theme = settings.value("theme", "default").toString();
     if(theme != "system")

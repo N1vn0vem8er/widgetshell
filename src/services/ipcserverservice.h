@@ -1,6 +1,7 @@
 #ifndef IPCSERVERSERVICE_H
 #define IPCSERVERSERVICE_H
 
+#include <QLocalServer>
 #include <QObject>
 
 class IPCServerService : public QObject
@@ -18,6 +19,10 @@ private:
 
 private:
     inline static IPCServerService* m_instance = nullptr;
+    QLocalServer* server;
+
+private slots:
+    void handleConnections();
 
 signals:
 };

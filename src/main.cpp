@@ -23,6 +23,24 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     QCoreApplication::setOrganizationName("widgetshell");
     QCoreApplication::setApplicationName("widgetshell");
+
+    const auto arguments = a.arguments();
+
+    QLocalSocket socket;
+    socket.connectToServer("WIDGETSHELL");
+    if(socket.waitForConnected(1000))
+    {
+        if(arguments.contains("--show-launcher"))
+        {
+            QJsonObject object;
+            object["command"] = "show-launcher";
+            socket.write(QJsonDocument(object).toJson());
+            socket.flush();
+            return 0;
+        }
+        return 1;
+    }
+
     IPCServerService::create();
     QSettings settings;
     const QString theme = settings.value("theme", "default").toString();

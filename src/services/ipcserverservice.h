@@ -16,6 +16,7 @@ public:
 
 private:
     explicit IPCServerService(QObject *parent = nullptr);
+    ~IPCServerService();
 
 private:
     inline static IPCServerService* m_instance = nullptr;

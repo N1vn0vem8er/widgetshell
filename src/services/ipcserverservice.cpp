@@ -29,8 +29,16 @@ IPCServerService::IPCServerService(QObject *parent)
 {
     server = new QLocalServer(this);
     if(!server->listen("WIDGETSHELL"))
-        QApplication::exit(1);
+    {
+        qWarning() << server->errorString();
+        return;
+    }
     connect(server, &QLocalServer::newConnection, this, &IPCServerService::handleConnections);
+}
+
+IPCServerService::~IPCServerService()
+{
+    server->removeServer("WIDGETSHELL");
 }
 
 void IPCServerService::handleConnections()

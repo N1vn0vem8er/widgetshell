@@ -34,10 +34,10 @@ int main(int argc, char *argv[])
         {
             QJsonObject object;
             object["command"] = "show-launcher";
-            socket.write(QJsonDocument(object).toJson());
-            socket.flush();
-            return 0;
+            socket.write(QJsonDocument(object).toJson(QJsonDocument::Compact) + "\n");
         }
+        socket.flush();
+        socket.close();
         return 1;
     }
 

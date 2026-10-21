@@ -1,8 +1,11 @@
 #ifndef APPLAUNCHER_H
 #define APPLAUNCHER_H
 
+#include "services/desktopappsservice.h"
 #include "services/ipcserverservice.h"
+#include <QLineEdit>
 #include <QWidget>
+#include <qlistview.h>
 
 class AppLauncher : public QWidget
 {
@@ -12,6 +15,12 @@ public:
 
 private:
     IPCServerService* ipcServerService;
+    DesktopAppsService* appService;
+    QLineEdit* searchLineEdit;
+    QListView* listView;
+
+private:
+    void refresh();
 
 private slots:
     void onActivate();

@@ -31,6 +31,7 @@ private slots:
     void handleDisconnected();
 
 signals:
+    void showLauncher();
 };
 
 #endif // IPCSERVERSERVICE_H

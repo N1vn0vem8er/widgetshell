@@ -3,6 +3,7 @@
 #include <QApplication>
 #include <QJsonDocument>
 #include <QLocalSocket>
+#include <qjsonobject.h>
 
 IPCServerService *IPCServerService::instance()
 {
@@ -73,6 +74,21 @@ void IPCServerService::processMessages(QLocalSocket *socket)
         if(!document.isObject())
         {
             qWarning() << "IPC message must be a JSON object";
+            continue;
+        }
+
+        const auto object = document.object();
+        const auto command = object.value("command").toString();
+
+        if(command.isEmpty())
+        {
+            qWarning() << "Empty command";
+            continue;
+        }
+
+        if(command == "show-launcher")
+        {
+            emit showLauncher();
             continue;
         }
 

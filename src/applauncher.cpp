@@ -19,17 +19,28 @@ AppLauncher::AppLauncher(QWidget *parent)
     searchLineEdit = new QLineEdit(this);
     layout->addWidget(searchLineEdit);
     listView = new QListView(this);
+    model = new DesktopAppModel(this);
+    proxyModel = new DesktopAppProxyModel(this);
+    proxyModel->setSourceModel(model);
+    listView->setModel(proxyModel);
+    listView->setViewMode(QListView::ListMode);
+    listView->setUniformItemSizes(true);
+    listView->setIconSize(QSize(32, 32));
+    connect(searchLineEdit, &QLineEdit::textEdited, proxyModel, &DesktopAppProxyModel::setSearchText);
+
     layout->addWidget(listView);
 
     auto closeAction = new QAction(this);
     closeAction->setShortcut(Qt::Key_Escape);
     connect(closeAction, &QAction::triggered, this, &AppLauncher::hide);
     addAction(closeAction);
+
+    refresh();
 }
 
 void AppLauncher::refresh()
 {
-
+    model->addApps(appService->desktopApps());
 }
 
 void AppLauncher::onActivate()

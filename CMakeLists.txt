@@ -75,6 +75,7 @@ qt_add_executable(widgetshell
     src/components/bar/niri/activeappnameniricomponent.h src/components/bar/niri/activeappnameniricomponent.cpp
     src/applauncher.h src/applauncher.cpp
     src/services/ipcserverservice.h src/services/ipcserverservice.cpp
+    src/models/desktopappmodel.h src/models/desktopappmodel.cpp
 )
 
 target_link_libraries(widgetshell

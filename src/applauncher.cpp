@@ -20,6 +20,11 @@ AppLauncher::AppLauncher(QWidget *parent)
     layout->addWidget(searchLineEdit);
     listView = new QListView(this);
     layout->addWidget(listView);
+
+    auto closeAction = new QAction(this);
+    closeAction->setShortcut(Qt::Key_Escape);
+    connect(closeAction, &QAction::triggered, this, &AppLauncher::hide);
+    addAction(closeAction);
 }
 
 void AppLauncher::refresh()

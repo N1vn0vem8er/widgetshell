@@ -1,13 +1,15 @@
 #include "applauncher.h"
 #include <LayerShellQt/window.h>
 #include <qboxlayout.h>
+#include <qsettings.h>
 
 AppLauncher::AppLauncher(QWidget *parent)
     : QWidget{parent}
 {
     ipcServerService = IPCServerService::instance();
     appService = DesktopAppsService::instance();
-    setFixedSize(300, 500);
+    QSettings settings;
+    setFixedSize(settings.value("AppLauncher/width", 300).toInt(), settings.value("AppLauncher/height", 500).toInt());
     winId();
     LayerShellQt::Window* layerWindow = LayerShellQt::Window::get(windowHandle());
     layerWindow->setLayer(LayerShellQt::Window::Layer::LayerOverlay);

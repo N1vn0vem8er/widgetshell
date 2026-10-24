@@ -1,5 +1,6 @@
 #include "applauncher.h"
 #include <LayerShellQt/window.h>
+#include <QProcess>
 #include <qboxlayout.h>
 #include <qsettings.h>
 
@@ -29,6 +30,7 @@ AppLauncher::AppLauncher(QWidget *parent)
     listView->setUniformItemSizes(true);
     listView->setIconSize(QSize(32, 32));
     connect(searchLineEdit, &QLineEdit::textEdited, proxyModel, &DesktopAppProxyModel::setSearchText);
+    connect(listView, &QListView::activated, this, &AppLauncher::onLaunch);
 
     layout->addWidget(listView);
 
@@ -51,4 +53,14 @@ void AppLauncher::onActivate()
         hide();
     else
         show();
+}
+
+void AppLauncher::onLaunch(const QModelIndex &index)
+{
+    const auto app = model->appAt(index.row());
+    auto command = QProcess::splitCommand(app->exec);
+    if(command.isEmpty())
+        return;
+    QProcess::startDetached(command.constFirst(), command.mid(1));
+    hide();
 }

@@ -28,6 +28,7 @@ private:
 
 private slots:
     void onActivate();
+    void onLaunch(const QModelIndex& index);
 
 signals:
 };

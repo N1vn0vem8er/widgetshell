@@ -8,10 +8,12 @@
 AppLauncher::AppLauncher(QWidget *parent)
     : QWidget{parent}
 {
+    setAttribute(Qt::WA_StyledBackground, true);
     ipcServerService = IPCServerService::instance();
     appService = DesktopAppsService::instance();
     QSettings settings;
     setFixedSize(settings.value("AppLauncher/width", 300).toInt(), settings.value("AppLauncher/height", 500).toInt());
+    setAttribute(Qt::WA_TranslucentBackground, settings.value("AppLauncher/TranslucentBackground", false).toBool());
     winId();
     LayerShellQt::Window* layerWindow = LayerShellQt::Window::get(windowHandle());
     layerWindow->setLayer(LayerShellQt::Window::Layer::LayerOverlay);

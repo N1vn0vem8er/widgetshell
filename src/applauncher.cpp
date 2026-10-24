@@ -1,5 +1,6 @@
 #include "applauncher.h"
 #include <LayerShellQt/window.h>
+#include <QKeyEvent>
 #include <QProcess>
 #include <qboxlayout.h>
 #include <qsettings.h>
@@ -52,7 +53,11 @@ void AppLauncher::onActivate()
     if(isVisible())
         hide();
     else
+    {
+        searchLineEdit->setFocus();
+        listView->setCurrentIndex(listView->model()->index(0, 0));
         show();
+    }
 }
 
 void AppLauncher::onLaunch(const QModelIndex &index)
@@ -63,4 +68,22 @@ void AppLauncher::onLaunch(const QModelIndex &index)
         return;
     QProcess::startDetached(command.constFirst(), command.mid(1));
     hide();
+}
+
+void AppLauncher::keyPressEvent(QKeyEvent *event)
+{
+    if(searchLineEdit->hasFocus() && event->key() == Qt::Key_Down && listView->model()->rowCount() > 0)
+    {
+        listView->setCurrentIndex(listView->model()->index(0, 0));
+        listView->setFocus();
+        return;
+    }
+    if(listView->hasFocus() && event->key() == Qt::Key_Up && listView->currentIndex().row() == 0)
+    {
+        searchLineEdit->setFocus();
+        searchLineEdit->setCursorPosition(searchLineEdit->text().size());
+        return;
+    }
+
+    QWidget::keyPressEvent(event);
 }

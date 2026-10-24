@@ -31,6 +31,9 @@ private slots:
     void onLaunch(const QModelIndex& index);
 
 signals:
+
+protected:
+    void keyPressEvent(QKeyEvent *event);
 };
 
 #endif // APPLAUNCHER_H

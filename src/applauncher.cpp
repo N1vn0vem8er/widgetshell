@@ -16,7 +16,7 @@ AppLauncher::AppLauncher(QWidget *parent)
     LayerShellQt::Window* layerWindow = LayerShellQt::Window::get(windowHandle());
     layerWindow->setLayer(LayerShellQt::Window::Layer::LayerOverlay);
     layerWindow->setAnchors(LayerShellQt::Window::Anchors(LayerShellQt::Window::AnchorNone));
-    layerWindow->setKeyboardInteractivity(LayerShellQt::Window::KeyboardInteractivityOnDemand);
+    layerWindow->setKeyboardInteractivity(LayerShellQt::Window::KeyboardInteractivityExclusive);
     connect(ipcServerService, &IPCServerService::showLauncher, this, &AppLauncher::onActivate);
 
     auto layout = new QVBoxLayout(this);

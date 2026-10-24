@@ -1,6 +1,7 @@
 #ifndef APPLAUNCHER_H
 #define APPLAUNCHER_H
 
+#include "components/applauncher/appslistview.h"
 #include "models/desktopappmodel.h"
 #include "models/desktopappproxymodel.h"
 #include "services/desktopappsservice.h"
@@ -19,7 +20,7 @@ private:
     IPCServerService* ipcServerService;
     DesktopAppsService* appService;
     QLineEdit* searchLineEdit;
-    QListView* listView;
+    AppsListView* listView;
     DesktopAppModel* model;
     DesktopAppProxyModel* proxyModel;
 

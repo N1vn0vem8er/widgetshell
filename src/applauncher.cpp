@@ -22,7 +22,7 @@ AppLauncher::AppLauncher(QWidget *parent)
     auto layout = new QVBoxLayout(this);
     searchLineEdit = new QLineEdit(this);
     layout->addWidget(searchLineEdit);
-    listView = new QListView(this);
+    listView = new AppsListView(searchLineEdit, this);
     model = new DesktopAppModel(this);
     proxyModel = new DesktopAppProxyModel(this);
     proxyModel->setSourceModel(model);

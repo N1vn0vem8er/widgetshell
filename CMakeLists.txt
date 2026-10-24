@@ -77,6 +77,7 @@ qt_add_executable(widgetshell
     src/services/ipcserverservice.h src/services/ipcserverservice.cpp
     src/models/desktopappmodel.h src/models/desktopappmodel.cpp
     src/models/desktopappproxymodel.h src/models/desktopappproxymodel.cpp
+    src/components/applauncher/appslistview.h src/components/applauncher/appslistview.cpp
 )
 
 target_link_libraries(widgetshell

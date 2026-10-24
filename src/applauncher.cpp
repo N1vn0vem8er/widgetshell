@@ -72,11 +72,20 @@ void AppLauncher::onLaunch(const QModelIndex &index)
 
 void AppLauncher::keyPressEvent(QKeyEvent *event)
 {
-    if(searchLineEdit->hasFocus() && event->key() == Qt::Key_Down && listView->model()->rowCount() > 0)
+    if(searchLineEdit->hasFocus())
     {
-        listView->setCurrentIndex(listView->model()->index(0, 0));
-        listView->setFocus();
-        return;
+        if(event->key() == Qt::Key_Down && listView->model()->rowCount() > 0)
+        {
+            listView->setCurrentIndex(listView->model()->index(0, 0));
+            listView->setFocus();
+            return;
+        }
+        if(event->key() == Qt::Key_Up && listView->currentIndex().row() > 0)
+        {
+            listView->setCurrentIndex(listView->model()->index(listView->currentIndex().row() - 1, 0));
+            listView->setFocus();
+            return;
+        }
     }
     if(listView->hasFocus() && event->key() == Qt::Key_Up && listView->currentIndex().row() == 0)
     {

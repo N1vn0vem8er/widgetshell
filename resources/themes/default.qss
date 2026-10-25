@@ -228,3 +228,15 @@ NotificationHistoryComponent QListWidget {
 NotificationHistoryComponent QLineEdit {
     background-color: #0b4d70;
 }
+
+AppLauncherButton {
+background-color: #38427f;
+}
+
+AppLauncherButton:hover {
+    background-color: #6474e1;
+}
+
+AppLauncherButton:checked {
+    background-color: #b0b9e1;
+}

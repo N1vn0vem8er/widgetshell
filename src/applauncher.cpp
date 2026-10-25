@@ -23,6 +23,8 @@ AppLauncher::AppLauncher(QWidget *parent)
 
     auto layout = new QVBoxLayout(this);
     searchLineEdit = new QLineEdit(this);
+    searchLineEdit->setPlaceholderText("Search");
+    searchLineEdit->setClearButtonEnabled(settings.value("AppLauncher/clearButtonEnabled", false).toBool());
     layout->addWidget(searchLineEdit);
     listView = new AppsListView(searchLineEdit, this);
     model = new DesktopAppModel(this);

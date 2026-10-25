@@ -52,8 +52,10 @@ private:
 
 public slots:
     void scanForApps();
+    void requestLauncher();
 
 signals:
+    void showLauncher();
 };
 
 #endif // DESKTOPAPPSSERVICE_H

@@ -89,3 +89,8 @@ void DesktopAppsService::scanForApps()
         }
     }
 }
+
+void DesktopAppsService::requestLauncher()
+{
+    emit showLauncher();
+}

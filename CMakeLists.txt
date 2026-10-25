@@ -78,6 +78,7 @@ qt_add_executable(widgetshell
     src/models/desktopappmodel.h src/models/desktopappmodel.cpp
     src/models/desktopappproxymodel.h src/models/desktopappproxymodel.cpp
     src/components/applauncher/appslistview.h src/components/applauncher/appslistview.cpp
+    src/components/bar/applauncherbutton.h src/components/bar/applauncherbutton.cpp
 )
 
 target_link_libraries(widgetshell

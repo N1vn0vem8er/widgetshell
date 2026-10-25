@@ -1,4 +1,5 @@
 #include "widgetfactory.h"
+#include "components/bar/applauncherbutton.h"
 #include "components/bar/audiovolumecontrolbarcomponent.h"
 #include "components/bar/controlmenubutton.h"
 #include "components/bar/cpuusagecomponent.h"
@@ -89,6 +90,10 @@ WidgetFactory::WidgetFactory(QObject *parent)
     });
     registerWidget("controlmenu", [](const QJsonObject& obj, QWidget* parent){
         ControlMenuButton* widget = new ControlMenuButton(parent);
+        return widget;
+    });
+    registerWidget("applauncherbutton", [](const QJsonObject& obj, QWidget* parent){
+        AppLauncherButton* widget = new AppLauncherButton(obj.value("icon").toString("application-x-executable"), obj.value("text").toString(), parent);
         return widget;
     });
     registerWidget("cpuusage", [](const QJsonObject& obj, QWidget* parent){

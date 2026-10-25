@@ -20,6 +20,7 @@ AppLauncher::AppLauncher(QWidget *parent)
     layerWindow->setAnchors(LayerShellQt::Window::Anchors(LayerShellQt::Window::AnchorNone));
     layerWindow->setKeyboardInteractivity(LayerShellQt::Window::KeyboardInteractivityExclusive);
     connect(ipcServerService, &IPCServerService::showLauncher, this, &AppLauncher::onActivate);
+    connect(appService, &DesktopAppsService::showLauncher, this, &AppLauncher::onActivate);
 
     auto layout = new QVBoxLayout(this);
     searchLineEdit = new QLineEdit(this);

@@ -45,3 +45,8 @@ Control menu layout can be configured with `controlmenu.json` file. This is the 
 ## Network Menu
 
 Network menu can be customized as shown in [here](Configuration-NetworkMenu.md)
+
+## Wallpaper
+
+Widget Shell can display both imaga and video wallpapers. All image and video formats supported by Qt should work.
+Wallpapaer can be configured as shwon in [here](Configuration-Wallpaper.md).

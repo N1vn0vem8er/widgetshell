@@ -28,6 +28,7 @@ in the bar:
 * [Control Menu Button](Configuration-ControlMenuButton.md)
 * [Cpu Usage](Configuration-CpuUsage.md)
 * [Date Time](Configuration-DateTime.md)
+* [Disk Usage](Configuration-DiskUsage.md)
 * [Memory Usage](Configuration-MemoryUsage.md)
 * [Network Connection](Configuration-NetworkConnection.md)
 * [Uptime](Configuration-Uptime.md)

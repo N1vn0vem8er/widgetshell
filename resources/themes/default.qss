@@ -241,6 +241,35 @@ AppLauncherButton:checked {
     background-color: #b0b9e1;
 }
 
+AppLauncher {
+    background-color: #000055;
+}
+
+AppLauncher QListView {
+    background-color: #000055;
+    color: #03f2ff;
+}
+
+AppLauncher QLineEdit {
+    background-color: #242455;
+    color: #03f2ff;
+}
+
+AppLauncher QScrollBar:horizontal {
+    background: #100043;
+    height: 10px;
+}
+
+AppLauncher QScrollBar::handle:horizontal {
+    background: #5b3fbf;
+    min-width: 30px;
+    border-radius: 5px;
+}
+
+AppLauncher QScrollBar::handle:horizontal:hover {
+    background: #7956e8;
+}
+
 #SelectDiskMenu {
     background-color: #100043;
 }

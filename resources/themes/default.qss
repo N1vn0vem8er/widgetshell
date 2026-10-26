@@ -240,3 +240,11 @@ AppLauncherButton:hover {
 AppLauncherButton:checked {
     background-color: #b0b9e1;
 }
+
+#SelectDiskMenu {
+    background-color: #100043;
+}
+
+#SelectDiskMenu QListWidget {
+    background-color: #100043;
+}

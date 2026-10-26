@@ -25,6 +25,8 @@ void DiskUsageBarComponent::onSelectDisk()
     if(!selectDiskWidget)
     {
         selectDiskWidget = new QWidget();
+        selectDiskWidget->setObjectName("SelectDiskMenu");
+        selectDiskWidget->setAttribute(Qt::WA_StyledBackground);
 
         auto* layout = new QVBoxLayout(selectDiskWidget);
         listWidget = new QListWidget(selectDiskWidget);

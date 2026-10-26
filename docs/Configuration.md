@@ -43,3 +43,5 @@ Control menu layout can be configured with `controlmenu.json` file. This is the 
 * [Notification History](Configuration-NotificationHistory.md)
 
 ## Network Menu
+
+Network menu can be customized as shown in [here](Configuration-NetworkMenu.md)

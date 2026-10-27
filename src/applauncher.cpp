@@ -67,10 +67,16 @@ void AppLauncher::onActivate()
 
 void AppLauncher::onLaunch(const QModelIndex &index)
 {
-    const auto app = model->appAt(index.row());
+    const QModelIndex sourceIndex = proxyModel->mapToSource(index);
+    if(!sourceIndex.isValid())
+        return;
+
+    const auto app = model->appAt(sourceIndex.row());
     auto command = QProcess::splitCommand(app->exec);
+
     if(command.isEmpty())
         return;
+
     QProcess::startDetached(command.constFirst(), command.mid(1));
     hide();
 }

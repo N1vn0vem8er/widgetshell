@@ -50,7 +50,9 @@ AppLauncher::AppLauncher(QWidget *parent)
 
 void AppLauncher::refresh()
 {
-    model->addApps(appService->desktopApps());
+    auto apps = appService->desktopApps();
+    apps.removeIf([](const DesktopApp& app){return app.noDisplay.value_or(false) || app.hidden.value_or(false);});
+    model->addApps(apps);
 }
 
 void AppLauncher::onActivate()

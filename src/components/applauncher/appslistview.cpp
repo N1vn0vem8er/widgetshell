@@ -8,8 +8,9 @@ AppsListView::AppsListView(QLineEdit* lineEdit, QWidget *parent) : lineEdit(line
 
 void AppsListView::keyPressEvent(QKeyEvent *event)
 {
-    if(!event->text().isEmpty())
+    if(event->key() != Qt::Key_Return && !event->text().isEmpty())
     {
+        qDebug() << event->text();
         lineEdit->setFocus();
         QApplication::sendEvent(lineEdit, event);
         return;

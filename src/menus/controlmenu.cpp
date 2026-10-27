@@ -29,7 +29,8 @@ ControlMenu::ControlMenu(QWidget *parent)
 
 void ControlMenu::createMenu()
 {
-    QFile configFile(QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + "/" + QCoreApplication::organizationName() + "/controlmenu.json");
+    QFileInfo fi(QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + "/" + QCoreApplication::organizationName() + "/controlmenu.json");
+    QFile configFile(fi.exists() ? fi.absoluteFilePath() : ":/config/controlmenu.json");
     if(!configFile.open(QIODevice::ReadOnly))
         return;
 

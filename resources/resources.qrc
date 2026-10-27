@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>themes/default.qss</file>
+        <file>config/bar.json</file>
+        <file>config/controlmenu.json</file>
     </qresource>
 </RCC>

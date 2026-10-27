@@ -1,0 +1,31 @@
+{
+    "left": [
+        {
+            "component": "openedapps"
+        },
+        {
+            "component": "activeappname"
+        }
+    ],
+    "center": [
+        {
+            "component": "workspaceswitcher"
+        }
+    ],
+    "right": [
+        {
+            "component": "networkconnection",
+            "unit": "kb"
+        },
+        {
+            "component": "audiocontrol"
+        },
+        {
+            "component": "datetime",
+            "format": "hh::mm:ss | dd:MM:yyyy"
+        },
+        {
+            "component": "controlmenu"
+        }
+    ]
+}

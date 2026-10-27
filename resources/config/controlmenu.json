@@ -1,0 +1,14 @@
+[
+    {
+        "component": "systemactions"
+    },
+    {
+        "component": "menuaudiocontrol"
+    },
+    {
+        "component": "menucalendar"
+    },
+    {
+        "component": "menunotificationhistory"
+    }
+]

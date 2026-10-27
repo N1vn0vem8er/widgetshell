@@ -37,7 +37,8 @@ BarWidget::~BarWidget()
 
 void BarWidget::createBar()
 {
-    QFile configFile(QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + "/" + QCoreApplication::organizationName() + "/bar.json");
+    QFileInfo fi(QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + "/" + QCoreApplication::organizationName() + "/bar.json");
+    QFile configFile(fi.exists() ? fi.absoluteFilePath() : ":/config/bar.json");
     if(!configFile.open(QIODevice::ReadOnly))
         return;
 

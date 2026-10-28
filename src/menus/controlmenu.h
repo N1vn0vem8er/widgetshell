@@ -7,6 +7,7 @@
 #include <QVBoxLayout>
 #include <QWidget>
 #include <QCalendarWidget>
+#include <qscrollarea.h>
 
 class ControlMenu : public QWidget
 {
@@ -19,6 +20,8 @@ private:
     QCalendarWidget* calendar;
     AudioVolumeControlComponent* audioVolumeControl;
     NotificationHistoryComponent* notificationHistory;
+    QScrollArea* scrollArea;
+    QWidget* contentWidget;
 
 private:
     void createMenu();

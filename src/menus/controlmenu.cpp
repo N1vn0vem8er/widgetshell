@@ -16,14 +16,25 @@ ControlMenu::ControlMenu(QWidget *parent)
 {
     setAttribute(Qt::WA_StyledBackground, true);
     QSettings settings;
-    setFixedSize(settings.value("ControlMenu/width", 300).toInt(), settings.value("ControlMenu/height", 600).toInt());
+    setFixedSize(settings.value("ControlMenu/width", 400).toInt(), settings.value("ControlMenu/height", 600).toInt());
     winId();
     LayerShellQt::Window* layerWindow = LayerShellQt::Window::get(windowHandle());
     layerWindow->setLayer(LayerShellQt::Window::Layer::LayerOverlay);
     layerWindow->setAnchors(LayerShellQt::Window::Anchors(LayerShellQt::Window::AnchorTop | LayerShellQt::Window::AnchorRight));
     layerWindow->setKeyboardInteractivity(LayerShellQt::Window::KeyboardInteractivityOnDemand);
 
-    mainLayout = new QVBoxLayout(this);
+    auto layout = new QVBoxLayout(this);
+    layout->setContentsMargins(0, 0, 0, 0);
+
+    scrollArea = new QScrollArea(this);
+    scrollArea->setWidgetResizable(true);
+
+    contentWidget = new QWidget();
+    mainLayout = new QVBoxLayout(contentWidget);
+
+    scrollArea->setWidget(contentWidget);
+    layout->addWidget(scrollArea);
+
     createMenu();
 }
 
@@ -47,6 +58,6 @@ void ControlMenu::createMenu()
     {
         const QJsonObject element = val.toObject();
         if(element.contains("component"))
-            mainLayout->addWidget(factory.create(element.value("component").toString(), element, this));
+            mainLayout->addWidget(factory.create(element.value("component").toString(), element, contentWidget));
     }
 }

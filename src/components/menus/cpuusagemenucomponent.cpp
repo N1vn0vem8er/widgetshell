@@ -5,6 +5,7 @@ CpuUsageMenuComponent::CpuUsageMenuComponent(QWidget *parent)
     : QWidget{parent}
 {
     setAttribute(Qt::WA_StyledBackground, true);
+    setMinimumHeight(180);
     service = SystemMonitorService::instance();
     connect(service, &SystemMonitorService::cpuUsage, this, &CpuUsageMenuComponent::update);
 
@@ -15,9 +16,6 @@ CpuUsageMenuComponent::CpuUsageMenuComponent(QWidget *parent)
 
     usedSlice->setBrush(QColor(0x4CAF50));
     freeSlice->setBrush(QColor(0x303030));
-
-    usedSlice->setLabelVisible(false);
-    freeSlice->setLabelVisible(false);
 
     chart = new QChart();
     chart->addSeries(series);

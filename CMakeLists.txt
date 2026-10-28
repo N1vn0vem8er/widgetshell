@@ -4,6 +4,7 @@ set (CMAKE_CXX_STANDARD 23)
 
 find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets Network DBus)
 find_package(Qt6 REQUIRED COMPONENTS MultimediaWidgets)
+find_package(Qt6 REQUIRED COMPONENTS Charts)
 find_package(LayerShellQt REQUIRED)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(PULSEAUDIO REQUIRED libpulse)
@@ -79,6 +80,7 @@ qt_add_executable(widgetshell
     src/models/desktopappproxymodel.h src/models/desktopappproxymodel.cpp
     src/components/applauncher/appslistview.h src/components/applauncher/appslistview.cpp
     src/components/bar/applauncherbutton.h src/components/bar/applauncherbutton.cpp
+    src/components/menus/cpuusagemenucomponent.h src/components/menus/cpuusagemenucomponent.cpp
 )
 
 target_link_libraries(widgetshell
@@ -93,6 +95,7 @@ target_link_libraries(widgetshell
     PRIVATE
         Qt6::MultimediaWidgets
         ${PULSEAUDIO_LIBRARIES})
+target_link_libraries(widgetshell PRIVATE Qt6::Charts)
 
 install(TARGETS widgetshell
     BUNDLE  DESTINATION .

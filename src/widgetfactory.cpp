@@ -19,6 +19,7 @@
 #include "components/bar/sway/workspaceswitcherswaycomponent.h"
 #include "components/bar/uptimebarcomponent.h"
 #include "components/bar/hyprland/workspaceswitcherhyprlandcomponent.h"
+#include "components/menus/cpuusagemenucomponent.h"
 #include "components/menus/systemactionsmenucomponent.h"
 
 #include <QJsonObject>
@@ -182,6 +183,10 @@ WidgetFactory::WidgetFactory(QObject *parent)
     });
     registerWidget("menucalendar", [](const QJsonObject& obj, QWidget* parent){
         QCalendarWidget* widget = new QCalendarWidget(parent);
+        return widget;
+    });
+    registerWidget("cpuusagemenu", [](const QJsonObject& obj, QWidget* parent){
+        CpuUsageMenuComponent* widget = new CpuUsageMenuComponent(parent);
         return widget;
     });
     registerWidget("diskusage", [](const QJsonObject& obj, QWidget* parent){

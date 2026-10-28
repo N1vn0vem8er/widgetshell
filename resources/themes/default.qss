@@ -33,6 +33,57 @@ ControlMenu QPushButton:checked {
     background-color: #b0b9e1;
 }
 
+ControlMenu QScrollBar:horizontal {
+    background: #100043;
+    height: 10px;
+}
+
+ControlMenu QScrollBar::handle:horizontal {
+    background: #5b3fbf;
+    min-width: 30px;
+    border-radius: 5px;
+}
+
+ControlMenu QScrollBar::handle:horizontal:hover {
+    background: #7956e8;
+}
+
+ControlMenu QScrollBar::add-line:horizontal,
+ControlMenu QScrollBar::sub-line:horizontal {
+    height: 0px;
+}
+
+ControlMenu QScrollBar::add-page:horizontal,
+ControlMenu QScrollBar::sub-page:horizontal {
+    background: #1b0757;
+}
+
+ControlMenu QScrollBar:vertical {
+    background: #100043;
+    width: 10px;
+    margin: 0px;
+}
+
+ControlMenu QScrollBar::handle:vertical {
+    background: #5b3fbf;
+    min-height: 30px;
+    border-radius: 5px;
+}
+
+ControlMenu QScrollBar::handle:vertical:hover {
+    background: #7956e8;
+}
+
+ControlMenu QScrollBar::add-line:vertical,
+ControlMenu QScrollBar::sub-line:vertical {
+    height: 0px;
+}
+
+ControlMenu QScrollBar::add-page:vertical,
+ControlMenu QScrollBar::sub-page:vertical {
+    background: #1b0757;
+}
+
 ControlMenuButton {
     background-color: #38427f;
 }

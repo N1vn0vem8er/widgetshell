@@ -14,5 +14,12 @@ CpuUsageComponent::CpuUsageComponent(const QString &labelText, QWidget *parent)
 
 void CpuUsageComponent::update(const QList<double>& usage)
 {
-    label->setText(labelText.arg(usage.at(0), 0, 'f', 1));
+    QString text = labelText;
+
+    for(int i = 0; i < usage.size(); i++)
+    {
+        text.replace(QString("%%1").arg(i), QString::number(usage.at(i), 'f', 1));
+    }
+
+    label->setText(text);
 }

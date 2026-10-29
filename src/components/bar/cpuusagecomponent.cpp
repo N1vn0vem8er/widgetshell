@@ -12,7 +12,7 @@ CpuUsageComponent::CpuUsageComponent(const QString &labelText, QWidget *parent)
     connect(service, &SystemMonitorService::cpuUsage, this, &CpuUsageComponent::update);
 }
 
-void CpuUsageComponent::update(double val)
+void CpuUsageComponent::update(const QList<double>& usage)
 {
-    label->setText(labelText.arg(val, 0, 'f', 1));
+    label->setText(labelText.arg(usage.at(0), 0, 'f', 1));
 }

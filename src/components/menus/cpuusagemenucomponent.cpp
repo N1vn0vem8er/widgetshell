@@ -31,8 +31,9 @@ CpuUsageMenuComponent::CpuUsageMenuComponent(QWidget *parent)
     layout->addWidget(chartView);
 }
 
-void CpuUsageMenuComponent::update(double val)
+void CpuUsageMenuComponent::update(const QList<double>& usage)
 {
+    double val = usage.at(0);
     usedSlice->setValue(val);
     freeSlice->setValue(100.0 - val);
 

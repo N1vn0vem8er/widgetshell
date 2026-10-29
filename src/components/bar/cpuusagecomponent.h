@@ -17,7 +17,7 @@ private:
     QString labelText;
 
 private slots:
-    void update(double val);
+    void update(const QList<double>& usage);
 
 signals:
 };

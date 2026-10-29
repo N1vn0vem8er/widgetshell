@@ -37,30 +37,47 @@ SystemMonitorService::SystemMonitorService(QObject *parent)
     timer->start();
 }
 
-CpuTimes SystemMonitorService::readCpuTimes()
+QList<CpuTimes> SystemMonitorService::readCpuTimes()
 {
     QFile file("/proc/stat");
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
         return {};
 
-    const QString line = QString::fromUtf8(file.readLine());
-    QTextStream stream(const_cast<QString*>(&line), QIODevice::ReadOnly);
-    QString cpu;
-    CpuTimes times;
+    QList<CpuTimes> result;
 
-    stream >> cpu >> times.user >> times.nice >> times.system >> times.idle >> times.iowait >> times.irq >> times.softirq >> times.steal >> times.guest >> times.guestNice;
-    return times;
+    while(true)
+    {
+        const QByteArray rawLine = file.readLine();
+        if(rawLine.isEmpty())
+            break;
+        const QString line = QString::fromUtf8(rawLine).trimmed();
+        if(!line.startsWith("cpu"))
+            break;
+
+        result.append(parseCpuLine(line));
+    }
+
+    return result;
 }
 
 double SystemMonitorService::countCpuUsage(const CpuTimes &old, const CpuTimes &current)
 {
     const quint64 oldIdle = old.idle + old.iowait;
     const quint64 currentIdle = current.idle + current.iowait;
-    const quint64 oldTotal = old.user + old.nice + old.system + old.idle + old.iowait + old.irq + old.softirq + old.steal + old.guest + old.guestNice;
-    const quint64 currentTotal = current.user + current.nice + current.system + current.idle + current.iowait + current.irq + current.softirq + current.steal + current.guest + current.guestNice;
+    const quint64 oldTotal = old.user + old.nice + old.system + old.idle + old.iowait + old.irq + old.softirq + old.steal;
+    const quint64 currentTotal = current.user + current.nice + current.system + current.idle + current.iowait + current.irq + current.softirq + current.steal;
+
+    if(currentTotal <= oldTotal)
+        return 0.0;
+
     const quint64 deltaTotal = currentTotal - oldTotal;
+
+    if(currentIdle < oldIdle)
+        return 0.0;
+
     const quint64 deltaIdle = currentIdle - oldIdle;
-    if(deltaTotal == 0)
+
+    if(deltaIdle > deltaTotal)
         return 0.0;
 
     return 100.0 * static_cast<double>(deltaTotal - deltaIdle) / static_cast<double>(deltaTotal);
@@ -68,9 +85,25 @@ double SystemMonitorService::countCpuUsage(const CpuTimes &old, const CpuTimes &
 
 void SystemMonitorService::checkCpu()
 {
-    const CpuTimes current = readCpuTimes();
-    emit cpuUsage(countCpuUsage(previousCpuTimes, current));
-    previousCpuTimes = current;
+    const QList<CpuTimes> current = readCpuTimes();
+
+    if(current.isEmpty())
+        return;
+
+    QList<double> usage;
+    usage.reserve(current.size());
+
+    for(int i = 0; i < current.size(); i++)
+    {
+        if(i < previousCoreTimes.size())
+            usage.append(countCpuUsage(previousCoreTimes[i], current[i]));
+        else
+            usage.append(0.0);
+    }
+
+    emit cpuUsage(usage);
+
+    previousCoreTimes = current;
 }
 
 void SystemMonitorService::checkMemory()
@@ -158,6 +191,17 @@ void SystemMonitorService::updateDiskStats()
     }
 
     emit diskStatsChanged(result);
+}
+
+CpuTimes SystemMonitorService::parseCpuLine(const QString &line)
+{
+    QTextStream stream(const_cast<QString*>(&line), QIODevice::ReadOnly);
+    QString cpu;
+    CpuTimes times;
+
+    stream >> cpu >> times.user >> times.nice >> times.system >> times.idle >> times.iowait >> times.irq >> times.softirq >> times.steal >> times.guest >> times.guestNice;
+
+    return times;
 }
 
 Disk SystemMonitorService::checkStorage(const QString &path)

@@ -48,22 +48,24 @@ private:
     inline static SystemMonitorService* m_instance {nullptr};
     QTimer* timer;
     CpuTimes previousCpuTimes;
+    QList<CpuTimes> previousCoreTimes;
     QMap<QString, DiskStats> m_previousStats;
     qint64 m_previousTime;
 
 private:
     explicit SystemMonitorService(QObject *parent = nullptr);
-    CpuTimes readCpuTimes();
+    QList<CpuTimes> readCpuTimes();
     double countCpuUsage(const CpuTimes& old, const CpuTimes& current);
     void checkCpu();
     void checkMemory();
     void updateDiskStats();
+    CpuTimes parseCpuLine(const QString& line);
 
 private slots:
     void timeout();
 
 signals:
-    void cpuUsage(double val);
+    void cpuUsage(const QList<double>& usage);
     void memoryUsage(quint64 used, quint64 free);
     void diskStatsChanged(const QMap<QString, DiskStats>& stats);
 };

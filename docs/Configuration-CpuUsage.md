@@ -23,8 +23,10 @@ You can format what is displayed:
 ```json
 {
     "component": "cpuusage",
-    "format": "%1%"
+    "format": "%0% | %1% | %2%"
 }
 ```
 
-Cpu usage will be placed in place of `%1`.
+Each subsequent number corresponds to the next CPU core. %0 represents the overall CPU usage, 
+%1 represents the usage of core 0, %2 represents the usage of core 1, %3 represents the usage of core 2, 
+and so on.

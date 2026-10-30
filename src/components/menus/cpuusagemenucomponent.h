@@ -2,24 +2,40 @@
 #define CPUUSAGEMENUCOMPONENT_H
 
 #include "services/systemmonitorservice.h"
+#include <QBarSeries>
 #include <QChart>
 #include <QChartView>
+#include <QLineSeries>
 #include <QPieSeries>
+#include <QValueAxis>
 #include <QWidget>
 
 class CpuUsageMenuComponent : public QWidget
 {
     Q_OBJECT
 public:
-    explicit CpuUsageMenuComponent(QWidget *parent = nullptr);
+    enum class ChartType {
+        Pie,
+        Line,
+        Bar
+    };
+    Q_ENUM(ChartType)
+    explicit CpuUsageMenuComponent(CpuUsageMenuComponent::ChartType chartType, QWidget *parent = nullptr);
 
 private:
-    SystemMonitorService* service;
-    QChart* chart;
-    QChartView* chartView;
-    QPieSeries* series;
-    QPieSlice* usedSlice;
-    QPieSlice* freeSlice;
+    SystemMonitorService* service {nullptr};
+    QChart* chart {nullptr};
+    ChartType chartType = ChartType::Pie;
+    QChartView* chartView {nullptr};
+    QPieSeries* series {nullptr};
+    QPieSlice* usedSlice {nullptr};
+    QPieSlice* freeSlice {nullptr};
+    QLineSeries* lineSeries {nullptr};
+    QBarSeries* barSeries {nullptr};
+    QBarSet* barSet {nullptr};
+    QValueAxis* axisX {nullptr};
+    QValueAxis* axisY {nullptr};
+    int sampleCount {0};
 
 private slots:
     void update(const QList<double> &usage);

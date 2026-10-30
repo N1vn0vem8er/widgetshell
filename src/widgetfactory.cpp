@@ -186,7 +186,16 @@ WidgetFactory::WidgetFactory(QObject *parent)
         return widget;
     });
     registerWidget("cpuusagemenu", [](const QJsonObject& obj, QWidget* parent){
-        CpuUsageMenuComponent* widget = new CpuUsageMenuComponent(parent);
+        const QString chart = obj.value("chart").toString("pie").trimmed().toLower();
+        CpuUsageMenuComponent* widget;
+        if(chart == "pie")
+            widget = new CpuUsageMenuComponent(CpuUsageMenuComponent::ChartType::Pie, parent);
+        else if(chart == "bar")
+            widget = new CpuUsageMenuComponent(CpuUsageMenuComponent::ChartType::Bar, parent);
+        else if(chart == "line")
+            widget = new CpuUsageMenuComponent(CpuUsageMenuComponent::ChartType::Line, parent);
+        else
+            widget = new CpuUsageMenuComponent(CpuUsageMenuComponent::ChartType::Pie, parent);
         return widget;
     });
     registerWidget("diskusage", [](const QJsonObject& obj, QWidget* parent){

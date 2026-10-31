@@ -20,6 +20,7 @@
 #include "components/bar/uptimebarcomponent.h"
 #include "components/bar/hyprland/workspaceswitcherhyprlandcomponent.h"
 #include "components/menus/cpuusagemenucomponent.h"
+#include "components/menus/memoryusagemenucomponent.h"
 #include "components/menus/systemactionsmenucomponent.h"
 
 #include <QJsonObject>
@@ -196,6 +197,19 @@ WidgetFactory::WidgetFactory(QObject *parent)
             widget = new CpuUsageMenuComponent(CpuUsageMenuComponent::ChartType::Line, parent);
         else
             widget = new CpuUsageMenuComponent(CpuUsageMenuComponent::ChartType::Pie, parent);
+        return widget;
+    });
+    registerWidget("memoryusagemenu", [](const QJsonObject& obj, QWidget* parent){
+        const QString chart = obj.value("chart").toString("pie").trimmed().toLower();
+        MemoryUsageMenuComponent* widget;
+        if(chart == "pie")
+            widget = new MemoryUsageMenuComponent(MemoryUsageMenuComponent::ChartType::Pie, parent);
+        else if(chart == "bar")
+            widget = new MemoryUsageMenuComponent(MemoryUsageMenuComponent::ChartType::Bar, parent);
+        else if(chart == "line")
+            widget = new MemoryUsageMenuComponent(MemoryUsageMenuComponent::ChartType::Line, parent);
+        else
+            widget = new MemoryUsageMenuComponent(MemoryUsageMenuComponent::ChartType::Pie, parent);
         return widget;
     });
     registerWidget("diskusage", [](const QJsonObject& obj, QWidget* parent){

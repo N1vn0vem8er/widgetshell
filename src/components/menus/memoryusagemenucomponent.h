@@ -3,6 +3,13 @@
 
 #include "services/systemmonitorservice.h"
 #include <QWidget>
+#include <qbarseries.h>
+#include <qbarset.h>
+#include <qchart.h>
+#include <qchartview.h>
+#include <qlineseries.h>
+#include <qpieseries.h>
+#include <qvalueaxis.h>
 
 class MemoryUsageMenuComponent : public QWidget
 {
@@ -18,7 +25,21 @@ public:
 
 private:
     SystemMonitorService* service {nullptr};
-    MemoryUsageMenuComponent::ChartType chartType;
+    MemoryUsageMenuComponent::ChartType chartType {ChartType::Pie};
+    QChart* chart {nullptr};
+    QChartView* chartView {nullptr};
+    QPieSeries* series {nullptr};
+    QPieSlice* usedSlice {nullptr};
+    QPieSlice* freeSlice {nullptr};
+    QLineSeries* lineSeries {nullptr};
+    QBarSeries* barSeries {nullptr};
+    QBarSet* barSet {nullptr};
+    QValueAxis* axisX {nullptr};
+    QValueAxis* axisY {nullptr};
+    int sampleCount {0};
+
+private slots:
+    void update(quint64 used, quint64 free);
 
 signals:
 };

@@ -42,6 +42,7 @@ Control menu layout can be configured with `controlmenu.json` file. This is the 
 * [Calendar](Configuration-MenuCalendar.md)
 * [Notification History](Configuration-NotificationHistory.md)
 * [Cpu Usage](Configuration-CpuUsageMenu.md)
+* [Memory Usage](Configuration-MemoryUsageMenu.md)
 
 ## Network Menu
 

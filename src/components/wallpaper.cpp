@@ -39,6 +39,10 @@ void Wallpaper::initWallpaper()
     }
     else if(mimeType.inherits("video/plain") || mimeType.name().startsWith("video/"))
     {
+        hyprlandService = HyprlandService::instance();
+        connect(hyprlandService, &HyprlandService::activeWindowEmpty, this, &Wallpaper::noWindows);
+        connect(hyprlandService, &HyprlandService::activedWindowV2, this, &Wallpaper::windowsPresent);
+
         videoWidget = new QVideoWidget(this);
         videoWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         videoWidget->setMinimumSize(100, 100);
@@ -56,6 +60,18 @@ void Wallpaper::initWallpaper()
         mainLayout->addWidget(videoWidget);
         mediaPlayer->play();
     }
+}
+
+void Wallpaper::noWindows()
+{
+    if(mediaPlayer)
+        mediaPlayer->play();
+}
+
+void Wallpaper::windowsPresent()
+{
+    if(mediaPlayer)
+        mediaPlayer->pause();
 }
 
 void Wallpaper::resizeEvent(QResizeEvent *event)

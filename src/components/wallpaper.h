@@ -1,6 +1,7 @@
 #ifndef WALLPAPER_H
 #define WALLPAPER_H
 
+#include "services/hyprlandservice.h"
 #include <QMediaPlayer>
 #include <QVideoWidget>
 #include <qboxlayout.h>
@@ -22,6 +23,11 @@ private:
     QPixmap currentPixmap;
     Qt::AspectRatioMode aspectratioMode;
     Qt::TransformationMode transformationMode;
+    HyprlandService* hyprlandService;
+
+private slots:
+    void noWindows();
+    void windowsPresent();
 
 signals:
 

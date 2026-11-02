@@ -124,6 +124,7 @@ void NiriService::processCommandResponse(const QJsonObject &object)
         {
             m_clients.clear();
             const auto array = obj.value("Windows").toArray();
+            bool hasActivce = false;
             for(const auto& co : array)
             {
                 const auto object = co.toObject();
@@ -135,8 +136,13 @@ void NiriService::processCommandResponse(const QJsonObject &object)
                 client.workspaceId = object.value("workspace_id").toInteger();
                 client.title = object.value("title").toString();
                 client.isUrgent = object.value("is_urgent").toBool();
+                if(!hasActivce && client.isFocused)
+                    hasActivce = true;
                 m_clients.append(client);
             }
+            if(!hasActivce)
+                emit noActiveWindow();
+
             emit clientsRefreshed();
             return;
         }
@@ -176,6 +182,7 @@ void NiriService::processEventResponse(const QJsonObject &object)
     if(object.contains("WindowFocusChanged"))
     {
         const auto id = object.value("WindowFocusChanged").toObject().value("id").toInteger();
+        bool hasActivce = false;
         for(auto& client : m_clients)
         {
             if(client.id == id)
@@ -183,8 +190,12 @@ void NiriService::processEventResponse(const QJsonObject &object)
                 client.isFocused = true;
                 emit clientOpenedOrChanged(client);
             }
+            if(!hasActivce && client.isFocused)
+                hasActivce = true;
             client.isFocused = false;
         }
+        if(!hasActivce)
+            emit noActiveWindow();
 
         emit clientsRefreshed();
         emit clientFocused(id);
@@ -222,10 +233,16 @@ void NiriService::processEventResponse(const QJsonObject &object)
     if(object.contains("WorkspaceActiveWindowChanged"))
     {
         const auto id = object.value("WorkspaceActiveWindowChanged").toObject().value("active_window_id").toInteger();
+        bool hasActivce = false;
         for(auto& client : m_clients)
         {
             client.isFocused = (client.id == id);
+            if(!hasActivce && client.isFocused)
+                hasActivce = true;
         }
+        if(!hasActivce)
+            emit noActiveWindow();
+
         emit clientsRefreshed();
         emit clientFocused(id);
         return;

@@ -69,6 +69,7 @@ signals:
     void clientsRefreshed();
     void clientFocused(quint64 id);
     void clientOpenedOrChanged(const NiriClient& client);
+    void noActiveWindow();
 };
 
 #endif // NIRISERVICE_H

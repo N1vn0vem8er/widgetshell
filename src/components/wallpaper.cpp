@@ -4,6 +4,7 @@
 #include <QMimeDatabase>
 #include <QSettings>
 #include <QMap>
+#include "services/hyprlandservice.h"
 
 Wallpaper::Wallpaper(QWidget *parent) : QWidget{parent}
 {
@@ -39,7 +40,7 @@ void Wallpaper::initWallpaper()
     }
     else if(mimeType.inherits("video/plain") || mimeType.name().startsWith("video/"))
     {
-        hyprlandService = HyprlandService::instance();
+        auto hyprlandService = HyprlandService::instance();
         connect(hyprlandService, &HyprlandService::activeWindowEmpty, this, &Wallpaper::noWindows);
         connect(hyprlandService, &HyprlandService::activedWindowV2, this, &Wallpaper::windowsPresent);
 

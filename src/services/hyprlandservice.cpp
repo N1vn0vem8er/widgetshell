@@ -162,7 +162,7 @@ void HyprlandService::onReadReady()
                 qCritical() << "Error parsing workspace id in workspace";
             continue;
         }
-        if(line.startsWith("createdworkspace>>"))
+        if(line.startsWith("createworkspace>>"))
         {
             emit workspacesChanged();
             continue;

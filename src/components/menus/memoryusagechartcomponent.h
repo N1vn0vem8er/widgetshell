@@ -1,5 +1,5 @@
-#ifndef MEMORYUSAGEMENUCOMPONENT_H
-#define MEMORYUSAGEMENUCOMPONENT_H
+#ifndef MEMORYUSAGECHARTCOMPONENT_H
+#define MEMORYUSAGECHARTCOMPONENT_H
 
 #include "services/systemmonitorservice.h"
 #include <QWidget>
@@ -11,7 +11,7 @@
 #include <qpieseries.h>
 #include <qvalueaxis.h>
 
-class MemoryUsageMenuComponent : public QWidget
+class MemoryUsageChartComponent : public QWidget
 {
     Q_OBJECT
 public:
@@ -21,11 +21,11 @@ public:
         Bar
     };
     Q_ENUM(ChartType)
-    explicit MemoryUsageMenuComponent(MemoryUsageMenuComponent::ChartType chartType, QWidget *parent = nullptr);
+    explicit MemoryUsageChartComponent(MemoryUsageChartComponent::ChartType chartType, QWidget *parent = nullptr);
 
 private:
     SystemMonitorService* service {nullptr};
-    MemoryUsageMenuComponent::ChartType chartType {ChartType::Pie};
+    MemoryUsageChartComponent::ChartType chartType {ChartType::Pie};
     QChart* chart {nullptr};
     QChartView* chartView {nullptr};
     QPieSeries* series {nullptr};
@@ -44,4 +44,4 @@ private slots:
 signals:
 };
 
-#endif // MEMORYUSAGEMENUCOMPONENT_H
+#endif // MEMORYUSAGECHARTCOMPONENT_H

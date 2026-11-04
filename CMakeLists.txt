@@ -81,7 +81,7 @@ qt_add_executable(widgetshell
     src/components/applauncher/appslistview.h src/components/applauncher/appslistview.cpp
     src/components/bar/applauncherbutton.h src/components/bar/applauncherbutton.cpp
     src/components/menus/cpuusagemenucomponent.h src/components/menus/cpuusagemenucomponent.cpp
-    src/components/menus/memoryusagemenucomponent.h src/components/menus/memoryusagemenucomponent.cpp
+    src/components/menus/memoryusagechartcomponent.h src/components/menus/memoryusagechartcomponent.cpp
 )
 
 target_link_libraries(widgetshell

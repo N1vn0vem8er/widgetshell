@@ -20,7 +20,7 @@
 #include "components/bar/uptimebarcomponent.h"
 #include "components/bar/hyprland/workspaceswitcherhyprlandcomponent.h"
 #include "components/menus/cpuusagemenucomponent.h"
-#include "components/menus/memoryusagemenucomponent.h"
+#include "components/menus/memoryusagechartcomponent.h"
 #include "components/menus/systemactionsmenucomponent.h"
 
 #include <QJsonObject>
@@ -186,7 +186,7 @@ WidgetFactory::WidgetFactory(QObject *parent)
         QCalendarWidget* widget = new QCalendarWidget(parent);
         return widget;
     });
-    registerWidget("cpuusagemenu", [](const QJsonObject& obj, QWidget* parent){
+    registerWidget("cpuusagechart", [](const QJsonObject& obj, QWidget* parent){
         const QString chart = obj.value("chart").toString("pie").trimmed().toLower();
         CpuUsageMenuComponent* widget;
         if(chart == "pie")
@@ -199,17 +199,17 @@ WidgetFactory::WidgetFactory(QObject *parent)
             widget = new CpuUsageMenuComponent(CpuUsageMenuComponent::ChartType::Pie, parent);
         return widget;
     });
-    registerWidget("memoryusagemenu", [](const QJsonObject& obj, QWidget* parent){
+    registerWidget("memoryusagechart", [](const QJsonObject& obj, QWidget* parent){
         const QString chart = obj.value("chart").toString("pie").trimmed().toLower();
-        MemoryUsageMenuComponent* widget;
+        MemoryUsageChartComponent* widget;
         if(chart == "pie")
-            widget = new MemoryUsageMenuComponent(MemoryUsageMenuComponent::ChartType::Pie, parent);
+            widget = new MemoryUsageChartComponent(MemoryUsageChartComponent::ChartType::Pie, parent);
         else if(chart == "bar")
-            widget = new MemoryUsageMenuComponent(MemoryUsageMenuComponent::ChartType::Bar, parent);
+            widget = new MemoryUsageChartComponent(MemoryUsageChartComponent::ChartType::Bar, parent);
         else if(chart == "line")
-            widget = new MemoryUsageMenuComponent(MemoryUsageMenuComponent::ChartType::Line, parent);
+            widget = new MemoryUsageChartComponent(MemoryUsageChartComponent::ChartType::Line, parent);
         else
-            widget = new MemoryUsageMenuComponent(MemoryUsageMenuComponent::ChartType::Pie, parent);
+            widget = new MemoryUsageChartComponent(MemoryUsageChartComponent::ChartType::Pie, parent);
         return widget;
     });
     registerWidget("diskusage", [](const QJsonObject& obj, QWidget* parent){

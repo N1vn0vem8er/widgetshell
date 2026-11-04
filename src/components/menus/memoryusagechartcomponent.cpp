@@ -1,13 +1,13 @@
-#include "memoryusagemenucomponent.h"
+#include "memoryusagechartcomponent.h"
 #include <qboxlayout.h>
 
-MemoryUsageMenuComponent::MemoryUsageMenuComponent(ChartType chartType, QWidget *parent)
+MemoryUsageChartComponent::MemoryUsageChartComponent(ChartType chartType, QWidget *parent)
     : QWidget{parent}, chartType(chartType)
 {
     setAttribute(Qt::WA_StyledBackground, true);
     setMinimumHeight(180);
     service = SystemMonitorService::instance();
-    connect(service, &SystemMonitorService::memoryUsage, this, &MemoryUsageMenuComponent::update);
+    connect(service, &SystemMonitorService::memoryUsage, this, &MemoryUsageChartComponent::update);
 
     chart = new QChart();
     chart->setBackgroundVisible(false);
@@ -72,7 +72,7 @@ MemoryUsageMenuComponent::MemoryUsageMenuComponent(ChartType chartType, QWidget 
     layout->addWidget(chartView);
 }
 
-void MemoryUsageMenuComponent::update(quint64 used, quint64 free)
+void MemoryUsageChartComponent::update(quint64 used, quint64 free)
 {
 
     double val = (static_cast<double>(used) / (static_cast<double>(used) + static_cast<double>(free))) * 100;

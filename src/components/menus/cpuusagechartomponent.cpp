@@ -1,14 +1,14 @@
-#include "cpuusagemenucomponent.h"
+#include "cpuusagechartomponent.h"
 #include <QBarSet>
 #include <qboxlayout.h>
 
-CpuUsageMenuComponent::CpuUsageMenuComponent(CpuUsageMenuComponent::ChartType chartType, QWidget *parent)
+CpuUsageChartComponent::CpuUsageChartComponent(CpuUsageChartComponent::ChartType chartType, QWidget *parent)
     : QWidget{parent}, chartType(chartType)
 {
     setAttribute(Qt::WA_StyledBackground, true);
     setMinimumHeight(180);
     service = SystemMonitorService::instance();
-    connect(service, &SystemMonitorService::cpuUsage, this, &CpuUsageMenuComponent::update);
+    connect(service, &SystemMonitorService::cpuUsage, this, &CpuUsageChartComponent::update);
 
     chart = new QChart();
     chart->setBackgroundVisible(false);
@@ -73,7 +73,7 @@ CpuUsageMenuComponent::CpuUsageMenuComponent(CpuUsageMenuComponent::ChartType ch
     layout->addWidget(chartView);
 }
 
-void CpuUsageMenuComponent::update(const QList<double>& usage)
+void CpuUsageChartComponent::update(const QList<double>& usage)
 {
     if(usage.isEmpty())
         return;

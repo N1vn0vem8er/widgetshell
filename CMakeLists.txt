@@ -80,7 +80,7 @@ qt_add_executable(widgetshell
     src/models/desktopappproxymodel.h src/models/desktopappproxymodel.cpp
     src/components/applauncher/appslistview.h src/components/applauncher/appslistview.cpp
     src/components/bar/applauncherbutton.h src/components/bar/applauncherbutton.cpp
-    src/components/menus/cpuusagemenucomponent.h src/components/menus/cpuusagemenucomponent.cpp
+    src/components/menus/cpuusagechartomponent.h src/components/menus/cpuusagechartomponent.cpp
     src/components/menus/memoryusagechartcomponent.h src/components/menus/memoryusagechartcomponent.cpp
 )
 

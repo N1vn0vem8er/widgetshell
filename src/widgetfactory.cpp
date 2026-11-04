@@ -19,7 +19,7 @@
 #include "components/bar/sway/workspaceswitcherswaycomponent.h"
 #include "components/bar/uptimebarcomponent.h"
 #include "components/bar/hyprland/workspaceswitcherhyprlandcomponent.h"
-#include "components/menus/cpuusagemenucomponent.h"
+#include "components/menus/cpuusagechartomponent.h"
 #include "components/menus/memoryusagechartcomponent.h"
 #include "components/menus/systemactionsmenucomponent.h"
 
@@ -188,15 +188,15 @@ WidgetFactory::WidgetFactory(QObject *parent)
     });
     registerWidget("cpuusagechart", [](const QJsonObject& obj, QWidget* parent){
         const QString chart = obj.value("chart").toString("pie").trimmed().toLower();
-        CpuUsageMenuComponent* widget;
+        CpuUsageChartComponent* widget;
         if(chart == "pie")
-            widget = new CpuUsageMenuComponent(CpuUsageMenuComponent::ChartType::Pie, parent);
+            widget = new CpuUsageChartComponent(CpuUsageChartComponent::ChartType::Pie, parent);
         else if(chart == "bar")
-            widget = new CpuUsageMenuComponent(CpuUsageMenuComponent::ChartType::Bar, parent);
+            widget = new CpuUsageChartComponent(CpuUsageChartComponent::ChartType::Bar, parent);
         else if(chart == "line")
-            widget = new CpuUsageMenuComponent(CpuUsageMenuComponent::ChartType::Line, parent);
+            widget = new CpuUsageChartComponent(CpuUsageChartComponent::ChartType::Line, parent);
         else
-            widget = new CpuUsageMenuComponent(CpuUsageMenuComponent::ChartType::Pie, parent);
+            widget = new CpuUsageChartComponent(CpuUsageChartComponent::ChartType::Pie, parent);
         return widget;
     });
     registerWidget("memoryusagechart", [](const QJsonObject& obj, QWidget* parent){

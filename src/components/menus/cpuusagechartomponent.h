@@ -1,5 +1,5 @@
-#ifndef CPUUSAGEMENUCOMPONENT_H
-#define CPUUSAGEMENUCOMPONENT_H
+#ifndef CPUUSAGECHARTOMPONENT_H
+#define CPUUSAGECHARTOMPONENT_H
 
 #include "services/systemmonitorservice.h"
 #include <QBarSeries>
@@ -10,7 +10,7 @@
 #include <QValueAxis>
 #include <QWidget>
 
-class CpuUsageMenuComponent : public QWidget
+class CpuUsageChartComponent : public QWidget
 {
     Q_OBJECT
 public:
@@ -20,7 +20,7 @@ public:
         Bar
     };
     Q_ENUM(ChartType)
-    explicit CpuUsageMenuComponent(CpuUsageMenuComponent::ChartType chartType, QWidget *parent = nullptr);
+    explicit CpuUsageChartComponent(CpuUsageChartComponent::ChartType chartType, QWidget *parent = nullptr);
 
 private:
     SystemMonitorService* service {nullptr};
@@ -43,4 +43,4 @@ private slots:
 signals:
 };
 
-#endif // CPUUSAGEMENUCOMPONENT_H
+#endif // CPUUSAGECHARTOMPONENT_H

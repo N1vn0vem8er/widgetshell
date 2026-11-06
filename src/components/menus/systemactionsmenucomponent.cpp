@@ -40,6 +40,10 @@ void SystemActionsMenuComponent::onLogout()
     {
         QProcess::startDetached("swaymsg", {"exit"});
     }
+    else if(getenv("NIRI_SOCKET") != NULL)
+    {
+        QProcess::startDetached("niri", {"msg", "action", "quit"});
+    }
     else
         QProcess::startDetached("loginctl", {"terminate-session", getenv("XDG_SESSION_ID")});
 }
